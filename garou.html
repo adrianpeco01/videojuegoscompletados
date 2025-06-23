@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Trofeos en Mosaico</title>
+<link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css" />
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #121212;
+    color: #eee;
+    margin: 20px;
+  }
+  ul.trophy-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 15px;
+    padding: 0;
+    list-style: none;
+  }
+  ul.trophy-grid li {
+    position: relative;
+    background: #222;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+  ul.trophy-grid li:hover {
+    transform: scale(1.1);
+    z-index: 10;
+  }
+  ul.trophy-grid li .trophy-image {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  ul.trophy-grid li .overlay {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    box-sizing: border-box;
+    text-align: center;
+  }
+  ul.trophy-grid li:hover .overlay {
+    opacity: 1;
+  }
+  .trophy-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  .unlock-date {
+    font-size: 0.8em;
+    color: #bbb;
+  }
+  .trophy-description {
+    font-size: 0.9em;
+    margin-top: 5px;
+  }
+  /* Estilos para el tooltip de Tippy.js */
+  .tippy-box {
+    background-color: #333 !important; /* Fondo del tooltip */
+    color: #eee !important; /* Color del texto del tooltip */
+    border-radius: 4px !important;
+    padding: 8px !important;
+    font-family: Arial, sans-serif !important;
+    font-size: 0.9em !important;
+  }
+  .tippy-box[data-placement^='top'] > .tippy-arrow {
+    border-top-color: #333 !important;
+  }
+  .tippy-box[data-placement^='bottom'] > .tippy-arrow {
+    border-bottom-color: #333 !important;
+  }
+  .tippy-box[data-placement^='left'] > .tippy-arrow {
+    border-left-color: #333 !important;
+  }
+  .tippy-box[data-placement^='right'] > .tippy-arrow {
+    border-right-color: #333 !important;
+  }
+
+  /* NUEVOS ESTILOS PARA OCULTAR LA INFO EN LA PÁGINA */
+  .award-details {
+    display: none; /* Oculta el título y la descripción del trofeo */
+  }
+
+  .award-earned span {
+    display: none; /* Oculta la fecha de desbloqueo, manteniendo el icono de candado */
+  }
+
+  .award-rarity {
+    font-size: 0; /* Oculta el texto del porcentaje de rareza */
+  }
+
+  .award-rarity i {
+      font-size: initial; /* Asegura que el icono de rareza siga siendo visible */
+  }
+
+  .award-average span.tippy {
+      color: transparent; /* Hace el texto del porcentaje de promedio invisible, pero mantiene el elemento para que Tippy.js funcione */
+  }
+  
+  /* Estilos para el tooltip de Tippy.js */
+.tippy-box {
+  background-color: #333 !important; /* Fondo del tooltip */
+  color: #eee !important; /* Color del texto del tooltip */
+  border-radius: 8px !important; /* Bordes más redondeados */
+  padding: 15px !important; /* Más padding para el contenido */
+  font-family: Arial, sans-serif !important;
+  font-size: 0.9em !important;
+  max-width: 250px !important; /* Limita el ancho del tooltip si es necesario */
+  text-align: center; /* Centra el texto del tooltip por defecto */
+}
+.tippy-box[data-placement^='top'] > .tippy-arrow {
+  border-top-color: #333 !important;
+}
+.tippy-box[data-placement^='bottom'] > .tippy-arrow {
+  border-bottom-color: #333 !important;
+}
+.tippy-box[data-placement^='left'] > .tippy-arrow {
+  border-left-color: #333 !important;
+}
+.tippy-box[data-placement^='right'] > .tippy-arrow {
+  border-right-color: #333 !important;
+}
+
+/* Estilos específicos para el contenido dentro del tooltip */
+.tippy-custom-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centra los elementos verticalmente */
+  gap: 8px; /* Espacio entre los elementos del tooltip */
+}
+
+.tippy-title {
+  font-weight: bold;
+  font-size: 1.1em;
+  text-align: center;
+  margin-bottom: 5px; /* Espacio debajo del título */
+}
+
+.tippy-description {
+  font-size: 0.9em;
+  text-align: center;
+  margin-bottom: 5px; /* Espacio debajo de la descripción */
+}
+
+.tippy-date-container {
+  display: flex;
+  align-items: center;
+  gap: 5px; /* Espacio entre el icono de candado y la fecha */
+  font-size: 0.85em;
+  color: #bbb;
+}
+
+.tippy-icon-unlock {
+  width: 16px; /* Ajusta el tamaño del icono de candado */
+  height: 16px;
+  vertical-align: middle;
+}
+
+.tippy-trophy-container {
+  margin-top: 10px; /* Espacio arriba del icono de trofeo */
+}
+
+.tippy-icon-trophy {
+  width: 24px; /* Ajusta el tamaño del icono de trofeo */
+  height: 24px;
+}
+
+/* ESTILOS PARA OCULTAR LA INFO EN LA PÁGINA (ya los tienes, pero los incluyo para el contexto completo) */
+.award-details {
+  display: none;
+}
+.award-earned span {
+  display: none;
+}
+.award-rarity {
+  font-size: 0;
+}
+.award-rarity i {
+  font-size: initial;
+}
+.award-average span.tippy {
+  color: transparent;
+}
+</style>
+</head>
+<body>
+
+<ul class="trophy-grid">
+  <li class="col-12 t0 award visible earned" data-type="" data-award-id="1" data-master="156132" id="156132" data-earned="1750199667" data-average="71.92" data-points="15">
+	<div class="row align-items-center">
+		<div class="col-auto award-left">
+			<div class="box image hidden-toggle">
+									<img data-tippy-content="<strong>No matter what...I will fight for my destiny...!</strong> <p>Beat the final boss Kain and clear the game as ROCK HOWARD</p><i class='exo-icon exo-icon-unlock'></i><span>June 18, 2025, 12:34 am (UTC+2)</span><div class=&quot;d-block text-center tippy-points&quot;>
+							<i class=&quot;me-0 exo-icon icon-collection-trophies exo-icon-trophy-bronze&quot;></i>
+					</div>" class="award-image trophy-image visible" src="https://m.exophase.com/psn/awards/s/11g567.png?bbcb601daca1336086389a2fa58f67bb" width="64" height="64">
+							</div>
+		</div>
+
+		<div class="col col-lg-4 col-xl-6 award-details snippet">
+			<div class="text-medium award-title hidden-toggle fw-bolder">
+				<a href="https://www.exophase.com/trophy/garou-mark-of-the-wolves-psn/157549-no-matter-what-i-will-fight-for-my-destiny">No matter what...I will fight for my destiny...!</a>
+			</div>
+
+			<div class="award-description hidden-toggle"><p>Beat the final boss Kain and clear the game as ROCK HOWARD</p></div>
+		</div>
+
+				<div class="col-12 col-lg mt-3 mt-lg-0 award-points text-center">
+							<i class="me-0 exo-icon icon-collection-trophies exo-icon-trophy-bronze"></i>
+					</div>
+		
+		<div class="col-12 col-lg mt-3 mt-lg-0 award-average text-center">
+			<span class="tippy" data-tippy-content="Common (79.00 EXP)" style="display:inline">71.92% (79.00)</span>
+		</div>
+
+		<div class="col-12 col-lg award-earned text-center text-lg-end mt-3 mt-lg-0"> <span>June 18, 2025, 12:34 am (UTC+2)</span></div>
+	</div>
+
+</li><li class="col-12 t1 award visible earned" data-type="" data-award-id="2" data-master="156133" id="156133" data-earned="1750198862" data-average="64.07" data-points="15">
+	<div class="row align-items-center">
+		<div class="col-auto award-left">
+			<div class="box image hidden-toggle">
+									<img data-tippy-content="<strong>You can't compare yourself with me!</strong> <p>Beat the final boss Kain and clear the game as KIM DONGHWAN</p><i class='exo-icon exo-icon-unlock'></i><span>June 18, 2025, 12:21 am (UTC+2)</span><div class=&quot;d-block text-center tippy-points&quot;>
+							<i class=&quot;me-0 exo-icon icon-collection-trophies exo-icon-trophy-bronze&quot;></i>
+					</div>" class="award-image trophy-image visible" src="https://m.exophase.com/psn/awards/s/34j3g0.png?bbcb601daca1336086389a2fa58f67bb" width="64" height="64">
+							</div>
+		</div>
+
+		<div class="col col-lg-4 col-xl-6 award-details snippet">
+			<div class="text-medium award-title hidden-toggle fw-bolder">
+				<a href="https://www.exophase.com/trophy/garou-mark-of-the-wolves-psn/157550-you-cant-compare-yourself-with-me">You can't compare yourself with me!</a>
+			</div>
+
+			<div class="award-description hidden-toggle"><p>Beat the final boss Kain and clear the game as KIM DONGHWAN</p></div>
+		</div>
+
+				<div class="col-12 col-lg mt-3 mt-lg-0 award-points text-center">
+							<i class="me-0 exo-icon icon-collection-trophies exo-icon-trophy-bronze"></i>
+					</div>
+		
+		<div class="col-12 col-lg mt-3 mt-lg-0 award-average text-center">
+			<span class="tippy" data-tippy-content="Common (89.00 EXP)" style="display:inline">64.07% (89.00)</span>
+		</div>
+
+		<div class="col-12 col-lg award-earned text-center text-lg-end mt-3 mt-lg-0"> <span>June 18, 2025, 12:21 am (UTC+2)</span></div>
+	</div>
+
+</li><li class="col-12 t0 award visible earned" data-type="" data-award-id="3" data-master="156134" id="156134" data-earned="1750197750" data-average="63.41" data-points="15">
+	<div class="row align-items-center">
+		<div class="col-auto award-left">
+			<div class="box image hidden-toggle">
+									<img data-tippy-content="<strong>I will meet him...won't I?</strong> <p>Beat the final boss Kain and clear the game as HOTARU FUTABA</p><i class='exo-icon exo-icon-unlock'></i><span>June 18, 2025, 12:02 am (UTC+2)</span><div class=&quot;d-block text-center tippy-points&quot;>
+							<i class=&quot;me-0 exo-icon icon-collection-trophies exo-icon-trophy-bronze&quot;></i>
+					</div>" class="award-image trophy-image visible" src="https://m.exophase.com/psn/awards/s/7dgj35.png?bbcb601daca1336086389a2fa58f67bb" width="64" height="64">
+							</div>
+		</div>
+
+		<div class="col col-lg-4 col-xl-6 award-details snippet">
+			<div class="text-medium award-title hidden-toggle fw-bolder">
+				<a href="https://www.exophase.com/trophy/garou-mark-of-the-wolves-psn/157551-i-will-meet-him-wont-i">I will meet him...won't I?</a>
+			</div>
+
+			<div class="award-description hidden-toggle"><p>Beat the final boss Kain and clear the game as HOTARU FUTABA</p></div>
+		</div>
+
+				<div class="col-12 col-lg mt-3 mt-lg-0 award-points text-center">
+							<i class="me-0 exo-icon icon-collection-trophies exo-icon-trophy-bronze"></i>
+					</div>
+		
+		<div class="col-12 col-lg mt-3 mt-lg-0 award-average text-center">
+			<span class="tippy" data-tippy-content="Common (90.00 EXP)" style="display:inline">63.41% (90.00)</span>
+		</div>
+
+		<div class="col-12 col-lg award-earned text-center text-lg-end mt-3 mt-lg-0"> <span>June 18, 2025, 12:02 am (UTC+2)</span></div>
+	</div>
+
+</li><li class="col-12 t1 award visible earned" data-type="" data-award-id="4" data-master="156135" id="156135" data-earned="1750196979" data-average="64.24" data-points="15">
+	<div class="row align-items-center">
+		<div class="col-auto award-left">
+			<div class="box image hidden-toggle">
+									<img data-tippy-content="<strong>Witness the full power of the Kyokugenryu karate!</strong> <p>Beat the final boss Kain and clear the game as KHUSHNOOD BUTT</p><i class='exo-icon exo-icon-unlock'></i><span>June 17, 2025, 11:49 pm (UTC+2)</span><div class=&quot;d-block text-center tippy-points&quot;>
+							<i class=&quot;me-0 exo-icon icon-collection-trophies exo-icon-trophy-bronze&quot;></i>
+					</div>" class="award-image trophy-image visible" src="https://m.exophase.com/psn/awards/s/5b6ejb.png?bbcb601daca1336086389a2fa58f67bb" width="64" height="64">
+							</div>
+		</div>
+
+		<div class="col col-lg-4 col-xl-6 award-details snippet">
+			<div class="text-medium award-title hidden-toggle fw-bolder">
+				<a href="https://www.exophase.com/trophy/garou-mark-of-the-wolves-psn/157552-witness-the-full-power-of-the-kyokugenryu-karate">Witness the full power of the Kyokugenryu karate!</a>
+			</div>
+
+			<div class="award-description hidden-toggle"><p>Beat the final boss Kain and clear the game as KHUSHNOOD BUTT</p></div>
+		</div>
+
+				<div class="col-12 col-lg mt-3 mt-lg-0 award-points text-center">
+							<i class="me-0 exo-icon icon-collection-trophies exo-icon-trophy-bronze"></i>
+					</div>
+		
+		<div class="col-12 col-lg mt-3 mt-lg-0 award-average text-center">
+			<span class="tippy" data-tippy-content="Common (89.00 EXP)" style="display:inline">64.24% (89.00)</span>
+		</div>
+
+		<div class="col-12 col-lg award-earned text-center text-lg-end mt-3 mt-lg-0"> <span>June 17, 2025, 11:49 pm (UTC+2)</span></div>
+	</div>
+
+</li><li class="col-12 t0 award visible earned" data-type="" data-award-id="5" data-master="156136" id="156136" data-earned="1750194871" data-average="60.47" data-points="15">
+	<div class="row align-items-center">
+		<div class="col-auto award-left">
+			<div class="box image hidden-toggle">
+									<img data-tippy-content="<strong>Yay, these are my skills!</strong> <p>Beat the final boss Kain and clear the game as HOKUTOMARU</p><i class='exo-icon exo-icon-unlock'></i><span>June 17, 2025, 11:14 pm (UTC+2)</span><div class=&quot;d-block text-center tippy-points&quot;>
+							<i class=&quot;me-0 exo-icon icon-collection-trophies exo-icon-trophy-bronze&quot;></i>
+					</div>" class="award-image trophy-image visible" src="https://m.exophase.com/psn/awards/s/01b7eb.png?bbcb601daca1336086389a2fa58f67bb" width="64" height="64">
+							</div>
+		</div>
+
+		<div class="col col-lg-4 col-xl-6 award-details snippet">
+			<div class="text-medium award-title hidden-toggle fw-bolder">
+				<a href="https://www.exophase.com/trophy/garou-mark-of-the-wolves-psn/157553-yay-these-are-my-skills">Yay, these are my skills!</a>
+			</div>
+
+			<div class="award-description hidden-toggle"><p>Beat the final boss Kain and clear the game as HOKUTOMARU</p></div>
+		</div>
+
+				<div class="col-12 col-lg mt-3 mt-lg-0 award-points text-center">
+							<i class="me-0 exo-icon icon-collection-trophies exo-icon-trophy-bronze"></i>
+					</div>
+		
+		<div class="col-12 col-lg mt-3 mt-lg-0 award-average text-center">
+			<span class="tippy" data-tippy-content="Common (94.00 EXP)" style="display:inline">60.47% (94.00)</span>
+		</div>
+
+		<div class="col-12 col-lg award-earned text-center text-lg-end mt-3 mt-lg-0"> <span>June 17, 2025, 11:14 pm (UTC+2)</span></div>
+	</div>
+
+</li><li class="col-12 t1 award visible earned" data-type="" data-award-id="6" data-master="156137" id="156137" data-earned="1750192820" data-average="60.59" data-points="15">
+	<div class="row align-items-center">
+		<div class="col-auto award-left">
+			<div class="box image hidden-toggle">
+									<img data-tippy-content="<strong>Mission Complete!</strong> <p>Beat the final boss Kain and clear the game as KEVIN RIAN </p><i class='exo-icon exo-icon-unlock'></i><span>June 17, 2025, 10:40 pm (UTC+2)</span><div class=&quot;d-block text-center tippy-points&quot;>
+							<i class=&quot;me-0 exo-icon icon-collection-trophies exo-icon-trophy-bronze&quot;></i>
+					</div>" class="award-image trophy-image visible" src="https://m.exophase.com/psn/awards/s/84e17b.png?bbcb601daca1336086389a2fa58f67bb" width="64" height="64">
+							</div>
+		</div>
+
+		<div class="col col-lg-4 col-xl-6 award-details snippet">
+			<div class="text-medium award-title hidden-toggle fw-bolder">
+				<a href="https://www.exophase.com/trophy/garou-mark-of-the-wolves-psn/157554-mission-complete">Mission Complete!</a>
+			</div>
+
+			<div class="award-description hidden-toggle"><p>Beat the final boss Kain and clear the game as KEVIN RIAN </p></div>
+		</div>
+
+				<div class="col-12 col-lg mt-3 mt-lg-0 award-points text-center">
+							<i class="me-0 exo-icon icon-collection-trophies exo-icon-trophy-bronze"></i>
+					</div>
+		
+		<div class="col-12 col-lg mt-3 mt-lg-0 award-average text-center">
+			<span class="tippy" data-tippy-content="Common (94.00 EXP)" style="display:inline">60.59% (94.00)</span>
+		</div>
+
+		<div class="col-12 col-lg award-earned text-center text-lg-end mt-3 mt-lg-0"> <span>June 17, 2025, 10:40 pm (UTC+2)</span></div>
+	</div>
+
+</li><li class="col-12 t0 award visible earned" data-type="" data-award-id="7" data-master="156138" id="156138" data-earned="1750192088" data-average="61.07" data-points="15">
+	<div class="row align-items-center">
+		<div class="col-auto award-left">
+			<div class="box image hidden-toggle">
+									<img data-tippy-content="<strong>Gratitude for a great death...</strong> <p>Beat the final boss Kain and clear the game as FREEMAN</p><i class='exo-icon exo-icon-unlock'></i><span>June 17, 2025, 10:28 pm (UTC+2)</span><div class=&quot;d-block text-center tippy-points&quot;>
+							<i class=&quot;me-0 exo-icon icon-collection-trophies exo-icon-trophy-bronze&quot;></i>
+					</div>" class="award-image trophy-image visible" src="https://m.exophase.com/psn/awards/s/e86d54.png?bbcb601daca1336086389a2fa58f67bb" width="64" height="64">
+							</div>
+		</div>
+
+		<div class="col col-lg-4 col-xl-6 award-details snippet">
+			<div class="text-medium award-title hidden-toggle fw-bolder">
+				<a href="https://www.exophase.com/trophy/garou-mark-of-the-wolves-psn/157555-gratitude-for-a-great-death">Gratitude for a great death...</a>
+			</div>
+
+			<div class="award-description hidden-toggle"><p>Beat the final boss Kain and clear the game as FREEMAN</p></div>
+		</div>
+
+				<div class="col-12 col-lg mt-3 mt-lg-0 award-points text-center">
+							<i class="me-0 exo-icon icon-collection-trophies exo-icon-trophy-bronze"></i>
+					</div>
+		
+		<div class="col-12 col-lg mt-3 mt-lg-0 award-average text-center">
+			<span class="tippy" data-tippy-content="Common (94.00 EXP)" style="display:inline">61.07% (94.00)</span>
+		</div>
+
+		<div class="col-12 col-lg award-earned text-center text-lg-end mt-3 mt-lg-0"> <span>June 17, 2025, 10:28 pm (UTC+2)</span></div>
+	</div>
+
+</li><li class="col-12 t1 award visible earned" data-type="" data-award-id="8" data-master="156139" id="156139" data-earned="1750189198" data-average="60.02" data-points="15">
+	<div class="row align-items-center">
+		<div class="col-auto award-left">
+			<div class="box image hidden-toggle">
+									<img data-tippy-content="<strong>I will keep fighting as long as my fighting spirit inhabits my heart!</strong> <p>Beat the final boss Kain and clear the game as TIZOC</p><i class='exo-icon exo-icon-unlock'></i><span>June 17, 2025, 9:39 pm (UTC+2)</span><div class=&quot;d-block text-center tippy-points&quot;>
+							<i class=&quot;me-0 exo-icon icon-collection-trophies exo-icon-trophy-bronze&quot;></i>
+					</div>" class="award-image trophy-image visible" src="https://m.exophase.com/psn/awards/s/4645d8.png?bbcb601daca1336086389a2fa58f67bb" width="64" height="64">
+							</div>
+		</div>
+
+		<div class="col col-lg-4 col-xl-6 award-details snippet">
+			<div class="text-medium award-title hidden-toggle fw-bolder">
+				<a href="https://www.exophase.com/trophy/garou-mark-of-the-wolves-psn/157556-i-will-keep-fighting-as-long-as-my-fighting-spirit-inhabits-my-heart">I will keep fighting as long as my fighting spirit inhabits my heart!</a>
+			</div>
+
+			<div class="award-description hidden-toggle"><p>Beat the final boss Kain and clear the game as TIZOC</p></div>
+		</div>
+
+				<div class="col-12 col-lg mt-3 mt-lg-0 award-points text-center">
+							<i class="me-0 exo-icon icon-collection-trophies exo-icon-trophy-bronze"></i>
+					</div>
+		
+		<div class="col-12 col-lg mt-3 mt-lg-0 award-average text-center">
+			<span class="tippy" data-tippy-content="Common (95.00 EXP)" style="display:inline">60.02% (95.00)</span>
+		</div>
+
+		<div class="col-12 col-lg award-earned text-center text-lg-end mt-3 mt-lg-0"> <span>June 17, 2025, 9:39 pm (UTC+2)</span></div>
+	</div>
+
+</li><li class="col-12 t0 award visible earned" data-type="" data-award-id="9" data-master="156140" id="156140" data-earned="1750179435" data-average="63.41" data-points="15">
+	<div class="row align-items-center">
+		<div class="col-auto award-left">
+			<div class="box image hidden-toggle">
+									<img data-tippy-content="<strong>Beautiful Victory!</strong> <p>Beat the final boss Kain and clear the game as BONNE JENET</p><i class='exo-icon exo-icon-unlock'></i><span>June 17, 2025, 6:57 pm (UTC+2)</span><div class=&quot;d-block text-center tippy-points&quot;>
+							<i class=&quot;me-0 exo-icon icon-collection-trophies exo-icon-trophy-bronze&quot;></i>
+					</div>" class="award-image trophy-image visible" src="https://m.exophase.com/psn/awards/s/6gb01j.png?bbcb601daca1336086389a2fa58f67bb" width="64" height="64">
+							</div>
+		</div>
+
+		<div class="col col-lg-4 col-xl-6 award-details snippet">
+			<div class="text-medium award-title hidden-toggle fw-bolder">
+				<a href="https://www.exophase.com/trophy/garou-mark-of-the-wolves-psn/157557-beautiful-victory">Beautiful Victory!</a>
+			</div>
+
+			<div class="award-description hidden-toggle"><p>Beat the final boss Kain and clear the game as BONNE JENET</p></div>
+		</div>
+
+				<div class="col-12 col-lg mt-3 mt-lg-0 award-points text-center">
+							<i class="me-0 exo-icon icon-collection-trophies exo-icon-trophy-bronze"></i>
+					</div>
+		
+		<div class="col-12 col-lg mt-3 mt-lg-0 award-average text-center">
+			<span class="tippy" data-tippy-content="Common (90.00 EXP)" style="display:inline">63.41% (90.00)</span>
+		</div>
+
+		<div class="col-12 col-lg award-earned text-center text-lg-end mt-3 mt-lg-0"> <span>June 17, 2025, 6:57 pm (UTC+2)</span></div>
+	</div>
+
+</li><li class="col-12 t1 award visible earned" data-type="" data-award-id="10" data-master="156141" id="156141" data-earned="1750177450" data-average="61.27" data-points="15">
+	<div class="row align-items-center">
+		<div class="col-auto award-left">
+			<div class="box image hidden-toggle">
+									<img data-tippy-content="<strong>If you are that weak...get the heck out of here!</strong> <p>Beat the final boss Kain and clear the game as GATO</p><i class='exo-icon exo-icon-unlock'></i><span>June 17, 2025, 6:24 pm (UTC+2)</span><div class=&quot;d-block text-center tippy-points&quot;>
+							<i class=&quot;me-0 exo-icon icon-collection-trophies exo-icon-trophy-bronze&quot;></i>
+					</div>" class="award-image trophy-image visible" src="https://m.exophase.com/psn/awards/s/b3e711.png?bbcb601daca1336086389a2fa58f67bb" width="64" height="64">
+							</div>
+		</div>
+
+		<div class="col col-lg-4 col-xl-6 award-details snippet">
+			<div class="text-medium award-title hidden-toggle fw-bolder">
+				<a href="https://www.exophase.com/trophy/garou-mark-of-the-wolves-psn/157558-if-you-are-that-weak-get-the-heck-out-of-here">If you are that weak...get the heck out of here!</a>
+			</div>
+
+			<div class="award-description hidden-toggle"><p>Beat the final boss Kain and clear the game as GATO</p></div>
+		</div>
+
+				<div class="col-12 col-lg mt-3 mt-lg-0 award-points text-center">
+							<i class="me-0 exo-icon icon-collection-trophies exo-icon-trophy-bronze"></i>
+					</div>
+		
+		<div class="col-12 col-lg mt-3 mt-lg-0 award-average text-center">
+			<span class="tippy" data-tippy-content="Common (93.00 EXP)" style="display:inline">61.27% (93.00)</span>
+		</div>
+
+		<div class="col-12 col-lg award-earned text-center text-lg-end mt-3 mt-lg-0"> <span>June 17, 2025, 6:24 pm (UTC+2)</span></div>
+	</div>
+
+</li><li class="col-12 t0 award visible earned" data-type="" data-award-id="11" data-master="156142" id="156142" data-earned="1750176648" data-average="62.16" data-points="15">
+	<div class="row align-items-center">
+		<div class="col-auto award-left">
+			<div class="box image hidden-toggle">
+									<img data-tippy-content="<strong>It was a great match!</strong> <p>Beat the final boss Kain and clear the game as KIM JAEHOON</p><i class='exo-icon exo-icon-unlock'></i><span>June 17, 2025, 6:10 pm (UTC+2)</span><div class=&quot;d-block text-center tippy-points&quot;>
+							<i class=&quot;me-0 exo-icon icon-collection-trophies exo-icon-trophy-bronze&quot;></i>
+					</div>" class="award-image trophy-image visible" src="https://m.exophase.com/psn/awards/s/g7g04b.png?bbcb601daca1336086389a2fa58f67bb" width="64" height="64">
+							</div>
+		</div>
+
+		<div class="col col-lg-4 col-xl-6 award-details snippet">
+			<div class="text-medium award-title hidden-toggle fw-bolder">
+				<a href="https://www.exophase.com/trophy/garou-mark-of-the-wolves-psn/157559-it-was-a-great-match">It was a great match!</a>
+			</div>
+
+			<div class="award-description hidden-toggle"><p>Beat the final boss Kain and clear the game as KIM JAEHOON</p></div>
+		</div>
+
+				<div class="col-12 col-lg mt-3 mt-lg-0 award-points text-center">
+							<i class="me-0 exo-icon icon-collection-trophies exo-icon-trophy-bronze"></i>
+					</div>
+		
+		<div class="col-12 col-lg mt-3 mt-lg-0 award-average text-center">
+			<span class="tippy" data-tippy-content="Common (92.00 EXP)" style="display:inline">62.16% (92.00)</span>
+		</div>
+
+		<div class="col-12 col-lg award-earned text-center text-lg-end mt-3 mt-lg-0"> <span>June 17, 2025, 6:10 pm (UTC+2)</span></div>
+	</div>
+
+</li><li class="col-12 t1 award visible earned" data-type="" data-award-id="12" data-master="156143" id="156143" data-earned="1750175748" data-average="75.06" data-points="15">
+	<div class="row align-items-center">
+		<div class="col-auto award-left">
+			<div class="box image hidden-toggle">
+									<img data-tippy-content="<strong>OK!</strong> <p>Beat the final boss Kain and clear the game as TERRY BOGARD</p><i class='exo-icon exo-icon-unlock'></i><span>June 17, 2025, 5:55 pm (UTC+2)</span><div class=&quot;d-block text-center tippy-points&quot;>
+							<i class=&quot;me-0 exo-icon icon-collection-trophies exo-icon-trophy-bronze&quot;></i>
+					</div>" class="award-image trophy-image visible" src="https://m.exophase.com/psn/awards/s/d84j7j.png?bbcb601daca1336086389a2fa58f67bb" width="64" height="64">
+							</div>
+		</div>
+
+		<div class="col col-lg-4 col-xl-6 award-details snippet">
+			<div class="text-medium award-title hidden-toggle fw-bolder">
+				<a href="https://www.exophase.com/trophy/garou-mark-of-the-wolves-psn/157560-ok">OK!</a>
+			</div>
+
+			<div class="award-description hidden-toggle"><p>Beat the final boss Kain and clear the game as TERRY BOGARD</p></div>
+		</div>
+
+				<div class="col-12 col-lg mt-3 mt-lg-0 award-points text-center">
+							<i class="me-0 exo-icon icon-collection-trophies exo-icon-trophy-bronze"></i>
+					</div>
+		
+		<div class="col-12 col-lg mt-3 mt-lg-0 award-average text-center">
+			<span class="tippy" data-tippy-content="Common (76.00 EXP)" style="display:inline">75.06% (76.00)</span>
+		</div>
+
+		<div class="col-12 col-lg award-earned text-center text-lg-end mt-3 mt-lg-0"> <span>June 17, 2025, 5:55 pm (UTC+2)</span></div>
+	</div>
+
+</li><li class="col-12 t0 award visible earned" data-type="" data-award-id="13" data-master="156144" id="156144" data-earned="1750126359" data-average="59.70" data-points="15">
+	<div class="row align-items-center">
+		<div class="col-auto award-left">
+			<div class="box image hidden-toggle">
+									<img data-tippy-content="<strong>Tremble in front of my flames!</strong> <p>Beat the final boss Kain and clear the game as KAIN R. HEINLEIN</p><i class='exo-icon exo-icon-unlock'></i><span>June 17, 2025, 4:12 am (UTC+2)</span><div class=&quot;d-block text-center tippy-points&quot;>
+							<i class=&quot;me-0 exo-icon icon-collection-trophies exo-icon-trophy-bronze&quot;></i>
+					</div>" class="award-image trophy-image visible" src="https://m.exophase.com/psn/awards/s/j14b70.png?bbcb601daca1336086389a2fa58f67bb" width="64" height="64">
+							</div>
+		</div>
+
+		<div class="col col-lg-4 col-xl-6 award-details snippet">
+			<div class="text-medium award-title hidden-toggle fw-bolder">
+				<a href="https://www.exophase.com/trophy/garou-mark-of-the-wolves-psn/157561-tremble-in-front-of-my-flames">Tremble in front of my flames!</a>
+			</div>
+
+			<div class="award-description hidden-toggle"><p>Beat the final boss Kain and clear the game as KAIN R. HEINLEIN</p></div>
+		</div>
+
+				<div class="col-12 col-lg mt-3 mt-lg-0 award-points text-center">
+							<i class="me-0 exo-icon icon-collection-trophies exo-icon-trophy-bronze"></i>
+					</div>
+		
+		<div class="col-12 col-lg mt-3 mt-lg-0 award-average text-center">
+			<span class="tippy" data-tippy-content="Uncommon (96.00 EXP)" style="display:inline">59.70% (96.00)</span>
+		</div>
+
+		<div class="col-12 col-lg award-earned text-center text-lg-end mt-3 mt-lg-0"> <span>June 17, 2025, 4:12 am (UTC+2)</span></div>
+	</div>
+
+</li><li class="col-12 t1 award visible earned" data-type="" data-award-id="14" data-master="156145" id="156145" data-earned="1750124574" data-average="62.07" data-points="15">
+	<div class="row align-items-center">
+		<div class="col-auto award-left">
+			<div class="box image hidden-toggle">
+									<img data-tippy-content="<strong>I...I am not going to die now!</strong> <p>Beat the final boss Kain and clear the game as GRANT</p><i class='exo-icon exo-icon-unlock'></i><span>June 17, 2025, 3:42 am (UTC+2)</span><div class=&quot;d-block text-center tippy-points&quot;>
+							<i class=&quot;me-0 exo-icon icon-collection-trophies exo-icon-trophy-bronze&quot;></i>
+					</div>" class="award-image trophy-image visible" src="https://m.exophase.com/psn/awards/s/11g5b7.png?bbcb601daca1336086389a2fa58f67bb" width="64" height="64">
+							</div>
+		</div>
+
+		<div class="col col-lg-4 col-xl-6 award-details snippet">
+			<div class="text-medium award-title hidden-toggle fw-bolder">
+				<a href="https://www.exophase.com/trophy/garou-mark-of-the-wolves-psn/157562-i-i-am-not-going-to-die-now">I...I am not going to die now!</a>
+			</div>
+
+			<div class="award-description hidden-toggle"><p>Beat the final boss Kain and clear the game as GRANT</p></div>
+		</div>
+
+				<div class="col-12 col-lg mt-3 mt-lg-0 award-points text-center">
+							<i class="me-0 exo-icon icon-collection-trophies exo-icon-trophy-bronze"></i>
+					</div>
+		
+		<div class="col-12 col-lg mt-3 mt-lg-0 award-average text-center">
+			<span class="tippy" data-tippy-content="Common (92.00 EXP)" style="display:inline">62.07% (92.00)</span>
+		</div>
+
+		<div class="col-12 col-lg award-earned text-center text-lg-end mt-3 mt-lg-0"> <span>June 17, 2025, 3:42 am (UTC+2)</span></div>
+	</div>
+
+</li><li class="col-12 t1 award visible earned" data-type="" data-award-id="16" data-master="156147" id="156147" data-earned="1750124574" data-average="72.66" data-points="15">
+	<div class="row align-items-center">
+		<div class="col-auto award-left">
+			<div class="box image hidden-toggle">
+									<img data-tippy-content="<strong>We swear for our eternal bonds</strong> <p>No continue game clear</p><i class='exo-icon exo-icon-unlock'></i><span>June 17, 2025, 3:42 am (UTC+2)</span><div class=&quot;d-block text-center tippy-points&quot;>
+							<i class=&quot;me-0 exo-icon icon-collection-trophies exo-icon-trophy-bronze&quot;></i>
+					</div>" class="award-image trophy-image visible" src="https://m.exophase.com/psn/awards/s/7dgjb5.png?bbcb601daca1336086389a2fa58f67bb" width="64" height="64">
+							</div>
+		</div>
+
+		<div class="col col-lg-4 col-xl-6 award-details snippet">
+			<div class="text-medium award-title hidden-toggle fw-bolder">
+				<a href="https://www.exophase.com/trophy/garou-mark-of-the-wolves-psn/157564-we-swear-for-our-eternal-bonds">We swear for our eternal bonds</a>
+			</div>
+
+			<div class="award-description hidden-toggle"><p>No continue game clear</p></div>
+		</div>
+
+				<div class="col-12 col-lg mt-3 mt-lg-0 award-points text-center">
+							<i class="me-0 exo-icon icon-collection-trophies exo-icon-trophy-bronze"></i>
+					</div>
+		
+		<div class="col-12 col-lg mt-3 mt-lg-0 award-average text-center">
+			<span class="tippy" data-tippy-content="Common (79.00 EXP)" style="display:inline">72.66% (79.00)</span>
+		</div>
+
+		<div class="col-12 col-lg award-earned text-center text-lg-end mt-3 mt-lg-0"> <span>June 17, 2025, 3:42 am (UTC+2)</span></div>
+	</div>
+
+</li><li class="col-12 t0 award visible earned" data-type="" data-award-id="15" data-master="156146" id="156146" data-earned="1750123628" data-average="39.27" data-points="15">
+	<div class="row align-items-center">
+		<div class="col-auto award-left">
+			<div class="box image hidden-toggle">
+									<img data-tippy-content="<strong>Yup...It's no bull... It's all about heart!</strong> <p>Complete SURVIVAL MODE</p><i class='exo-icon exo-icon-unlock'></i><span>June 17, 2025, 3:27 am (UTC+2)</span><div class=&quot;d-block text-center tippy-points&quot;>
+							<i class=&quot;me-0 exo-icon icon-collection-trophies exo-icon-trophy-bronze&quot;></i>
+					</div>" class="award-image trophy-image visible" src="https://m.exophase.com/psn/awards/s/34j310.png?bbcb601daca1336086389a2fa58f67bb" width="64" height="64">
+							</div>
+		</div>
+
+		<div class="col col-lg-4 col-xl-6 award-details snippet">
+			<div class="text-medium award-title hidden-toggle fw-bolder">
+				<a href="https://www.exophase.com/trophy/garou-mark-of-the-wolves-psn/157563-yup-its-no-bull-its-all-about-heart">Yup...It's no bull... It's all about heart!</a>
+			</div>
+
+			<div class="award-description hidden-toggle"><p>Complete SURVIVAL MODE</p></div>
+		</div>
+
+				<div class="col-12 col-lg mt-3 mt-lg-0 award-points text-center">
+							<i class="me-0 exo-icon icon-collection-trophies exo-icon-trophy-bronze"></i>
+					</div>
+		
+		<div class="col-12 col-lg mt-3 mt-lg-0 award-average text-center">
+			<span class="tippy" data-tippy-content="Uncommon (145.00 EXP)" style="display:inline">39.27% (145.00)</span>
+		</div>
+
+		<div class="col-12 col-lg award-earned text-center text-lg-end mt-3 mt-lg-0"> <span>June 17, 2025, 3:27 am (UTC+2)</span></div>
+	</div>
+
+</li><li class="col-12 t1 award visible earned" data-type="" data-award-id="18" data-master="156149" id="156149" data-earned="1750109558" data-average="48.03" data-points="30">
+	<div class="row align-items-center">
+		<div class="col-auto award-left">
+			<div class="box image hidden-toggle">
+									<img data-tippy-content="<strong>THE MIGHTY RULE</strong> <p>Play MULTIPLAYER and win 20 times (excluding invite or ad hoc)</p><i class='exo-icon exo-icon-unlock'></i><span>June 16, 2025, 11:32 pm (UTC+2)</span><div class=&quot;d-block text-center tippy-points&quot;>
+							<i class=&quot;me-0 exo-icon icon-collection-trophies exo-icon-trophy-silver&quot;></i>
+					</div>" class="award-image trophy-image visible" src="https://m.exophase.com/psn/awards/s/01b74b.png?bbcb601daca1336086389a2fa58f67bb" width="64" height="64">
+							</div>
+		</div>
+
+		<div class="col col-lg-4 col-xl-6 award-details snippet">
+			<div class="text-medium award-title hidden-toggle fw-bolder">
+				<a href="https://www.exophase.com/trophy/garou-mark-of-the-wolves-psn/157566-the-mighty-rule">THE MIGHTY RULE</a>
+			</div>
+
+			<div class="award-description hidden-toggle"><p>Play MULTIPLAYER and win 20 times (excluding invite or ad hoc)</p></div>
+		</div>
+
+				<div class="col-12 col-lg mt-3 mt-lg-0 award-points text-center">
+							<i class="me-0 exo-icon icon-collection-trophies exo-icon-trophy-silver"></i>
+					</div>
+		
+		<div class="col-12 col-lg mt-3 mt-lg-0 award-average text-center">
+			<span class="tippy" data-tippy-content="Uncommon (119.00 EXP)" style="display:inline">48.03% (119.00)</span>
+		</div>
+
+		<div class="col-12 col-lg award-earned text-center text-lg-end mt-3 mt-lg-0"> <span>June 16, 2025, 11:32 pm (UTC+2)</span></div>
+	</div>
+
+</li><li class="col-12 t0 award visible earned" data-type="" data-award-id="19" data-master="156150" id="156150" data-earned="1750108865" data-average="45.41" data-points="30">
+	<div class="row align-items-center">
+		<div class="col-auto award-left">
+			<div class="box image hidden-toggle">
+									<img data-tippy-content="<strong>MARK OF THE WOLVES</strong> <p>Play MULTIPLAYER and win 10 times in a row (excluding invite or ad hoc)</p><i class='exo-icon exo-icon-unlock'></i><span>June 16, 2025, 11:21 pm (UTC+2)</span><div class=&quot;d-block text-center tippy-points&quot;>
+							<i class=&quot;me-0 exo-icon icon-collection-trophies exo-icon-trophy-silver&quot;></i>
+					</div>" class="award-image trophy-image visible" src="https://m.exophase.com/psn/awards/s/84e1db.png?bbcb601daca1336086389a2fa58f67bb" width="64" height="64">
+							</div>
+		</div>
+
+		<div class="col col-lg-4 col-xl-6 award-details snippet">
+			<div class="text-medium award-title hidden-toggle fw-bolder">
+				<a href="https://www.exophase.com/trophy/garou-mark-of-the-wolves-psn/157567-mark-of-the-wolves">MARK OF THE WOLVES</a>
+			</div>
+
+			<div class="award-description hidden-toggle"><p>Play MULTIPLAYER and win 10 times in a row (excluding invite or ad hoc)</p></div>
+		</div>
+
+				<div class="col-12 col-lg mt-3 mt-lg-0 award-points text-center">
+							<i class="me-0 exo-icon icon-collection-trophies exo-icon-trophy-silver"></i>
+					</div>
+		
+		<div class="col-12 col-lg mt-3 mt-lg-0 award-average text-center">
+			<span class="tippy" data-tippy-content="Uncommon (126.00 EXP)" style="display:inline">45.41% (126.00)</span>
+		</div>
+
+		<div class="col-12 col-lg award-earned text-center text-lg-end mt-3 mt-lg-0"> <span>June 16, 2025, 11:21 pm (UTC+2)</span></div>
+	</div>
+
+</li><li class="col-12 t0 award visible earned" data-type="" data-award-id="17" data-master="156148" id="156148" data-earned="1750108673" data-average="54.54" data-points="15">
+	<div class="row align-items-center">
+		<div class="col-auto award-left">
+			<div class="box image hidden-toggle">
+									<img data-tippy-content="<strong>Legendary Wolf</strong> <p>Play MULTIPLAYER and win 5 times (excluding invite or ad hoc)</p><i class='exo-icon exo-icon-unlock'></i><span>June 16, 2025, 11:17 pm (UTC+2)</span><div class=&quot;d-block text-center tippy-points&quot;>
+							<i class=&quot;me-0 exo-icon icon-collection-trophies exo-icon-trophy-bronze&quot;></i>
+					</div>" class="award-image trophy-image visible" src="https://m.exophase.com/psn/awards/s/5b6e0b.png?bbcb601daca1336086389a2fa58f67bb" width="64" height="64">
+							</div>
+		</div>
+
+		<div class="col col-lg-4 col-xl-6 award-details snippet">
+			<div class="text-medium award-title hidden-toggle fw-bolder">
+				<a href="https://www.exophase.com/trophy/garou-mark-of-the-wolves-psn/157565-legendary-wolf">Legendary Wolf</a>
+			</div>
+
+			<div class="award-description hidden-toggle"><p>Play MULTIPLAYER and win 5 times (excluding invite or ad hoc)</p></div>
+		</div>
+
+				<div class="col-12 col-lg mt-3 mt-lg-0 award-points text-center">
+							<i class="me-0 exo-icon icon-collection-trophies exo-icon-trophy-bronze"></i>
+					</div>
+		
+		<div class="col-12 col-lg mt-3 mt-lg-0 award-average text-center">
+			<span class="tippy" data-tippy-content="Uncommon (105.00 EXP)" style="display:inline">54.54% (105.00)</span>
+		</div>
+
+		<div class="col-12 col-lg award-earned text-center text-lg-end mt-3 mt-lg-0"> <span>June 16, 2025, 11:17 pm (UTC+2)</span></div>
+	</div>
+
+</li>
+</ul>
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/tippy.js@6"></script>
+<script>
+  tippy('[data-tippy-content]', {
+    allowHTML: true,
+    interactive: true,
+    theme: 'translucent',
+    animation: 'fade',
+    placement: 'top', // Cambiado a 'top' para que esté encima
+    offset: [0, 10], // Ajusta el offset [horizontal, vertical] para que no se recorte ni se pegue al icono
+    appendTo: document.body, // Asegura que el tooltip se añada directamente al body para evitar recortes dentro de contenedores pequeños.
+    onShow(instance) {
+      // Modifica dinámicamente el contenido del tooltip para aplicar la estética deseada
+      // Necesitamos extraer la información del data-tippy-content original y reformatearla
+      const originalContent = instance.props.content;
+
+      // Extrae la información usando expresiones regulares o parseando como HTML
+      // Esto es un ejemplo, el parsing exacto puede variar dependiendo de la complejidad de tu data-tippy-content
+      const titleMatch = originalContent.match(/<strong>(.*?)<\/strong>/);
+      const descriptionMatch = originalContent.match(/<p>(.*?)<\/p>/);
+      const dateMatch = originalContent.match(/<span>(.*?)<\/span>/);
+      const trophyIconMatch = originalContent.match(/icon-trophy-(bronze|silver|gold|platinum)/);
+
+      let title = titleMatch ? titleMatch[1] : '';
+      let description = descriptionMatch ? descriptionMatch[1] : '';
+      let date = dateMatch ? dateMatch[1] : '';
+      let trophyType = trophyIconMatch ? trophyIconMatch[1] : 'bronze'; // Default a bronze si no se encuentra
+
+      // URLs de los iconos de trofeo
+      const trophyIcons = {
+        'bronze': 'https://www.exophase.com/assets/dist/images/icon-trophy-bronze.94f26df2.svg',
+        'silver': 'https://www.exophase.com/assets/dist/images/icon-trophy-silver.da413809.svg',
+        'gold': 'https://www.exophase.com/assets/dist/images/icon-trophy-gold.34cdcdb0.svg',
+        'platinum': 'https://www.exophase.com/assets/dist/images/icon-trophy-platinum.ca1313d4.svg',
+      };
+      const unlockIcon = 'https://www.exophase.com/assets/dist/images/icon-unlock.6dc7aa81.svg';
+
+      // Construye el nuevo contenido HTML para el tooltip
+      // Usaremos clases para estilizar esto en el CSS
+      const newContent = `
+        <div class="tippy-custom-content">
+          <div class="tippy-title">${title}</div>
+          <div class="tippy-description">${description}</div>
+          <div class="tippy-date-container">
+            <img src="${unlockIcon}" alt="Unlock Date Icon" class="tippy-icon-unlock" />
+            <span class="tippy-date">${date}</span>
+          </div>
+          <div class="tippy-trophy-container">
+            <img src="${trophyIcons[trophyType]}" alt="${trophyType} Trophy" class="tippy-icon-trophy" />
+          </div>
+        </div>
+      `;
+      instance.setContent(newContent);
+    }
+  });
+</script>
+</body>
+</html>
