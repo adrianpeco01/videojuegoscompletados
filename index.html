@@ -327,20 +327,19 @@ html.dark img[src$="logroRA.png"] {
             border-radius: 1rem;
         }
 
-        @media (max-width: 480px) {
-            #modal > div {
-                width: 95%;
-                max-height: 85vh;
-            }
+@media (max-width: 480px) {
+  #modal > div {
+    width: 95%;
+    max-height: 85vh;
+    overflow-y: scroll; /* Necesario para que siga haciendo scroll */
+    scrollbar-width: none; /* Firefox: oculta la scrollbar */
+  }
 
-            #modal > div::-webkit-scrollbar-track {
-                background: transparent !important;
-            }
+  #modal > div::-webkit-scrollbar {
+    display: none; /* Chrome, Safari: oculta la scrollbar */
+  }
+}
 
-            #modal > div::-webkit-scrollbar-thumb {
-                background: transparent !important;
-            }
-        }
 
 @media (max-width: 1023px) {
   body.modal-open header {
