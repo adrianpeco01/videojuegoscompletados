@@ -342,6 +342,29 @@ html.dark img[src$="logroRA.png"] {
             }
         }
 
+@media (max-width: 1023px) {
+  body.modal-open header {
+    isolation: isolate !important; /* 🔐 Fuerza stacking context y mantiene sticky */
+    z-index: 900 !important; /* conserva su nivel */
+  }
+}
+
+
+@media (max-width: 1023px) {
+  body.modal-open #games-container input,
+  body.modal-open #games-container a {
+    z-index: 0 !important;
+    position: relative !important;
+  }
+}
+
+@media (max-width: 1023px) {
+  body.modal-open main {
+    position: relative !important;
+    z-index: 0 !important;
+  }
+}
+
         body.modal-open {
             overflow: hidden;
             position: fixed;
@@ -438,6 +461,8 @@ html.dark img[src$="logroRA.png"] {
         opacity 300ms ease-in-out,
         backdrop-filter 300ms ease-in-out,
         -webkit-backdrop-filter 300ms ease-in-out;
+          transform: translateZ(0); /* Forzar nuevo stacking context, especialmente en móviles */
+
 }
 
 /* Cuando está visible (modal abierto) */
