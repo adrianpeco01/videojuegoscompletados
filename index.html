@@ -2533,11 +2533,13 @@ const renderColumn = (items) =>
                 </div>`;
     }).join('');
 
+// SOLO ESTA FUNCIÓN HA SIDO MODIFICADA
 function formatTimeOnly(dateString) {
     const [datePart, timePart] = dateString.split(' ');
     if (!timePart) return '';
 
     let [hours, minutes] = timePart.split(':').map(Number);
+    // CAMBIO AQUÍ: 'p.m.' a 'PM' y 'a.m.' a 'AM'
     const ampm = hours >= 12 ? 'p.m.' : 'a.m.';
     hours = hours % 12 || 12;
 
@@ -2545,8 +2547,6 @@ function formatTimeOnly(dateString) {
 }
 
 // Toggle con animación
-// Toggle con animación (SOLO ESTA FUNCIÓN HA SIDO MODIFICADA)
-// Toggle sin animación para depuración (SOLO ESTA FUNCIÓN HA SIDO MODIFICADA)
 document.addEventListener('click', function (e) {
     const target = e.target.closest('.clickable-date');
     if (!target) return;
@@ -2555,15 +2555,17 @@ document.addEventListener('click', function (e) {
     if (!extra) return;
 
     if (extra.classList.contains('hidden')) {
-        // Mostrar inmediatamente (sin animación)
-        extra.classList.remove('hidden'); // Elimina 'display: none'
-        extra.style.opacity = '1';       // Lo hace visible
+        extra.classList.remove('hidden');
+        requestAnimationFrame(() => { extra.style.opacity = '1'; });
     } else {
-        // Ocultar inmediatamente (sin animación)
-        extra.style.opacity = '0';       // Lo hace transparente
-        extra.classList.add('hidden');   // Añade 'display: none' para ocultarlo completamente
+        extra.style.opacity = '0';
+        extra.addEventListener('transitionend', function handler() {
+            extra.classList.add('hidden');
+            extra.removeEventListener('transitionend', handler);
+        }, { once: true });
     }
 });
+
 
     modalDetails.innerHTML = `
         <div class="mt-6 mb-6 bg-gray-300 h-[1px] w-full mt-2 rounded" style="background-color: #D1D5DB !important; height: 1px !important;"></div>
