@@ -582,13 +582,10 @@ html.dark img[src$="logroPS.png"] {
 
 @media (max-width: 768px) {
     .extra-time {
-        display: none;
-        font-size: inherit;
-        font-weight: inherit;
-        color: inherit;
-    }
-    .extra-time:not(.hidden) {
-        display: inline;
+        opacity: 0;
+        transition: opacity 0.3s;
+        /* Elimina o comenta cualquier 'display: none;' aquí */
+        /* font-size, font-weight, color, etc. */
     }
 }
 
@@ -2539,13 +2536,31 @@ function formatTimeOnly(dateString) {
     if (!timePart) return '';
 
     let [hours, minutes] = timePart.split(':').map(Number);
-    const ampm = hours >= 12 ? 'p.m.' : 'a.m.';
-    hours = hours % 12 || 12;
 
-    return `${hours}:${minutes.toString().padStart(2, '0')} ${ampm}`;
+    // Asegúrate de que las horas y minutos sean números válidos
+    if (isNaN(hours) || isNaN(minutes)) {
+        return ''; // O maneja el error como prefieras
+    }
+
+    let displayHours = hours;
+    let ampm;
+
+    if (hours === 0) { // Medianoche (00:00 a 00:59)
+        displayHours = 12;
+        ampm = 'a.m.';
+    } else if (hours >= 1 && hours <= 11) { // Mañana (01:00 a 11:59)
+        ampm = 'a.m.';
+    } else if (hours === 12) { // Mediodía (12:00 a 12:59)
+        ampm = 'p.m.';
+    } else { // Tarde/Noche (13:00 a 23:59)
+        displayHours = hours - 12;
+        ampm = 'p.m.';
+    }
+
+    return `${displayHours}:${minutes.toString().padStart(2, '0')} ${ampm}`;
 }
 
-// Toggle con animación (SOLO ESTA FUNCIÓN HA SIDO MODIFICADA para asegurar estabilidad)
+// Toggle con animación (MODIFICADO para estabilidad y control de display)
 document.addEventListener('click', function (e) {
     const target = e.target.closest('.clickable-date');
     if (!target) return;
@@ -2553,30 +2568,25 @@ document.addEventListener('click', function (e) {
     const extra = target.querySelector('.extra-time');
     if (!extra) return;
 
-    if (extra.classList.contains('hidden')) {
-        // Mostrar
-        extra.classList.remove('hidden');
-        requestAnimationFrame(() => { extra.style.opacity = '1'; });
+    // Si el elemento está oculto (con display: 'none' o con opacidad 0 después de ocultarse)
+    if (extra.style.display === 'none' || getComputedStyle(extra).opacity === '0') {
+        // MOSTRAR: Primero establece 'display', luego inicia la transición de 'opacity'
+        extra.style.display = 'inline'; // O 'inline-block' si prefieres ese comportamiento de bloque
+        requestAnimationFrame(() => {
+            extra.style.opacity = '1'; // Inicia la transición a visible
+        });
     } else {
-        // Ocultar
+        // OCULTAR: Inicia la transición de 'opacity' a 0
         extra.style.opacity = '0';
-        const transitionEndHandler = () => {
-            extra.classList.add('hidden');
-            extra.removeEventListener('transitionend', transitionEndHandler);
-        };
-        extra.addEventListener('transitionend', transitionEndHandler, { once: true });
-
-        // AÑADIDO: Temporizador de seguridad para asegurar que el elemento se oculte.
-        // Si el evento 'transitionend' no se dispara (o se pierde),
-        // este setTimeout forzará la adición de la clase 'hidden' después de un breve retraso.
-        setTimeout(() => {
-            // Solo aplicar 'hidden' si ya está transparente y no tiene ya la clase 'hidden'
-            if (extra.style.opacity === '0' && !extra.classList.contains('hidden')) {
-                extra.classList.add('hidden');
-                // Opcional: Si el handler de transitionend no se eliminó (ej. porque no se disparó), eliminarlo ahora.
-                extra.removeEventListener('transitionend', transitionEndHandler);
+        const hideHandler = () => {
+            // Una vez que la opacidad es 0, establece 'display: none' para eliminarlo del flujo
+            if (getComputedStyle(extra).opacity === '0') {
+                extra.style.display = 'none';
             }
-        }, 500); // Dar 500ms (un poco más que tu transición de 0.3s) para que la transición termine
+            extra.removeEventListener('transitionend', hideHandler); // Limpia el listener
+        };
+        extra.addEventListener('transitionend', hideHandler, { once: true });
+        // Se ha ELIMINADO el setTimeout de seguridad aquí, ya que podría estar contribuyendo al "parpadeo"
     }
 });
 
