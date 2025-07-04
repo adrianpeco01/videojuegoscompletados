@@ -2530,7 +2530,7 @@ const renderColumn = (items) =>
                 </div>`;
     }).join('');
 
-// Tu función formatTimeOnly (se mantiene EXACTAMENTE como la tienes, sin cambios)
+// Tu función formatTimeOnly (mantenida con la lógica estándar de A.M./P.M.)
 function formatTimeOnly(dateString) {
     const [datePart, timePart] = dateString.split(' ');
     if (!timePart) return '';
@@ -2539,7 +2539,7 @@ function formatTimeOnly(dateString) {
 
     // Asegúrate de que las horas y minutos sean números válidos
     if (isNaN(hours) || isNaN(minutes)) {
-        return ''; // O maneja el error como prefieras
+        return '';
     }
 
     let displayHours = hours;
@@ -2550,8 +2550,10 @@ function formatTimeOnly(dateString) {
         ampm = 'a.m.';
     } else if (hours >= 1 && hours <= 11) { // Mañana (01:00 a 11:59)
         ampm = 'a.m.';
+        // displayHours ya es el valor correcto para este rango
     } else if (hours === 12) { // Mediodía (12:00 a 12:59)
         ampm = 'p.m.';
+        // displayHours ya es 12, que es correcto para 12 p.m.
     } else { // Tarde/Noche (13:00 a 23:59)
         displayHours = hours - 12;
         ampm = 'p.m.';
