@@ -635,7 +635,7 @@ html.dark img[src$="logroPS.png"] {
     <div class="container flex h-14 items-center justify-between">
         
       <div class="flex items-center space-x-1">
-        <a class="ml-2 mr-4 hidden sm:block __className_9fd9c5" href="https://platinumhunt.com/">Mis videojuegos completados</a>
+        <a class="ml-2 mr-4 hidden sm:block __className_9fd9c5" href="https://platinumhunt.com/">Mis videojuegos completadosa</a>
         <a class="ml-2 mr-4 sm:hidden __className_9fd9c5" href="https://platinumhunt.com/">Mis completados</a>
             
             </div>
@@ -2531,21 +2531,19 @@ const renderColumn = (items) =>
     }).join('');
 
 // Función formatTimeOnly (¡VERSIÓN CON DEPURACIÓN PARA MÓVILES!)
+// Función formatTimeOnly (¡VERSIÓN CON DEPURACIÓN, POR FAVOR ACTIVA LOS ALERT!)
 function formatTimeOnly(dateString) {
     const [datePart, timePart] = dateString.split(' ');
     if (!timePart) {
-        // console.log("formatTimeOnly: No timePart, returning empty string."); // Puedes dejar este para depurar en PC
         return '';
     }
 
     let [hours, minutes] = timePart.split(':').map(Number);
 
-    // Si la depuración en móvil es necesaria, activa esta alerta
-    // ¡RECUERDA ELIMINAR ESTA LÍNEA CUANDO EL PROBLEMA ESTÉ RESUELTO!
-    // alert(`DEBUG: Input=${dateString}, Hours=${hours}, Minutes=${minutes}`);
+    // ¡POR FAVOR, DESCOMENTA ESTA LÍNEA!
+    alert(`DEBUG: Input=${dateString}, Hours=${hours}, Minutes=${minutes}`);
 
     if (isNaN(hours) || isNaN(minutes)) {
-        // console.log("formatTimeOnly: Invalid hours/minutes, returning empty string."); // Puedes dejar este para depurar en PC
         return '';
     }
 
@@ -2556,22 +2554,19 @@ function formatTimeOnly(dateString) {
         displayHours = 12;
         ampm = 'a.m.';
     } else if (hours >= 1 && hours <= 11) { // Mañana (01:00 a 11:59)
-        // La hora ya es correcta (1 a 11)
         ampm = 'a.m.';
     } else if (hours === 12) { // Mediodía (12:00 a 12:59)
-        // La hora ya es correcta (12)
         ampm = 'p.m.';
     } else { // Tarde/Noche (13:00 a 23:59)
-        displayHours = hours - 12; // Resta 12 para convertir a formato de 12 horas (ej. 13 -> 1)
+        displayHours = hours - 12;
         ampm = 'p.m.';
     }
 
     const formattedMinutes = minutes.toString().padStart(2, '0');
 
     const result = `${displayHours}:${formattedMinutes} ${ampm}`;
-    // Si la depuración en móvil es necesaria, activa esta alerta
-    // ¡RECUERDA ELIMINAR ESTA LÍNEA CUANDO EL PROBLEMA ESTÉ RESUELTO!
-    // alert(`DEBUG Result: ${result}`);
+    // ¡POR FAVOR, DESCOMENTA ESTA LÍNEA!
+    alert(`DEBUG Result: ${result}`);
 
     return result;
 }
