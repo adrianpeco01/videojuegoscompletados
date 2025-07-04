@@ -636,7 +636,7 @@ html.dark img[src$="logroPS.png"] {
         
       <div class="flex items-center space-x-1">
         <a class="ml-2 mr-4 hidden sm:block __className_9fd9c5" href="https://platinumhunt.com/">Mis videojuegos completadosa</a>
-        <a class="ml-2 mr-4 sm:hidden __className_9fd9c5" href="https://platinumhunt.com/">Mis completados</a>
+        <a class="ml-2 mr-4 sm:hidden __className_9fd9c5" href="https://platinumhunt.com/">Mis completadosa</a>
             
             </div>
           <div class="flex items-center space-x-1">
@@ -2483,34 +2483,36 @@ const formatDateOnly = (dateString) => {
 if (game.dateStarted) {
     column2.push({
         icon: '🆕',
-        // iconTitle: Será el tooltip para el icono
         iconTitle: 'Fecha de inicio',
         label: formatDateOnly(game.dateStarted),
-        // labelTitle: Será el tooltip para el texto de la fecha
-        labelTitle: formatDateTime(game.dateStarted)
+        labelTitle: formatDateTime(game.dateStarted),
+        originalDateString: game.dateStarted // <--- ¡AÑADE ESTA LÍNEA!
     });
 }
 
 if (game.dateFinished) {
     column2.push({
         icon: '🏆',
-        // iconTitle: Será el tooltip para el icono
         iconTitle: 'Fecha de finalización',
         label: formatDateOnly(game.dateFinished),
-        // labelTitle: Será el tooltip para el texto de la fecha
-        labelTitle: formatDateTime(game.dateFinished)
+        labelTitle: formatDateTime(game.dateFinished),
+        originalDateString: game.dateFinished // <--- ¡AÑADE ESTA LÍNEA!
     });
 }
 
     if (game.dateStarted && game.dateFinished) column2.push({ icon: '🕑', label: gameDuration, title: 'Tiempo de juego' });
 
-    // --- CAMBIO CLAVE AQUÍ: MODIFICAR LA FUNCIÓN renderColumn ---
+// --- CAMBIO CLAVE AQUÍ: MODIFICAR LA FUNCIÓN renderColumn ---
 const renderColumn = (items) =>
     items.filter(Boolean).map((item) => {
         const isMobile = window.matchMedia('(max-width: 768px)').matches;
 
-        const timeHtml = isMobile && item.labelTitle
-            ? `<span class="extra-time ml-1 hidden" style="opacity: 0; transition: opacity 0.3s;">${formatTimeOnly(item.labelTitle)}</span>`
+        // ¡EL CAMBIO VA EN ESTA LÍNEA!
+        // En lugar de item.labelTitle, pasamos la cadena original (game.dateStarted o game.dateFinished)
+        const originalDateString = item.originalDateString; // Necesitamos añadir esta propiedad al item
+
+        const timeHtml = isMobile && originalDateString
+            ? `<span class="extra-time ml-1 hidden" style="opacity: 0; transition: opacity 0.3s;">${formatTimeOnly(originalDateString)}</span>`
             : '';
 
         if (item.isHtmlIcon) {
@@ -2522,7 +2524,7 @@ const renderColumn = (items) =>
                     </div>`;
         }
 
-        return `<div class="mb-2 flex items-center gap-2">
+        return `<div class="mb-2 flex flex-center gap-2">
                     <span title="${!isMobile ? item.iconTitle || item.title || '' : ''}" style="margin-right: 0.3em;">${item.icon}</span>
                     <span class="custom-text-gray-800 clickable-date" style="margin-left: 0.3em;" ${!isMobile ? `title="${item.labelTitle || ''}"` : ''}>
                         ${item.label}${timeHtml}
@@ -2531,19 +2533,21 @@ const renderColumn = (items) =>
     }).join('');
 
 // Función formatTimeOnly (¡VERSIÓN CON DEPURACIÓN PARA MÓVILES!)
-// Función formatTimeOnly (¡VERSIÓN CON DEPURACIÓN, POR FAVOR ACTIVA LOS ALERT!)
 function formatTimeOnly(dateString) {
     const [datePart, timePart] = dateString.split(' ');
     if (!timePart) {
+        // console.log("formatTimeOnly: No timePart, returning empty string."); // Puedes dejar este para depurar en PC
         return '';
     }
 
     let [hours, minutes] = timePart.split(':').map(Number);
 
-    // ¡POR FAVOR, DESCOMENTA ESTA LÍNEA!
-    alert(`DEBUG: Input=${dateString}, Hours=${hours}, Minutes=${minutes}`);
+    // Si la depuración en móvil es necesaria, activa esta alerta
+    // ¡RECUERDA ELIMINAR ESTA LÍNEA CUANDO EL PROBLEMA ESTÉ RESUELTO!
+    // alert(`DEBUG: Input=${dateString}, Hours=${hours}, Minutes=${minutes}`);
 
     if (isNaN(hours) || isNaN(minutes)) {
+        // console.log("formatTimeOnly: Invalid hours/minutes, returning empty string."); // Puedes dejar este para depurar en PC
         return '';
     }
 
@@ -2554,19 +2558,22 @@ function formatTimeOnly(dateString) {
         displayHours = 12;
         ampm = 'a.m.';
     } else if (hours >= 1 && hours <= 11) { // Mañana (01:00 a 11:59)
+        // La hora ya es correcta (1 a 11)
         ampm = 'a.m.';
     } else if (hours === 12) { // Mediodía (12:00 a 12:59)
+        // La hora ya es correcta (12)
         ampm = 'p.m.';
     } else { // Tarde/Noche (13:00 a 23:59)
-        displayHours = hours - 12;
+        displayHours = hours - 12; // Resta 12 para convertir a formato de 12 horas (ej. 13 -> 1)
         ampm = 'p.m.';
     }
 
     const formattedMinutes = minutes.toString().padStart(2, '0');
 
     const result = `${displayHours}:${formattedMinutes} ${ampm}`;
-    // ¡POR FAVOR, DESCOMENTA ESTA LÍNEA!
-    alert(`DEBUG Result: ${result}`);
+    // Si la depuración en móvil es necesaria, activa esta alerta
+    // ¡RECUERDA ELIMINAR ESTA LÍNEA CUANDO EL PROBLEMA ESTÉ RESUELTO!
+    // alert(`DEBUG Result: ${result}`);
 
     return result;
 }
