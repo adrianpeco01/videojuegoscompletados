@@ -587,27 +587,25 @@ html.dark img[src$="logroRA.png"] {
   /* backface-visibility: visible; si la tienes descomentada */ 
 }
 
-/* Por defecto oculto en móvil */
 @media (max-width: 768px) {
     .extra-time {
         display: none;
+        font-size: inherit;
+        font-weight: inherit;
+        color: inherit;
     }
-
-    .extra-time.hidden {
-        display: none;
-    }
-
     .extra-time:not(.hidden) {
         display: inline;
     }
 }
 
-/* En PC no mostramos nada extra */
+/* En PC siempre oculto */
 @media (min-width: 769px) {
     .extra-time {
         display: none !important;
     }
 }
+
 
 </style>
 
@@ -2491,25 +2489,32 @@ const renderColumn = (items) =>
     items.filter(Boolean).map((item) => {
         const isMobile = window.matchMedia('(max-width: 768px)').matches;
 
+        const timeHtml = isMobile && item.labelTitle
+            ? `<span class="hidden extra-time ml-1">${formatTimeOnly(item.labelTitle)}</span>`
+            : '';
+
         if (item.isHtmlIcon) {
             return `<div class="mb-2 flex items-center gap-2">
-                        ${item.icon}<span style="margin-left: 0.3em;" class="custom-text-gray-800" title="${!isMobile ? item.labelTitle || '' : ''}">
-                            ${item.label}
-                            ${isMobile && item.labelTitle ? `<br><span class="hidden extra-time text-xs">${item.labelTitle}</span>` : ''}
+                        ${item.icon}
+                        <span class="custom-text-gray-800 clickable-date" style="margin-left: 0.3em;" ${!isMobile ? `title="${item.labelTitle || ''}"` : ''}>
+                            ${item.label}${timeHtml}
                         </span>
                     </div>`;
         }
 
-        return `
-            <div class="mb-2 flex items-center gap-2">
-                <span title="${!isMobile ? item.iconTitle || item.title || '' : ''}" style="margin-right: 0.3em;">${item.icon}</span>
-                <span style="margin-left: 0.3em;" class="custom-text-gray-800 clickable-date" ${!isMobile ? `title="${item.labelTitle || ''}"` : ''}>
-                    ${item.label}
-                    ${isMobile && item.labelTitle ? `<br><span class="hidden extra-time text-xs">${item.labelTitle}</span>` : ''}
-                </span>
-            </div>
-        `;
+        return `<div class="mb-2 flex items-center gap-2">
+                    <span title="${!isMobile ? item.iconTitle || item.title || '' : ''}" style="margin-right: 0.3em;">${item.icon}</span>
+                    <span class="custom-text-gray-800 clickable-date" style="margin-left: 0.3em;" ${!isMobile ? `title="${item.labelTitle || ''}"` : ''}>
+                        ${item.label}${timeHtml}
+                    </span>
+                </div>`;
     }).join('');
+
+
+function formatTimeOnly(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+}
 
 document.addEventListener('click', function(e) {
     const target = e.target.closest('.clickable-date');
@@ -2520,7 +2525,6 @@ document.addEventListener('click', function(e) {
 
     extra.classList.toggle('hidden');
 });
-
 
     modalDetails.innerHTML = `
         <div class="mt-6 mb-6 bg-gray-300 h-[1px] w-full mt-2 rounded" style="background-color: #D1D5DB !important; height: 1px !important;"></div>
