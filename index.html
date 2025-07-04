@@ -2490,7 +2490,7 @@ const renderColumn = (items) =>
         const isMobile = window.matchMedia('(max-width: 768px)').matches;
 
         const timeHtml = isMobile && item.labelTitle
-            ? `<span class="hidden extra-time ml-1">${formatTimeOnly(item.labelTitle)}</span>`
+            ? `<span class="hidden extra-time ml-1">, ${formatTimeOnly(item.labelTitle)}</span>`
             : '';
 
         if (item.isHtmlIcon) {
@@ -2509,7 +2509,6 @@ const renderColumn = (items) =>
                     </span>
                 </div>`;
     }).join('');
-
 
 function formatTimeOnly(dateString) {
     // Asume formato "DD-MM-YYYY HH:mm"
@@ -2532,6 +2531,7 @@ document.addEventListener('click', function(e) {
 
     extra.classList.toggle('hidden');
 });
+
 
     modalDetails.innerHTML = `
         <div class="mt-6 mb-6 bg-gray-300 h-[1px] w-full mt-2 rounded" style="background-color: #D1D5DB !important; height: 1px !important;"></div>
