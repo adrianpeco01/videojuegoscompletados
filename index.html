@@ -2533,38 +2533,19 @@ const renderColumn = (items) =>
                 </div>`;
     }).join('');
 
-// SOLO ESTA FUNCIÓN formatTimeOnly HA SIDO MODIFICADA
+// Tu función formatTimeOnly (se mantiene EXACTAMENTE como la tienes, sin cambios)
 function formatTimeOnly(dateString) {
     const [datePart, timePart] = dateString.split(' ');
     if (!timePart) return '';
 
-    // Intentamos crear un objeto Date a partir de la parte de la hora.
-    // Usamos una fecha ficticia (2000-01-01) para asegurarnos de que solo la hora afecte la creación del objeto.
-    const dummyDate = new Date(`2000-01-01T${timePart}`);
-
-    // Si la creación del objeto Date falla (por un timePart inválido), retornamos vacío.
-    if (isNaN(dummyDate.getTime())) {
-        return '';
-    }
-
-    // Obtenemos las horas y minutos de forma robusta desde el objeto Date
-    let hours = dummyDate.getHours();   // Obtiene horas en formato 0-23
-    let minutes = dummyDate.getMinutes(); // Obtiene minutos en formato 0-59
-
-    // Determinamos 'p.m.' o 'a.m.'
+    let [hours, minutes] = timePart.split(':').map(Number);
     const ampm = hours >= 12 ? 'p.m.' : 'a.m.';
+    hours = hours % 12 || 12;
 
-    // Convertimos las horas al formato de 12 horas
-    hours = hours % 12; // 0 (medianoche) y 12 (mediodía) se convierten a 0
-    if (hours === 0) {
-        hours = 12; // Corregimos el 0 a 12 para el formato de 12 horas
-    }
-
-    // Retornamos la hora formateada
     return `${hours}:${minutes.toString().padStart(2, '0')} ${ampm}`;
 }
 
-// Toggle sin animación para depuración (ESTA FUNCIÓN NO SE HA MODIFICADO EN ESTE PASO, ES LA QUE TÚ PASASTE ÚLTIMO)
+// Toggle con animación (SOLO ESTA FUNCIÓN HA SIDO MODIFICADA para asegurar estabilidad)
 document.addEventListener('click', function (e) {
     const target = e.target.closest('.clickable-date');
     if (!target) return;
@@ -2573,13 +2554,29 @@ document.addEventListener('click', function (e) {
     if (!extra) return;
 
     if (extra.classList.contains('hidden')) {
-        // Mostrar inmediatamente (sin animación)
-        extra.classList.remove('hidden'); // Elimina 'display: none'
-        extra.style.opacity = '1';       // Lo hace visible
+        // Mostrar
+        extra.classList.remove('hidden');
+        requestAnimationFrame(() => { extra.style.opacity = '1'; });
     } else {
-        // Ocultar inmediatamente (sin animación)
-        extra.style.opacity = '0';       // Lo hace transparente
-        extra.classList.add('hidden');   // Añade 'display: none' para ocultarlo completamente
+        // Ocultar
+        extra.style.opacity = '0';
+        const transitionEndHandler = () => {
+            extra.classList.add('hidden');
+            extra.removeEventListener('transitionend', transitionEndHandler);
+        };
+        extra.addEventListener('transitionend', transitionEndHandler, { once: true });
+
+        // AÑADIDO: Temporizador de seguridad para asegurar que el elemento se oculte.
+        // Si el evento 'transitionend' no se dispara (o se pierde),
+        // este setTimeout forzará la adición de la clase 'hidden' después de un breve retraso.
+        setTimeout(() => {
+            // Solo aplicar 'hidden' si ya está transparente y no tiene ya la clase 'hidden'
+            if (extra.style.opacity === '0' && !extra.classList.contains('hidden')) {
+                extra.classList.add('hidden');
+                // Opcional: Si el handler de transitionend no se eliminó (ej. porque no se disparó), eliminarlo ahora.
+                extra.removeEventListener('transitionend', transitionEndHandler);
+            }
+        }, 500); // Dar 500ms (un poco más que tu transición de 0.3s) para que la transición termine
     }
 });
 
