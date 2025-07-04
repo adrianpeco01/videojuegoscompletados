@@ -2512,8 +2512,15 @@ const renderColumn = (items) =>
 
 
 function formatTimeOnly(dateString) {
-    const date = new Date(dateString);
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    // Asume formato "DD-MM-YYYY HH:mm"
+    const [datePart, timePart] = dateString.split(' ');
+    if (!timePart) return ''; // Por si acaso
+
+    let [hours, minutes] = timePart.split(':').map(Number);
+    const ampm = hours >= 12 ? 'p.m.' : 'a.m.';
+    hours = hours % 12 || 12; // Pasa 0 → 12 para formato 12h
+
+    return `${hours}:${minutes.toString().padStart(2, '0')} ${ampm}`;
 }
 
 document.addEventListener('click', function(e) {
