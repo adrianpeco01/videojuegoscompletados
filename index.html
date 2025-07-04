@@ -2546,6 +2546,7 @@ function formatTimeOnly(dateString) {
 
 // Toggle con animación
 // Toggle con animación (SOLO ESTA FUNCIÓN HA SIDO MODIFICADA)
+// Toggle sin animación para depuración (SOLO ESTA FUNCIÓN HA SIDO MODIFICADA)
 document.addEventListener('click', function (e) {
     const target = e.target.closest('.clickable-date');
     if (!target) return;
@@ -2554,30 +2555,15 @@ document.addEventListener('click', function (e) {
     if (!extra) return;
 
     if (extra.classList.contains('hidden')) {
-        // Mostrar
-        extra.classList.remove('hidden');
-        requestAnimationFrame(() => { extra.style.opacity = '1'; });
+        // Mostrar inmediatamente (sin animación)
+        extra.classList.remove('hidden'); // Elimina 'display: none'
+        extra.style.opacity = '1';       // Lo hace visible
     } else {
-        // Ocultar
-        extra.style.opacity = '0';
-        const transitionEndHandler = () => {
-            extra.classList.add('hidden');
-            extra.removeEventListener('transitionend', transitionEndHandler);
-        };
-        extra.addEventListener('transitionend', transitionEndHandler, { once: true });
-
-        // AÑADIDO: Temporizador de seguridad para asegurar que el elemento se oculte
-        // en caso de que la transición CSS no se complete o el evento transitionend no se dispare.
-        setTimeout(() => {
-            if (extra.style.opacity === '0' && !extra.classList.contains('hidden')) {
-                extra.classList.add('hidden');
-                // Esto es por si el transitionEndHandler no se ejecutó, nos aseguramos de limpiarlo.
-                extra.removeEventListener('transitionend', transitionEndHandler);
-            }
-        }, 500); // Esto da 500ms (0.5 segundos) de tiempo antes de forzar el 'display: none'
+        // Ocultar inmediatamente (sin animación)
+        extra.style.opacity = '0';       // Lo hace transparente
+        extra.classList.add('hidden');   // Añade 'display: none' para ocultarlo completamente
     }
 });
-
 
     modalDetails.innerHTML = `
         <div class="mt-6 mb-6 bg-gray-300 h-[1px] w-full mt-2 rounded" style="background-color: #D1D5DB !important; height: 1px !important;"></div>
