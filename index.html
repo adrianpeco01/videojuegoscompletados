@@ -2533,20 +2533,38 @@ const renderColumn = (items) =>
                 </div>`;
     }).join('');
 
-// SOLO ESTA FUNCIÓN HA SIDO MODIFICADA
+// SOLO ESTA FUNCIÓN formatTimeOnly HA SIDO MODIFICADA
 function formatTimeOnly(dateString) {
     const [datePart, timePart] = dateString.split(' ');
     if (!timePart) return '';
 
-    let [hours, minutes] = timePart.split(':').map(Number);
-    // CAMBIO AQUÍ: 'p.m.' a 'PM' y 'a.m.' a 'AM'
-    const ampm = hours >= 12 ? 'p.m.' : 'a.m.';
-    hours = hours % 12 || 12;
+    // Intentamos crear un objeto Date a partir de la parte de la hora.
+    // Usamos una fecha ficticia (2000-01-01) para asegurarnos de que solo la hora afecte la creación del objeto.
+    const dummyDate = new Date(`2000-01-01T${timePart}`);
 
+    // Si la creación del objeto Date falla (por un timePart inválido), retornamos vacío.
+    if (isNaN(dummyDate.getTime())) {
+        return '';
+    }
+
+    // Obtenemos las horas y minutos de forma robusta desde el objeto Date
+    let hours = dummyDate.getHours();   // Obtiene horas en formato 0-23
+    let minutes = dummyDate.getMinutes(); // Obtiene minutos en formato 0-59
+
+    // Determinamos 'p.m.' o 'a.m.'
+    const ampm = hours >= 12 ? 'p.m.' : 'a.m.';
+
+    // Convertimos las horas al formato de 12 horas
+    hours = hours % 12; // 0 (medianoche) y 12 (mediodía) se convierten a 0
+    if (hours === 0) {
+        hours = 12; // Corregimos el 0 a 12 para el formato de 12 horas
+    }
+
+    // Retornamos la hora formateada
     return `${hours}:${minutes.toString().padStart(2, '0')} ${ampm}`;
 }
 
-// Toggle con animación
+// Toggle sin animación para depuración (ESTA FUNCIÓN NO SE HA MODIFICADO EN ESTE PASO, ES LA QUE TÚ PASASTE ÚLTIMO)
 document.addEventListener('click', function (e) {
     const target = e.target.closest('.clickable-date');
     if (!target) return;
@@ -2555,14 +2573,13 @@ document.addEventListener('click', function (e) {
     if (!extra) return;
 
     if (extra.classList.contains('hidden')) {
-        extra.classList.remove('hidden');
-        requestAnimationFrame(() => { extra.style.opacity = '1'; });
+        // Mostrar inmediatamente (sin animación)
+        extra.classList.remove('hidden'); // Elimina 'display: none'
+        extra.style.opacity = '1';       // Lo hace visible
     } else {
-        extra.style.opacity = '0';
-        extra.addEventListener('transitionend', function handler() {
-            extra.classList.add('hidden');
-            extra.removeEventListener('transitionend', handler);
-        }, { once: true });
+        // Ocultar inmediatamente (sin animación)
+        extra.style.opacity = '0';       // Lo hace transparente
+        extra.classList.add('hidden');   // Añade 'display: none' para ocultarlo completamente
     }
 });
 
