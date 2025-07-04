@@ -2530,23 +2530,30 @@ const renderColumn = (items) =>
                 </div>`;
     }).join('');
 
-// Función formatTimeOnly (RECONFIRMADA para conversión 24h a 12h A.M./P.M.)
+// Función formatTimeOnly (¡VERSIÓN CON DEPURACIÓN PARA MÓVILES!)
 function formatTimeOnly(dateString) {
     const [datePart, timePart] = dateString.split(' ');
-    if (!timePart) return '';
-
-    let [hours, minutes] = timePart.split(':').map(Number);
-
-    // Asegúrate de que las horas y minutos sean números válidos
-    if (isNaN(hours) || isNaN(minutes)) {
+    if (!timePart) {
+        // console.log("formatTimeOnly: No timePart, returning empty string."); // Puedes dejar este para depurar en PC
         return '';
     }
 
-    let displayHours = hours; // Inicializamos con la hora original
+    let [hours, minutes] = timePart.split(':').map(Number);
+
+    // Si la depuración en móvil es necesaria, activa esta alerta
+    // ¡RECUERDA ELIMINAR ESTA LÍNEA CUANDO EL PROBLEMA ESTÉ RESUELTO!
+    // alert(`DEBUG: Input=${dateString}, Hours=${hours}, Minutes=${minutes}`);
+
+    if (isNaN(hours) || isNaN(minutes)) {
+        // console.log("formatTimeOnly: Invalid hours/minutes, returning empty string."); // Puedes dejar este para depurar en PC
+        return '';
+    }
+
+    let displayHours = hours;
     let ampm;
 
     if (hours === 0) { // Medianoche (00:00 a 00:59)
-        displayHours = 12; // Se muestra como 12
+        displayHours = 12;
         ampm = 'a.m.';
     } else if (hours >= 1 && hours <= 11) { // Mañana (01:00 a 11:59)
         // La hora ya es correcta (1 a 11)
@@ -2559,10 +2566,14 @@ function formatTimeOnly(dateString) {
         ampm = 'p.m.';
     }
 
-    // Asegura que los minutos siempre tengan dos dígitos (ej. 7 se convierte en 07)
     const formattedMinutes = minutes.toString().padStart(2, '0');
 
-    return `${displayHours}:${formattedMinutes} ${ampm}`;
+    const result = `${displayHours}:${formattedMinutes} ${ampm}`;
+    // Si la depuración en móvil es necesaria, activa esta alerta
+    // ¡RECUERDA ELIMINAR ESTA LÍNEA CUANDO EL PROBLEMA ESTÉ RESUELTO!
+    // alert(`DEBUG Result: ${result}`);
+
+    return result;
 }
 
 // Toggle con animación (MODIFICADO para estabilidad y control de display)
