@@ -563,22 +563,20 @@ html.dark img[src$="logroRA.png"] {
 
 /* Modifica .pyramid-text-rotator */
 .pyramid-text-rotator {
-    transition: transform 0.7s ease-out; /* Tu transición actual */
+    transition: transform 0.7s ease-out;
     transform-style: preserve-3d;
     will-change: transform;
     display: inline-block;
     user-select: none;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-smoothing: antialiased;
     text-align: center;
-    width: 100%;
-    /* Elimina o comenta estas líneas que pueden causar conflictos */
-    /* font-size: 0.875rem; */ 
-    /* height: 40%; */ 
-    color: white; 
-    vertical-align: top; /* Mantén esto para evitar problemas de alineación */
+    color: white;
+    vertical-align: top;
+    min-width: 120px; /* → Igual al ancho del SVG para que no encoja */
+    max-width: 120px; /* Opcional, para que no crezca más de la cuenta */
 }
+
 
 .pyramid-text-rotator.rotated {
   /* ¡CAMBIO CLAVE AQUÍ! Combinamos rotateY y scaleX en una sola transformación */
@@ -2777,7 +2775,7 @@ document.querySelectorAll('.pyramid-segment').forEach(segment => {
                 // --------------------------------------------------------
 
 const svgContent = `
-    <svg width="100%" height="40px" viewBox="0 0 100 40" preserveAspectRatio="xMidYMid meet">
+    <svg width="120px" height="40px" viewBox="0 0 120 40" preserveAspectRatio="xMidYMid meet">
         <text x="50%" y="15" text-anchor="middle" font-size="14" font-weight="bold" fill="white">
             Duración
         </text>
@@ -2786,6 +2784,7 @@ const svgContent = `
         </text>
     </svg>
 `;
+
                 textElement.innerHTML = svgContent;
 
             }, 350);
