@@ -226,6 +226,10 @@ html.dark img[src$="logroRA.png"] {
     filter: invert(1);
 }
 
+html.dark img[src$="logroPS.png"] {
+    filter: invert(1);
+}
+
 /* Ocultar el tooltip por defecto */
 #dynamicTooltipWrapper {
     display: none;
@@ -537,15 +541,6 @@ html.dark img[src$="logroRA.png"] {
         /* Asegúrate de que no haya otras propiedades de ancho que lo anulen */
     }
 
-/* Social icon hover effect */
-.social-icon-link {
-  transition: transform 0.2s ease-in-out, filter 0.2s ease-in-out;
-}
-.social-icon-link:hover {
-  transform: translateY(-3px) scale(1.05);
-  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
-}
-
 .color1 { color: #93c462; } /* ejemplo color 1, cambia tú */
 .color2 { color: #d4ba2a; } /* color 2 */
 .color3 { color: #d6b033; } /* color 3 */
@@ -604,6 +599,36 @@ html.dark img[src$="logroRA.png"] {
     }
 }
 
+.social-links-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px 12px; /* vertical 20px, horizontal 40px */
+    margin-top: 10px;
+    padding: 10px 10px;
+    border-radius: 1rem;
+}
+
+.social-icon-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #6b7280; /* text-gray-500 */
+    transition: transform 0.2s ease-in-out, filter 0.2s ease-in-out, color 0.3s;
+}
+
+.social-icon-link:hover {
+    transform: translateY(-3px) scale(1.05);
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
+    color: inherit;
+}
+
+.social-icon-link img {
+    width: 40px;
+    height: 40px;
+    box-shadow: 0 0px 6px rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+}
 
 </style>
 
@@ -633,10 +658,11 @@ html.dark img[src$="logroRA.png"] {
     </div>
 </header>
 
-<main class="flex grow flex-col items-stretch"><div class="lg:container lg:flex lg:flex-1 lg:flex-row"><div class="mt-6 block lg:sticky lg:top-20 lg:mr-2 lg:h-[calc(100vh-5rem)] lg:w-96 lg:min-w-96"><div class="bg-card text-card-foreground rounded-xl border-0 shadow-none" id="yop"><div class="flex flex-col space-y-1.5 p-6 pt-0"><div class="relative mx-auto"><img alt="adricollantex" fetchpriority="high" width="200" height="200" decoding="async" data-nimg="1" class="mb-2 transform-gpu rounded-md drop-shadow-md" src="./adricollantex • Platinum Hunt MARZO 2025_files/A2103_xl.png" style="color: transparent;"></div><h3 class="text-2xl font-semibold leading-none tracking-tight flex flex-row items-center justify-center">adricollantex<span class="ml-2 mt-0.5 text-2xl">🇪🇸</span></h3></div><div class="px-6 pt-0"><div data-orientation="horizontal" role="none" class="bg-border shrink-0 h-[1px] w-full mb-6"></div><div class="mb-6 flex h-14 flex-row justify-between"><div class="flex flex-row items-center"><img alt="254" loading="lazy" width="58" height="55" decoding="async" data-nimg="1" class="mr-4" src="./adricollantex • Platinum Hunt MARZO 2025_files/bronze3.39efc8c2.png" style="color: transparent;"><div class="flex w-32 flex-col items-center"><div class="text-md font-medium">Nivel 269</div><div id="general" aria-valuemax="100" aria-valuemin="0" role="progressbar" data-state="indeterminate" data-max="100" class="bg-secondary relative h-4 w-full overflow-hidden rounded-full mt-1" style="background-color: hsl(203, 85%, 95%); box-shadow: inset 0 1px 6px rgba(0, 0, 0, 0.07);"><div data-state="indeterminate" data-max="100" class="dark:bg-primary h-full w-full flex-1 bg-black transition-all" style="transform: translateX(-87%);"></div><div class="absolute inset-0 flex items-center justify-center"><span class="text-xs font-medium text-white mix-blend-difference">13%</span></div></div></div></div><div data-orientation="vertical" role="none" class="bg-border shrink-0 h-full w-[1px]"></div><div class="flex flex-col items-center justify-center"><div class="flex text-3xl">1401<button type="button" class="h-fit cursor-pointer self-start info-button-trigger" data-state="closed" data-tooltip-message="20 ocultos"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5"><path d="M7.49991 0.876892C3.84222 0.876892 0.877075 3.84204 0.877075 7.49972C0.877075 11.1574 3.84222 14.1226 7.49991 14.1226C11.1576 14.1226 14.1227 11.1574 14.1227 7.49972C14.1227 3.84204 11.1576 0.876892 7.49991 0.876892ZM1.82707 7.49972C1.82707 4.36671 4.36689 1.82689 7.49991 1.82689C10.6329 1.82689 13.1727 4.36671 13.1727 7.49972C13.1727 10.6327 10.6329 13.1726 7.49991 13.1726C4.36689 13.1726 1.82707 10.6327 1.82707 7.49972ZM8.24992 4.49999C8.24992 4.9142 7.91413 5.24999 7.49992 5.24999C7.08571 5.24999 6.74992 4.9142 6.74992 4.49999C6.74992 4.08577 7.08571 3.74999 7.49992 3.74999C7.91413 3.74999 8.24992 4.08577 8.24992 4.49999ZM6.00003 5.99999H6.50003H7.50003C7.77618 5.99999 8.00003 6.22384 8.00003 6.49999V9.99999H8.50003H9.00003V11H8.50003H7.50003H6.50003H6.00003V9.99999H6.50003H7.00003V6.99999H6.50003H6.00003V5.99999Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg></button>
+<main class="flex grow flex-col items-stretch"><div class="lg:container lg:flex lg:flex-1 lg:flex-row"><div class="mt-6 block lg:sticky lg:top-20 lg:mr-2 lg:h-[calc(100vh-5rem)] lg:w-96 lg:min-w-96"><div class="bg-card text-card-foreground rounded-xl border-0 shadow-none" id="yop"><div class="flex flex-col space-y-1.5 p-6 pt-0"><div class="relative mx-auto"><img alt="adricollantex" fetchpriority="high" width="200" height="200" decoding="async" data-nimg="1" class="mb-2 transform-gpu rounded-md drop-shadow-md" src="./adricollantex • Platinum Hunt MARZO 2025_files/A2103_xl.png" style="color: transparent;"></div><h3 class="text-2xl font-semibold leading-none tracking-tight flex flex-row items-center justify-center">adricollantex<span class="ml-2 mt-0.5 text-2xl">🇪🇸</span></h3></div><div class="px-6 pt-0"><div data-orientation="horizontal" role="none" class="bg-border shrink-0 h-[1px] w-full mb-6"></div><div class="mb-6 flex h-14 flex-row justify-between"><div class="flex flex-row items-center"><img alt="254" loading="lazy" width="58" height="55" decoding="async" data-nimg="1" class="mr-4" src="./adricollantex • Platinum Hunt MARZO 2025_files/bronze3.39efc8c2.png" style="color: transparent;"><div class="flex w-32 flex-col items-center"><div class="text-md font-medium">Nivel 269</div><div id="general" aria-valuemax="100" aria-valuemin="0" role="progressbar" data-state="indeterminate" data-max="100" class="bg-secondary relative h-4 w-full overflow-hidden rounded-full mt-1" style="background-color: hsl(203, 85%, 95%); box-shadow: inset 0 1px 6px rgba(0, 0, 0, 0.07);"><div data-state="indeterminate" data-max="100" class="dark:bg-primary h-full w-full flex-1 bg-black transition-all" style="transform: translateX(-54%);"></div><div class="absolute inset-0 flex items-center justify-center"><span class="text-xs font-medium text-white mix-blend-difference">46%</span></div></div></div></div><div data-orientation="vertical" role="none" class="bg-border shrink-0 h-full w-[1px]"></div><div class="flex flex-col items-center justify-center"><div class="flex text-3xl">1408<button type="button" class="h-fit cursor-pointer self-start info-button-trigger" data-state="closed" data-tooltip-message="20 ocultos"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5"><path d="M7.49991 0.876892C3.84222 0.876892 0.877075 3.84204 0.877075 7.49972C0.877075 11.1574 3.84222 14.1226 7.49991 14.1226C11.1576 14.1226 14.1227 11.1574 14.1227 7.49972C14.1227 3.84204 11.1576 0.876892 7.49991 0.876892ZM1.82707 7.49972C1.82707 4.36671 4.36689 1.82689 7.49991 1.82689C10.6329 1.82689 13.1727 4.36671 13.1727 7.49972C13.1727 10.6327 10.6329 13.1726 7.49991 13.1726C4.36689 13.1726 1.82707 10.6327 1.82707 7.49972ZM8.24992 4.49999C8.24992 4.9142 7.91413 5.24999 7.49992 5.24999C7.08571 5.24999 6.74992 4.9142 6.74992 4.49999C6.74992 4.08577 7.08571 3.74999 7.49992 3.74999C7.91413 3.74999 8.24992 4.08577 8.24992 4.49999ZM6.00003 5.99999H6.50003H7.50003C7.77618 5.99999 8.00003 6.22384 8.00003 6.49999V9.99999H8.50003H9.00003V11H8.50003H7.50003H6.50003H6.00003V9.99999H6.50003H7.00003V6.99999H6.50003H6.00003V5.99999Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg></button>
   
   
-  </div><div>Trofeos Totales</div></div></div><div data-orientation="horizontal" role="none" class="bg-border shrink-0 h-[1px] w-full my-6"></div><div class="flex flex-row justify-between space-x-1"><div class="flex flex-row items-center"><img alt="Platinum trophy" loading="lazy" width="307" height="477" decoding="async" data-nimg="1" class="w-auto h-5 lg:h-6" src="./adricollantex • Platinum Hunt MARZO 2025_files/platinum.c0edb513.png" style="color: transparent;"><span class="text-lg ml-2">23</span></div><div class="flex flex-row items-center"><img alt="Gold trophy" loading="lazy" width="380" height="459" decoding="async" data-nimg="1" class="w-auto h-5 lg:h-6" src="./adricollantex • Platinum Hunt MARZO 2025_files/gold.d6c88f73.png" style="color: transparent;"><span class="text-lg ml-2">179</span></div><div class="flex flex-row items-center"><img alt="Silver trophy" loading="lazy" width="351" height="435" decoding="async" data-nimg="1" class="w-auto h-5 lg:h-6" src="./adricollantex • Platinum Hunt MARZO 2025_files/silver.e2239c30.png" style="color: transparent;"><span class="text-lg ml-2">337</span><button type="button" class="h-fit cursor-pointer self-start info-button-trigger" data-state="closed" data-tooltip-message="5 ocultos"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5"><path d="M7.49991 0.876892C3.84222 0.876892 0.877075 3.84204 0.877075 7.49972C0.877075 11.1574 3.84222 14.1226 7.49991 14.1226C11.1576 14.1226 14.1227 11.1574 14.1227 7.49972C14.1227 3.84204 11.1576 0.876892 7.49991 0.876892ZM1.82707 7.49972C1.82707 4.36671 4.36689 1.82689 7.49991 1.82689C10.6329 1.82689 13.1727 4.36671 13.1727 7.49972C13.1727 10.6327 10.6329 13.1726 7.49991 13.1726C4.36689 13.1726 1.82707 10.6327 1.82707 7.49972ZM8.24992 4.49999C8.24992 4.9142 7.91413 5.24999 7.49992 5.24999C7.08571 5.24999 6.74992 4.9142 6.74992 4.49999C6.74992 4.08577 7.08571 3.74999 7.49992 3.74999C7.91413 3.74999 8.24992 4.08577 8.24992 4.49999ZM6.00003 5.99999H6.50003H7.50003C7.77618 5.99999 8.00003 6.22384 8.00003 6.49999V9.99999H8.50003H9.00003V11H8.50003H7.50003H6.50003H6.00003V9.99999H6.50003H7.00003V6.99999H6.50003H6.00003V5.99999Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg></button></div><div class="flex flex-row items-center"><img alt="Bronze trophy" loading="lazy" width="318" height="417" decoding="async" data-nimg="1" class="w-auto h-5 lg:h-6" src="./adricollantex • Platinum Hunt MARZO 2025_files/bronze.a58983fd.png" style="color: transparent;"><span class="text-lg ml-2">862</span><button type="button" class="h-fit cursor-pointer self-start info-button-trigger" data-state="closed" data-tooltip-message="15 ocultos"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5"><path d="M7.49991 0.876892C3.84222 0.876892 0.877075 3.84204 0.877075 7.49972C0.877075 11.1574 3.84222 14.1226 7.49991 14.1226C11.1576 14.1226 14.1227 11.1574 14.1227 7.49972C14.1227 3.84204 11.1576 0.876892 7.49991 0.876892ZM1.82707 7.49972C1.82707 4.36671 4.36689 1.82689 7.49991 1.82689C10.6329 1.82689 13.1727 4.36671 13.1727 7.49972C13.1727 10.6327 10.6329 13.1726 7.49991 13.1726C4.36689 13.1726 1.82707 10.6327 1.82707 7.49972ZM8.24992 4.49999C8.24992 4.9142 7.91413 5.24999 7.49992 5.24999C7.08571 5.24999 6.74992 4.9142 6.74992 4.49999C6.74992 4.08577 7.08571 3.74999 7.49992 3.74999C7.91413 3.74999 8.24992 4.08577 8.24992 4.49999ZM6.00003 5.99999H6.50003H7.50003C7.77618 5.99999 8.00003 6.22384 8.00003 6.49999V9.99999H8.50003H9.00003V11H8.50003H7.50003H6.50003H6.00003V9.99999H6.50003H7.00003V6.99999H6.50003H6.00003V5.99999Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg></button></div></div><div></div></div></div></div><div class="mt-6 grow lg:mt-4"><div dir="ltr" data-orientation="horizontal" class="w-full px-2 lg:px-0"></div><div class="mx-2 lg:mx-0"><div class="mb-2">
+  </div><div>Trofeos Totales</div></div></div><div data-orientation="horizontal" role="none" class="bg-border shrink-0 h-[1px] w-full my-6"></div><div class="flex flex-row justify-between space-x-1"><div class="flex flex-row items-center"><img alt="Platinum trophy" loading="lazy" width="307" height="477" decoding="async" data-nimg="1" class="w-auto h-5 lg:h-6" src="./adricollantex • Platinum Hunt MARZO 2025_files/logroPS.png" style="color: transparent;"><span class="text-lg ml-2">27</span></div><div class="flex flex-row items-center"><img alt="Gold trophy" loading="lazy" width="380" height="459" decoding="async" data-nimg="1" class="w-auto h-5 lg:h-6" src="./adricollantex • Platinum Hunt MARZO 2025_files/platinum.c0edb513.png" style="color: transparent;"><span class="text-lg ml-2">23</span></div><div class="flex flex-row items-center"><img alt="Steam trophy" loading="lazy" width="351" height="435" decoding="async" data-nimg="1" class="w-auto h-5 lg:h-6" src="./adricollantex • Platinum Hunt MARZO 2025_files/logroSteam.png" style="color: transparent;"><span class="text-lg ml-2">9</span><button type="button" class="h-fit cursor-pointer self-start info-button-trigger" data-state="closed" data-tooltip-message="5 limitados"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5"><path d="M7.49991 0.876892C3.84222 0.876892 0.877075 3.84204 0.877075 7.49972C0.877075 11.1574 3.84222 14.1226 7.49991 14.1226C11.1576 14.1226 14.1227 11.1574 14.1227 7.49972C14.1227 3.84204 11.1576 0.876892 7.49991 0.876892ZM1.82707 7.49972C1.82707 4.36671 4.36689 1.82689 7.49991 1.82689C10.6329 1.82689 13.1727 4.36671 13.1727 7.49972C13.1727 10.6327 10.6329 13.1726 7.49991 13.1726C4.36689 13.1726 1.82707 10.6327 1.82707 7.49972ZM8.24992 4.49999C8.24992 4.9142 7.91413 5.24999 7.49992 5.24999C7.08571 5.24999 6.74992 4.9142 6.74992 4.49999C6.74992 4.08577 7.08571 3.74999 7.49992 3.74999C7.91413 3.74999 8.24992 4.08577 8.24992 4.49999ZM6.00003 5.99999H6.50003H7.50003C7.77618 5.99999 8.00003 6.22384 8.00003 6.49999V9.99999H8.50003H9.00003V11H8.50003H7.50003H6.50003H6.00003V9.99999H6.50003H7.00003V6.99999H6.50003H6.00003V5.99999Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg></button></div><div class="flex flex-row items-center"><img alt="Bronze trophy" loading="lazy" width="318" height="417" decoding="async" data-nimg="1" class="w-auto h-5 lg:h-6" src="./adricollantex • Platinum Hunt MARZO 2025_files/logroRAlogo.png" style="color: transparent;"><span class="text-lg ml-2">1</span><button type="button" class="h-fit cursor-pointer self-start info-button-trigger" data-state="closed" data-tooltip-message="1 sin masterizar"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5"><path d="M7.49991 0.876892C3.84222 0.876892 0.877075 3.84204 0.877075 7.49972C0.877075 11.1574 3.84222 14.1226 7.49991 14.1226C11.1576 14.1226 14.1227 11.1574 14.1227 7.49972C14.1227 3.84204 11.1576 0.876892 7.49991 0.876892ZM1.82707 7.49972C1.82707 4.36671 4.36689 1.82689 7.49991 1.82689C10.6329 1.82689 13.1727 4.36671 13.1727 7.49972C13.1727 10.6327 10.6329 13.1726 7.49991 13.1726C4.36689 13.1726 1.82707 10.6327 1.82707 7.49972ZM8.24992 4.49999C8.24992 4.9142 7.91413 5.24999 7.49992 5.24999C7.08571 5.24999 6.74992 4.9142 6.74992 4.49999C6.74992 4.08577 7.08571 3.74999 7.49992 3.74999C7.91413 3.74999 8.24992 4.08577 8.24992 4.49999ZM6.00003 5.99999H6.50003H7.50003C7.77618 5.99999 8.00003 6.22384 8.00003 6.49999V9.99999H8.50003H9.00003V11H8.50003H7.50003H6.50003H6.00003V9.99999H6.50003H7.00003V6.99999H6.50003H6.00003V5.99999Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg></button></div></div>
+  <div></div></div></div></div><div class="mt-6 grow lg:mt-4"><div dir="ltr" data-orientation="horizontal" class="w-full px-2 lg:px-0"></div><div class="mx-2 lg:mx-0"><div class="mb-2">
     
 
 
@@ -2315,7 +2341,6 @@ const game = {
 
 };
 
-
     const modalImage = document.getElementById("modalImage");
     const modalDetails = document.getElementById("modalDetails");
     const modalHeader = document.getElementById('modalHeader');
@@ -2325,7 +2350,7 @@ const game = {
         return;
     }
 
-    modalHeader.innerHTML = `<h2 class="text-gray-800 text-center" style="font-weight: bold; font-size: 1.1rem;">${game.title}</h2>`;
+    modalHeader.innerHTML = `<h2 class="text-gray-800 text-center" style="font-weight: bold; font-size: 1.1rem; line-height: 1.4; max-width: 90%; margin: 0 auto; word-break: break-word;">${game.title}</h2>`;
     modalImage.src = game.image;
 
     let imageHeightModal = 330;
@@ -2520,6 +2545,7 @@ function formatTimeOnly(dateString) {
 }
 
 // Toggle con animación
+// Toggle con animación (SOLO ESTA FUNCIÓN HA SIDO MODIFICADA)
 document.addEventListener('click', function (e) {
     const target = e.target.closest('.clickable-date');
     if (!target) return;
@@ -2528,14 +2554,27 @@ document.addEventListener('click', function (e) {
     if (!extra) return;
 
     if (extra.classList.contains('hidden')) {
+        // Mostrar
         extra.classList.remove('hidden');
         requestAnimationFrame(() => { extra.style.opacity = '1'; });
     } else {
+        // Ocultar
         extra.style.opacity = '0';
-        extra.addEventListener('transitionend', function handler() {
+        const transitionEndHandler = () => {
             extra.classList.add('hidden');
-            extra.removeEventListener('transitionend', handler);
-        }, { once: true });
+            extra.removeEventListener('transitionend', transitionEndHandler);
+        };
+        extra.addEventListener('transitionend', transitionEndHandler, { once: true });
+
+        // AÑADIDO: Temporizador de seguridad para asegurar que el elemento se oculte
+        // en caso de que la transición CSS no se complete o el evento transitionend no se dispare.
+        setTimeout(() => {
+            if (extra.style.opacity === '0' && !extra.classList.contains('hidden')) {
+                extra.classList.add('hidden');
+                // Esto es por si el transitionEndHandler no se ejecutó, nos aseguramos de limpiarlo.
+                extra.removeEventListener('transitionend', transitionEndHandler);
+            }
+        }, 500); // Esto da 500ms (0.5 segundos) de tiempo antes de forzar el 'display: none'
     }
 });
 
@@ -2612,30 +2651,26 @@ document.addEventListener('click', function (e) {
         </div>
     </div>
 
-<div class="w-full custom-bg-gray border-t border-gray-200 px-6 py-4 flex justify-center flex-wrap gap-8 rounded-b-xl">
-  ${game.linkPsnprofiles ? `
-    <a href="${game.linkPsnprofiles}" target="_blank" class="social-icon-link flex flex-col items-center text-gray-500 hover:text-blue-600" title="Ver en PSNProfiles">
-      <img src="https://i.imgur.com/ruwMUMf.png" alt="PSNProfiles" class="w-8 h-8" />
-      <span class="text-xs mt-1">PSNProfiles</span>
-    </a>` : ''}
+<div class="social-links-container">
+    ${game.linkPsnprofiles ? `
+        <a href="${game.linkPsnprofiles}" target="_blank" class="social-icon-link" title="Ver en PSNProfiles">
+            <img src="./adricollantex • Platinum Hunt MARZO 2025_files/link PSN.png" alt="PSNProfiles" />
+        </a>` : ''}
 
-  ${game.linkExophase ? `
-    <a href="${game.linkExophase}" target="_blank" class="social-icon-link flex flex-col items-center text-gray-500 hover:text-green-600" title="Ver en Exophase">
-      <img src="https://i.imgur.com/qMnyX7j.png" alt="Exophase" class="w-8 h-8" />
-      <span class="text-xs mt-1">Exophase</span>
-    </a>` : ''}
+    ${game.linkExophase ? `
+        <a href="${game.linkExophase}" target="_blank" class="social-icon-link" title="Ver en Exophase">
+            <img src="./adricollantex • Platinum Hunt MARZO 2025_files/link EXO.png" alt="Exophase" />
+        </a>` : ''}
 
-  ${game.linkRetroachievements ? `
-    <a href="${game.linkRetroachievements}" target="_blank" class="social-icon-link flex flex-col items-center text-gray-500 hover:text-red-600" title="Ver en RetroAchievements">
-      <img src="https://i.imgur.com/UcJ2D3l.png" alt="RetroAchievements" class="w-8 h-8" />
-      <span class="text-xs mt-1">RetroAchievements</span>
-    </a>` : ''}
+    ${game.linkRetroachievements ? `
+        <a href="${game.linkRetroachievements}" target="_blank" class="social-icon-link" title="Ver en RetroAchievements">
+            <img src="./adricollantex • Platinum Hunt MARZO 2025_files/link RA.png" alt="RetroAchievements" />
+        </a>` : ''}
 
-  ${game.linkSteam ? `
-    <a href="${game.linkSteam}" target="_blank" class="social-icon-link flex flex-col items-center text-gray-500 hover:text-black" title="Ver en Steam">
-      <img src="https://i.imgur.com/YXjYhBP.png" alt="Steam" class="w-8 h-8" />
-      <span class="text-xs mt-1">Steam</span>
-    </a>` : ''}
+    ${game.linkSteam ? `
+        <a href="${game.linkSteam}" target="_blank" class="social-icon-link" title="Ver en Steam">
+            <img src="./adricollantex • Platinum Hunt MARZO 2025_files/link Steam.png" alt="Steam" />
+        </a>` : ''}
 </div>
     `;
 
