@@ -2537,29 +2537,29 @@ function formatTimeOnly(dateString) {
 
     let [hours, minutes] = timePart.split(':').map(Number);
 
+    // Asegúrate de que las horas y minutos sean números válidos
     if (isNaN(hours) || isNaN(minutes)) {
         return '';
     }
 
-    let displayHours;
+    let displayHours = hours; // Inicializamos con la hora original
     let ampm;
 
-    // Lógica corregida para a.m./p.m.
-    if (hours >= 12) {
-        ampm = 'p.m.';
-    } else {
+    if (hours === 0) { // Medianoche (00:00 a 00:59)
+        displayHours = 12; // Se muestra como 12
         ampm = 'a.m.';
+    } else if (hours >= 1 && hours <= 11) { // Mañana (01:00 a 11:59)
+        // La hora ya es correcta (1 a 11)
+        ampm = 'a.m.';
+    } else if (hours === 12) { // Mediodía (12:00 a 12:59)
+        // La hora ya es correcta (12)
+        ampm = 'p.m.';
+    } else { // Tarde/Noche (13:00 a 23:59)
+        displayHours = hours - 12; // Resta 12 para convertir a formato de 12 horas (ej. 13 -> 1)
+        ampm = 'p.m.';
     }
 
-    // Lógica corregida para la hora de 12 horas
-    if (hours === 0) { // Medianoche (00:00) -> 12 a.m.
-        displayHours = 12;
-    } else if (hours > 12) { // De 13:00 a 23:59 -> resta 12
-        displayHours = hours - 12;
-    } else { // De 01:00 a 11:59 y 12:00 (mediodía)
-        displayHours = hours;
-    }
-
+    // Asegura que los minutos siempre tengan dos dígitos (ej. 7 se convierte en 07)
     const formattedMinutes = minutes.toString().padStart(2, '0');
 
     return `${displayHours}:${formattedMinutes} ${ampm}`;
