@@ -2490,7 +2490,7 @@ const renderColumn = (items) =>
         const isMobile = window.matchMedia('(max-width: 768px)').matches;
 
         const timeHtml = isMobile && item.labelTitle
-            ? `<span class="hidden extra-time ml-1">, ${formatTimeOnly(item.labelTitle)}</span>`
+            ? `<span class="extra-time ml-1 hidden" style="opacity: 0; transition: opacity 0.3s;">${formatTimeOnly(item.labelTitle)}</span>`
             : '';
 
         if (item.isHtmlIcon) {
@@ -2511,25 +2511,34 @@ const renderColumn = (items) =>
     }).join('');
 
 function formatTimeOnly(dateString) {
-    // Asume formato "DD-MM-YYYY HH:mm"
     const [datePart, timePart] = dateString.split(' ');
-    if (!timePart) return ''; // Por si acaso
+    if (!timePart) return '';
 
     let [hours, minutes] = timePart.split(':').map(Number);
     const ampm = hours >= 12 ? 'p.m.' : 'a.m.';
-    hours = hours % 12 || 12; // Pasa 0 → 12 para formato 12h
+    hours = hours % 12 || 12;
 
     return `${hours}:${minutes.toString().padStart(2, '0')} ${ampm}`;
 }
 
-document.addEventListener('click', function(e) {
+// Toggle con animación
+document.addEventListener('click', function (e) {
     const target = e.target.closest('.clickable-date');
     if (!target) return;
 
     const extra = target.querySelector('.extra-time');
     if (!extra) return;
 
-    extra.classList.toggle('hidden');
+    if (extra.classList.contains('hidden')) {
+        extra.classList.remove('hidden');
+        requestAnimationFrame(() => { extra.style.opacity = '1'; });
+    } else {
+        extra.style.opacity = '0';
+        extra.addEventListener('transitionend', function handler() {
+            extra.classList.add('hidden');
+            extra.removeEventListener('transitionend', handler);
+        }, { once: true });
+    }
 });
 
 
