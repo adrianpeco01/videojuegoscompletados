@@ -553,16 +553,62 @@ html.dark img[src$="logroRA.png"] {
 .color5 { color: #e08256; } /* color 5 */
 .color6 { color: #cc534b; } /* color 6 */
 
-.mirror-text {
-  transform: scaleX(-1) translateZ(0);
-  display: inline-block;
-  user-select: none;
-  backface-visibility: hidden;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  /* Añade esto para forzar la aceleración por hardware si lo anterior no es suficiente */
-  will-change: transform;
+.pyramid-segment.bg-black {
+    height: 56px; /* 40px (contenido del SVG) + 8px (padding-top) + 8px (padding-bottom) */
+    box-sizing: border-box; /* Asegura que el padding se incluya en la altura total */
+    display: flex; /* Ayuda a centrar el contenido verticalmente */
+    align-items: center; /* Centra el contenido verticalmente */
+    justify-content: center; /* Centra el contenido horizontalmente (si es necesario) */
 }
+
+/* Modifica .pyramid-text-rotator */
+.pyramid-text-rotator {
+    transition: transform 0.7s ease-out; /* Tu transición actual */
+    transform-style: preserve-3d;
+    will-change: transform;
+    display: inline-block;
+    user-select: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-smoothing: antialiased;
+    text-align: center;
+    width: 100%;
+    /* Elimina o comenta estas líneas que pueden causar conflictos */
+    /* font-size: 0.875rem; */ 
+    /* height: 40%; */ 
+    color: white; 
+    vertical-align: top; /* Mantén esto para evitar problemas de alineación */
+}
+
+.pyramid-text-rotator.rotated {
+  /* ¡CAMBIO CLAVE AQUÍ! Combinamos rotateY y scaleX en una sola transformación */
+  transform: rotateY(180deg) scaleX(-1); 
+  transform-origin: center center; /* Asegura un punto de origen consistente */
+  /* backface-visibility: visible; si la tienes descomentada */ 
+}
+
+/* Por defecto oculto en móvil */
+@media (max-width: 768px) {
+    .extra-time {
+        display: none;
+    }
+
+    .extra-time.hidden {
+        display: none;
+    }
+
+    .extra-time:not(.hidden) {
+        display: inline;
+    }
+}
+
+/* En PC no mostramos nada extra */
+@media (min-width: 769px) {
+    .extra-time {
+        display: none !important;
+    }
+}
+
 </style>
 
 </head><body id="page-content"><div class="relative flex min-h-svh flex-col">
@@ -1049,7 +1095,7 @@ html.dark img[src$="logroRA.png"] {
     <span data-game-field="date-started">25-12-2024 20:30</span>
     <span data-game-field="date-finished">27-12-2024 17:55</span>
     <span data-game-field="rarity">31.59%</span>
-    <span data-game-field="horas">15h</span>
+    <span data-game-field="horas">7h</span>
     <span data-game-field="content">15 trofeos</span>
     <span data-game-field="rarest-trophy-name1">Por todos los medios</span>
      <span data-game-field="rarest-trophy-image1">https://m.exophase.com/psn/awards/s/06d070.png?928ae699a8e87ab95679ee4e2b0fade5</span>
@@ -1074,7 +1120,7 @@ html.dark img[src$="logroRA.png"] {
     <span data-game-field="date-started">15-12-2021 20:55</span>
     <span data-game-field="date-finished">21-12-2024 19:10</span>
     <span data-game-field="rarity">2.36%</span>
-    <span data-game-field="horas">15h</span>
+    <span data-game-field="horas">27h</span>
     <span data-game-field="content">27 + 🧩 28 trofeos</span>
     <span data-game-field="rarest-trophy-name1">🧩 ¡Al carbón!</span>
      <span data-game-field="rarest-trophy-image1">https://m.exophase.com/psn/awards/s/663eb6e.png?8d080887932ac21a513ae43d5881a882</span>
@@ -1108,7 +1154,7 @@ html.dark img[src$="logroRA.png"] {
     <span data-game-field="date-started">06-12-2024 20:37</span>
     <span data-game-field="date-finished">06-12-2024 21:40</span>
     <span data-game-field="rarity">80.54%</span>
-    <span data-game-field="horas">15h</span>
+    <span data-game-field="horas">15min</span>
     <span data-game-field="content">20 logros</span>
     <span data-game-field="rarest-trophy-name1">BOOP</span>
      <span data-game-field="rarest-trophy-image1">https://m.exophase.com/steam/awards/s/40eeg046.png?bbe23083c233dee88a118ab4f34e0ba5</span>
@@ -1133,7 +1179,7 @@ html.dark img[src$="logroRA.png"] {
     <span data-game-field="date-started">30-07-2022 21:05</span>
     <span data-game-field="date-finished">16-11-2024 19:00</span>
     <span data-game-field="rarity">37.30%</span>
-    <span data-game-field="horas">15h</span>
+    <span data-game-field="horas">50h</span>
     <span data-game-field="content">36 + 🧩 52 trofeos</span>
     <span data-game-field="rarest-trophy-name1">🧩 Espectacular</span>
      <span data-game-field="rarest-trophy-image1">https://m.exophase.com/psn/awards/s/364306.png?fb5829385e4b6a2408a879b32a2d7d41</span>
@@ -1158,7 +1204,7 @@ html.dark img[src$="logroRA.png"] {
     <span data-game-field="date-started">17-08-2022 16:28</span>
     <span data-game-field="date-finished">27-10-2024 21:11</span>
     <span data-game-field="rarity">37.30%</span>
-    <span data-game-field="horas">15h</span>
+    <span data-game-field="horas">10h</span>
     <span data-game-field="content">39 trofeos</span>
     <span data-game-field="rarest-trophy-name1">Por encima de todos</span>
      <span data-game-field="rarest-trophy-image1">https://m.exophase.com/psn/awards/s/6d3e13.png?90e9a7b0a539c27707e86a60eaf9f6ab</span>
@@ -1183,7 +1229,7 @@ html.dark img[src$="logroRA.png"] {
     <span data-game-field="date-started">06-10-2024 04:56</span>
     <span data-game-field="date-finished">25-10-2024 02:36</span>
     <span data-game-field="rarity">18.39%</span>
-    <span data-game-field="horas">15h</span>
+    <span data-game-field="horas">18h</span>
     <span data-game-field="content">41 trofeos</span>
     <span data-game-field="rarest-trophy-name1">Hecho, hecho y hecho</span>
      <span data-game-field="rarest-trophy-image1">https://m.exophase.com/psn/awards/s/j4g4b3.png</span>
@@ -1208,7 +1254,7 @@ html.dark img[src$="logroRA.png"] {
     <span data-game-field="date-started">22-10-2024 02:47</span>
     <span data-game-field="date-finished">25-10-2024 04:24</span>
     <span data-game-field="rarity">20.12%</span>
-    <span data-game-field="horas">15h</span>
+    <span data-game-field="horas">20h</span>
     <span data-game-field="content">47 trofeos</span>
     <span data-game-field="rarest-trophy-name1">Hecho consumado</span>
      <span data-game-field="rarest-trophy-image1">https://m.exophase.com/psn/awards/s/0be153.png</span>
@@ -1233,7 +1279,7 @@ html.dark img[src$="logroRA.png"] {
     <span data-game-field="date-started">29-04-2021 19:44</span>
     <span data-game-field="date-finished">15-10-2024 19:51</span>
     <span data-game-field="rarity">0.88%</span>
-    <span data-game-field="horas">15h</span>
+    <span data-game-field="horas">29h</span>
     <span data-game-field="content">28 + 🧩 2 trofeos</span>
     <span data-game-field="rarest-trophy-name1">Gran maestro de la magia</span>
      <span data-game-field="rarest-trophy-image1">https://m.exophase.com/psn/awards/s/1jb850.png?a01f2799d00212556d716d90ba3f06a3</span>
@@ -1258,7 +1304,7 @@ html.dark img[src$="logroRA.png"] {
     <span data-game-field="date-started">19-12-2020 21:00</span>
     <span data-game-field="date-finished">10-10-2024 13:05</span>
     <span data-game-field="rarity">9.12%</span>
-    <span data-game-field="horas">15h</span>
+    <span data-game-field="horas">5h</span>
     <span data-game-field="content">11 trofeos</span>
     <span data-game-field="rarest-trophy-name1">Todas las guarniciones</span>
      <span data-game-field="rarest-trophy-image1">https://m.exophase.com/psn/awards/s/b37g0b.png?2901685e43ba3e9dca5827e0bd552cbe</span>
@@ -1283,7 +1329,7 @@ html.dark img[src$="logroRA.png"] {
     <span data-game-field="date-started">11-08-2023 03:49</span>
     <span data-game-field="date-finished">01-10-2024 01:37</span>
     <span data-game-field="rarity">21.62%</span>
-    <span data-game-field="horas">15h</span>
+    <span data-game-field="horas">8h</span>
     <span data-game-field="content">25 trofeos</span>
     <span data-game-field="rarest-trophy-name1">Ya está todo</span>
      <span data-game-field="rarest-trophy-image1">https://m.exophase.com/psn/awards/s/7e6egjb.png?a604e9e3ac99269a9a5e566402f36a6d</span>
@@ -1308,7 +1354,7 @@ html.dark img[src$="logroRA.png"] {
     <span data-game-field="date-started">15-09-2024 22:24</span>
     <span data-game-field="date-finished">15-09-2024 23:34</span>
     <span data-game-field="rarity">8.61%</span>
-    <span data-game-field="horas">15h</span>
+    <span data-game-field="horas">44h</span>
     <span data-game-field="content">29 +  🧩 4 trofeos</span>
     <span data-game-field="rarest-trophy-name1">Trofeo de platino</span>
      <span data-game-field="rarest-trophy-image1">https://m.exophase.com/psn/awards/s/86500e.png?cf8f486ef9b22ec65ebe1b478c3500f7</span>
@@ -1333,7 +1379,7 @@ html.dark img[src$="logroRA.png"] {
     <span data-game-field="date-started">15-09-2024 22:24</span>
     <span data-game-field="date-finished">15-09-2024 23:34</span>
     <span data-game-field="rarity">88.29%</span>
-    <span data-game-field="horas">15h</span>
+    <span data-game-field="horas">1h</span>
     <span data-game-field="content">24 trofeos</span>
     <span data-game-field="rarest-trophy-name1">Completionist</span>
      <span data-game-field="rarest-trophy-image1">https://m.exophase.com/psn/awards/s/4gg0e47.png</span>
@@ -1358,7 +1404,7 @@ html.dark img[src$="logroRA.png"] {
     <span data-game-field="date-started">14-09-2024 01:47</span>
     <span data-game-field="date-finished">14-09-2024 19:50</span>
     <span data-game-field="rarity">70.94%</span>
-    <span data-game-field="horas">15h</span>
+    <span data-game-field="horas">4h</span>
     <span data-game-field="content">26 trofeos</span>
     <span data-game-field="rarest-trophy-name1">All Moved In</span>
      <span data-game-field="rarest-trophy-image1">https://m.exophase.com/psn/awards/s/g4ed5e8.png?6163306ef542866d927396fdab7d3955</span>
@@ -1383,7 +1429,7 @@ html.dark img[src$="logroRA.png"] {
     <span data-game-field="date-started">09-09-2024 03:12</span>
     <span data-game-field="date-finished">13-09-2024 14:48</span>
     <span data-game-field="rarity">23.44%</span>
-    <span data-game-field="horas">90h</span>
+    <span data-game-field="horas">15h</span>
     <span data-game-field="content">31 trofeos</span>
     <span data-game-field="rarest-trophy-name1">Heartbeat</span>
      <span data-game-field="rarest-trophy-image1">https://m.exophase.com/psn/awards/s/0676e8.png?94182f0fd933b1e168f5dc4f8511e548</span>
@@ -2438,31 +2484,42 @@ if (game.dateFinished) {
     });
 }
 
-    if (game.dateStarted && game.dateFinished) column2.push({ icon: '🕑', label: gameDuration, title: 'Duración' });
+    if (game.dateStarted && game.dateFinished) column2.push({ icon: '🕑', label: gameDuration, title: 'Tiempo de juego' });
 
     // --- CAMBIO CLAVE AQUÍ: MODIFICAR LA FUNCIÓN renderColumn ---
-    const renderColumn = (items) =>
-        items.filter(Boolean).map((item) => {
-            // Verifica si se proporcionó un isHtmlIcon.
-            // Si quieres que el icono html también tenga tooltip,
-            // necesitarías modificar cómo se maneja 'item.isHtmlIcon'
-            // para permitir un 'title' en el HTML inyectado.
-            if (item.isHtmlIcon) {
-                // Si item.isHtmlIcon es verdadero, el icono ya es un fragmento HTML.
-                // Tendrías que asegurarte de que el HTML de item.icon ya incluya el atributo title.
-                // Por simplicidad para este caso, nos centraremos en los iconos de texto.
-                return `<div class="mb-2 flex items-center gap-2">
-                            ${item.icon}<span style="margin-left: 0.3em;" class="custom-text-gray-800" title="${item.labelTitle || ''}">${item.label}</span>
-                        </div>`;
-            }
-            // ESTA ES LA PARTE QUE NECESITA LA MODIFICACIÓN
-            return `
-                <div class="mb-2 flex items-center gap-2">
-                    <span title="${item.iconTitle || item.title || ''}" style="margin-right: 0.3em;">${item.icon}</span>
-                    <span style="margin-left: 0.3em;" class="custom-text-gray-800" title="${item.labelTitle || ''}">${item.label}</span>
-                </div>
-            `;
-        }).join('');
+const renderColumn = (items) =>
+    items.filter(Boolean).map((item) => {
+        const isMobile = window.matchMedia('(max-width: 768px)').matches;
+
+        if (item.isHtmlIcon) {
+            return `<div class="mb-2 flex items-center gap-2">
+                        ${item.icon}<span style="margin-left: 0.3em;" class="custom-text-gray-800" title="${!isMobile ? item.labelTitle || '' : ''}">
+                            ${item.label}
+                            ${isMobile && item.labelTitle ? `<br><span class="hidden extra-time text-xs">${item.labelTitle}</span>` : ''}
+                        </span>
+                    </div>`;
+        }
+
+        return `
+            <div class="mb-2 flex items-center gap-2">
+                <span title="${!isMobile ? item.iconTitle || item.title || '' : ''}" style="margin-right: 0.3em;">${item.icon}</span>
+                <span style="margin-left: 0.3em;" class="custom-text-gray-800 clickable-date" ${!isMobile ? `title="${item.labelTitle || ''}"` : ''}>
+                    ${item.label}
+                    ${isMobile && item.labelTitle ? `<br><span class="hidden extra-time text-xs">${item.labelTitle}</span>` : ''}
+                </span>
+            </div>
+        `;
+    }).join('');
+
+document.addEventListener('click', function(e) {
+    const target = e.target.closest('.clickable-date');
+    if (!target) return;
+
+    const extra = target.querySelector('.extra-time');
+    if (!extra) return;
+
+    extra.classList.toggle('hidden');
+});
 
 
     modalDetails.innerHTML = `
@@ -2481,7 +2538,7 @@ if (game.dateFinished) {
 
         <!-- ULTRARRARO -->
         <div class="pyramid-segment pyramid-ultrarare p-2 text-center font-bold text-sm 
-            ${rarityValue <= 5 ? 'bg-black text-white' : 'bg-gray-medium custom-text-dark'}">
+            ${rarityValue <= 5 ? 'bg-black text-white' : 'bg-gray-medium custom-text-dark'}" data-horas-valor="${game.horas}">
             <span class="block w-full">
                 Ultrarraro ${rarityValue <= 5 ? `<br>${rarityValue}%` : ''}
             </span>
@@ -2489,7 +2546,7 @@ if (game.dateFinished) {
 
         <!-- MUY RARO -->
         <div class="pyramid-segment pyramid-veryrare p-2 text-center font-bold text-sm 
-            ${rarityValue > 5 && rarityValue <= 15 ? 'bg-black text-white' : 'bg-gray-medium custom-text-dark'}">
+            ${rarityValue > 5 && rarityValue <= 15 ? 'bg-black text-white' : 'bg-gray-medium custom-text-dark'}" data-horas-valor="${game.horas}">
             <span class="block w-full">
                 Muy raro ${rarityValue > 5 && rarityValue <= 15 ? `<br>${rarityValue}%` : ''}
             </span>
@@ -2497,7 +2554,7 @@ if (game.dateFinished) {
 
         <!-- RARO -->
         <div class="pyramid-segment pyramid-rare p-2 text-center font-bold text-sm 
-            ${rarityValue > 15 && rarityValue <= 50 ? 'bg-black text-white' : 'bg-gray-medium custom-text-dark'}">
+            ${rarityValue > 15 && rarityValue <= 50 ? 'bg-black text-white' : 'bg-gray-medium custom-text-dark'}" data-horas-valor="${game.horas}">
             <span class="block w-full">
                 Raro ${rarityValue > 15 && rarityValue <= 50 ? `<br>${rarityValue}%` : ''}
             </span>
@@ -2505,7 +2562,7 @@ if (game.dateFinished) {
 
         <!-- COMÚN -->
         <div class="pyramid-segment pyramid-common p-2 text-center font-bold text-sm 
-            ${rarityValue > 50 ? 'bg-black text-white' : 'bg-gray-medium custom-text-dark'}">
+            ${rarityValue > 50 ? 'bg-black text-white' : 'bg-gray-medium custom-text-dark'}" data-horas-valor="${game.horas}">
             <span class="block w-full">
                 Común ${rarityValue > 50 ? `<br>${rarityValue}%` : ''}
             </span>
@@ -2587,92 +2644,142 @@ if (game.dateFinished) {
         });
     }
 
-const horasRaw = game.horas; // Ejemplo: "2h 30min" o "15h" o "45min"
+// --- 1. Definición de Colores para SVG (Necesarios para colores HEX) ---
+const COLORS_MAP = {
+    'color1': '#93c462', 
+    'color2': '#d4ba2a', 
+    'color3': '#d6b033', 
+    'color4': '#e49944', 
+    'color5': '#e08256', 
+    'color6': '#cc534b'
+};
 
-function getColorClass(number, isHours) {
-  if (!isHours) return 'color1'; // todos los minutos en color1
-  if (number >= 1 && number <= 15) return 'color1';
-  if (number >= 16 && number <= 24) return 'color2';
-  if (number >= 25 && number <= 39) return 'color3';
-  if (number >= 40 && number <= 59) return 'color4';
-  if (number >= 60 && number <= 79) return 'color5';
-  if (number >= 80) return 'color6';
-  return '';
+// --- 2. Función para obtener el color HEX para SVG (NO CLASES CSS) ---
+function getColorSVG(number, isHours) {
+    let colorClassName;
+    if (!isHours) colorClassName = 'color1'; // todos los minutos en color1
+    else if (number >= 1 && number <= 15) colorClassName = 'color1';
+    else if (number >= 16 && number <= 24) colorClassName = 'color2';
+    else if (number >= 25 && number <= 39) colorClassName = 'color3';
+    else if (number >= 40 && number <= 59) colorClassName = 'color4';
+    else if (number >= 60 && number <= 79) colorClassName = 'color5';
+    else if (number >= 80) colorClassName = 'color6';
+    else colorClassName = 'color1';
+
+    return COLORS_MAP[colorClassName] || 'white';
 }
 
-// Convierte string como "2h 30min" a HTML con clases y texto largo
-function parseHoras(horasStr) {
-  // Buscar horas y minutos
-  const hourMatch = horasStr.match(/(\d+)\s*h/);
-  const minMatch = horasStr.match(/(\d+)\s*min/);
+// --- 3. Función para parsear horas para SVG (devuelve un objeto con TEXTO y COLORES HEX, NO HTML) ---
+function parseHorasForSVG(horasStr) {
+    const hourMatch = horasStr ? horasStr.match(/(\d+)\s*h/) : null;
+    const minMatch = horasStr ? horasStr.match(/(\d+)\s*min/) : null;
 
-  let parts = [];
+    let horaText = '';
+    let horaColor = '';
+    let minutoText = '';
+    let minutoColor = '';
+    let hasContent = false;
 
-  if (hourMatch) {
-    const h = parseInt(hourMatch[1], 10);
-    const colorClass = getColorClass(h, true);
-    parts.push(`<span class="${colorClass}">${h} horas</span>`);
-  }
-
-  if (minMatch) {
-    const m = parseInt(minMatch[1], 10);
-    const colorClass = getColorClass(m, false);
-    parts.push(`<span class="${colorClass}">${m} minutos</span>`);
-  }
-
-  if (parts.length === 0) {
-    // Si no detecta horas o minutos, mostrar tal cual (en color1)
-    parts.push(`<span class="color1">${horasStr}</span>`);
-  }
-
-  return parts.join(' ');
-}
-
-document.querySelectorAll('.pyramid-segment').forEach(segment => {
-  const isActive = segment.classList.contains('bg-black') && segment.classList.contains('text-white');
-  if (!isActive) return;
-
-  const textElement = segment.querySelector('span.block') || segment.querySelector('span');
-  if (!textElement) return;
-
-  let originalHTML = textElement.innerHTML;
-  let flipped = false;
-
-  textElement.style.display = 'inline-block';
-  textElement.style.transition = 'transform 0.6s';
-  textElement.style.willChange = 'transform';
-
-  segment.style.cursor = 'pointer';
-
-  segment.addEventListener('click', () => {
-    if (!flipped) {
-      textElement.style.transform = 'rotateY(90deg)';
-      setTimeout(() => {
-        // Texto en modo espejo con Duración y horas parseadas y coloreadas
-        const horasParsed = parseHoras(horasRaw);
-textElement.classList.add('block', 'w-full', 'text-sm', 'text-center'); // Quitar font-bold aquí
-textElement.style.display = 'inline-block';
-textElement.style.userSelect = 'none';
-
-textElement.innerHTML = `
-  <span class="mirror-text" style="display:inline-block;">
-    <span style="font-weight:bold;">Duración</span><br>
-    ${horasParsed}
-  </span>
-`;
-        textElement.style.transform = 'rotateY(180deg)';
-      }, 300);
-    } else {
-      textElement.style.transform = 'rotateY(90deg)';
-      setTimeout(() => {
-        textElement.innerHTML = originalHTML;
-        textElement.style.transform = 'rotateY(0deg)';
-      }, 300);
+    if (hourMatch) {
+        const h = parseInt(hourMatch[1], 10);
+        horaColor = getColorSVG(h, true);
+        horaText = `${h} horas`;
+        hasContent = true;
     }
-    flipped = !flipped;
-  });
-});
 
+    if (minMatch) {
+        const m = parseInt(minMatch[1], 10);
+        minutoColor = getColorSVG(m, false);
+        minutoText = `${m} minutos`;
+        hasContent = true;
+    }
+
+    return {
+        horaText: horaText,
+        horaColor: horaColor,
+        minutoText: minutoText,
+        minutoColor: minutoColor,
+        hasContent: hasContent
+    };
+}
+
+// --- 4. Lógica Principal del Event Listener (El bucle sobre los segmentos del DOM) ---
+document.querySelectorAll('.pyramid-segment').forEach(segment => {
+    const isActive = segment.classList.contains('bg-black') && segment.classList.contains('text-white');
+    // Si no está activo, no necesita el comportamiento de giro
+    if (!isActive) return; 
+
+    const textElement = segment.querySelector('span.block') || segment.querySelector('span');
+    if (!textElement) return;
+
+    // *** ¡¡¡AQUÍ ES DONDE SE OBTIENE EL VALOR CORRECTO PARA CADA SEGMENTO!!! ***
+    // Se lee el valor del atributo 'data-horas-valor' que se añadió en el HTML.
+    const horasRaw = segment.dataset.horasValor; 
+    
+    let originalHTML = textElement.innerHTML;
+    let flipped = false;
+
+    textElement.classList.add('pyramid-text-rotator');
+
+    segment.style.cursor = 'pointer';
+
+    segment.addEventListener('click', () => {
+        if (!flipped) {
+            textElement.classList.add('rotated');
+
+            setTimeout(() => {
+                // Usamos la función parseHorasForSVG para obtener texto y colores HEX
+                const parsedDataForSVG = parseHorasForSVG(horasRaw);
+                
+                let horasDisplay = '';
+                let horasFillColor = 'white'; 
+                
+                if (parsedDataForSVG.horaText && parsedDataForSVG.minutoText) {
+                    horasDisplay = `${parsedDataForSVG.horaText} ${parsedDataForSVG.minutoText}`;
+                    horasFillColor = parsedDataForSVG.horaColor || parsedDataForSVG.minutoColor || 'white';
+                } else if (parsedDataForSVG.horaText) {
+                    horasDisplay = parsedDataForSVG.horaText;
+                    horasFillColor = parsedDataForSVG.horaColor || 'white';
+                } else if (parsedDataForSVG.minutoText) {
+                    horasDisplay = parsedDataForSVG.minutoText;
+                    horasFillColor = parsedDataForSVG.minutoColor || 'white';
+                } else {
+                    // Fallback si no se pudo parsear o si horasRaw estaba vacío/undefined
+                    horasDisplay = horasRaw ? String(horasRaw) : 'N/A';
+                    horasFillColor = getColorSVG(0, true); 
+                }
+
+                // --- CONSOLE.LOGS DEPURACIÓN: ¡REVÍSALOS EN EL NAVEGADOR! ---
+                console.log('Horas Raw (leído del data-):', horasRaw);
+                console.log('Datos parseados para SVG:', parsedDataForSVG);
+                console.log('Texto final para mostrar en SVG:', horasDisplay);
+                console.log('Color final para SVG:', horasFillColor);
+                // --------------------------------------------------------
+
+const svgContent = `
+    <svg width="100%" height="40px" viewBox="0 0 100 40" preserveAspectRatio="xMidYMid meet">
+        <text x="50%" y="15" text-anchor="middle" font-size="14" font-weight="bold" fill="white">
+            Duración
+        </text>
+        <text x="50%" y="35" text-anchor="middle" font-size="14" fill="${horasFillColor}">
+            ${horasDisplay}
+        </text>
+    </svg>
+`;
+                textElement.innerHTML = svgContent;
+
+            }, 350);
+
+        } else {
+            textElement.classList.remove('rotated');
+
+            setTimeout(() => {
+                textElement.innerHTML = originalHTML;
+            }, 350);
+        }
+        flipped = !flipped;
+    });
+});
     
        let currentRarestTrophyIndex = 0; // Reiniciar para cada juego
 
