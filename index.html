@@ -2530,7 +2530,7 @@ const renderColumn = (items) =>
                 </div>`;
     }).join('');
 
-// Tu función formatTimeOnly (mantenida con la lógica estándar de A.M./P.M.)
+// Tu función formatTimeOnly (CORREGIDA para A.M./P.M.)
 function formatTimeOnly(dateString) {
     const [datePart, timePart] = dateString.split(' ');
     if (!timePart) return '';
@@ -2542,18 +2542,18 @@ function formatTimeOnly(dateString) {
         return '';
     }
 
-    let displayHours = hours;
+    let displayHours; // Declaramos aquí, asignamos en cada rama
     let ampm;
 
     if (hours === 0) { // Medianoche (00:00 a 00:59)
         displayHours = 12;
         ampm = 'a.m.';
     } else if (hours >= 1 && hours <= 11) { // Mañana (01:00 a 11:59)
+        displayHours = hours; // <-- ¡ESTA LÍNEA ES CLAVE! Asegura que displayHours se actualice.
         ampm = 'a.m.';
-        // displayHours ya es el valor correcto para este rango
     } else if (hours === 12) { // Mediodía (12:00 a 12:59)
+        displayHours = 12; // <-- ¡ESTA LÍNEA ES CLAVE! Asegura que displayHours se actualice.
         ampm = 'p.m.';
-        // displayHours ya es 12, que es correcto para 12 p.m.
     } else { // Tarde/Noche (13:00 a 23:59)
         displayHours = hours - 12;
         ampm = 'p.m.';
