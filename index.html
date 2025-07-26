@@ -716,11 +716,18 @@ html.dark img[src$="logroPS.png"] {
 
 .dark .pyramid-segment.bg-black {
   background-color: #000;
-  box-shadow: inset 0 1px 6px rgba(255, 255, 255, 0.235);
+  box-shadow: inset 0 1px 6px rgba(255, 255, 255, 0.035);
   will-change: box-shadow;
-  transform: translateZ(0); /* fuerza renderizado GPU */
+  transform: translateZ(0);
 }
 
+@media (max-width: 768px) {
+  .dark .pyramid-segment.bg-black {
+    box-shadow:
+      inset 0 1.5px 8px rgba(255, 255, 255, 0.1), /* sombra blanca suave */
+      inset 0 0 0 1px rgba(0, 0, 0, 0.6); /* borde negro semitransparente */
+  }
+}
 
 
 @media (max-width: 768px) {
