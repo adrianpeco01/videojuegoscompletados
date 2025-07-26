@@ -239,9 +239,21 @@ html.dark img[src$="logroPS.png"] {
 
 /* Ocultar el tooltip por defecto */
 #dynamicTooltipWrapper {
-    display: none;
-    /* Asegúrate de que no haya un 'transform' inline aquí, lo manejaremos con JS */
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  max-width: calc(100vw - 16px); /* Asegura que no se salga */
+  min-width: max-content;
+  overflow: visible;
+  pointer-events: none; /* Opcional: evita clics no deseados */
 }
+
+#dynamicTooltipContent {
+  word-break: break-word;
+  white-space: normal;
+}
+
+
 
 /* 1. Estilo general de la barra de desplazamiento (para navegadores WebKit como Chrome, Edge, Safari) */
 ::-webkit-scrollbar {
@@ -711,7 +723,7 @@ html.dark img[src$="logroPS.png"] {
 }
 
 .dark .pyramid-segment.bg-black span {
-    color: rgba(255, 255, 255, 0.80); /* blanco con 85% de opacidad */
+    color: rgba(255, 255, 255, 0.85); /* blanco con 85% de opacidad */
 }
 
 .dark .pyramid-segment.bg-black {
@@ -854,8 +866,14 @@ html.dark img[src$="logroPS.png"] {
 }
 
 .arrow-icon {
+    position: relative; /* o absolute/fixed según contexto */
+
     color: #b2b4b6;
     cursor: pointer;
+    font-size: 28px; /* Ajusta el valor a tu gusto */
+      top: -8px; /* mueve la flecha 10px hacia arriba */
+
+
 }
 
 .arrow-icon:hover {
@@ -864,11 +882,15 @@ html.dark img[src$="logroPS.png"] {
 
 /* Modo oscuro */
 .dark .arrow-icon {
-    color:  rgba(121, 120, 120, 0.85);
+    position: relative; /* o absolute/fixed según contexto */
+    color:  rgba(77, 75, 75, 0.85);
+    font-size: 28px; /* Ajusta el valor a tu gusto */
+  top: -8px; /* mueve la flecha 10px hacia arriba */
+
 }
 
 .dark .arrow-icon:hover {
-    color:  rgba(221, 217, 217, 0.85);
+    color:  rgba(99, 99, 99, 0.85);
 }
 
 h3.text-lg {
@@ -878,10 +900,10 @@ h3.text-lg {
 /* Imágenes dentro de los botones, menos opacas y con borde difuminado */
 button img {
   position: relative;
-  opacity: 0.4;
-  border-radius: 0.25rem;
+  opacity: 0.25;
+  border-radius: 0.15rem;
   z-index: 1;
-    width: 40px !important;  /* ajusta el tamaño que quieras */
+    width: 38px !important;  /* ajusta el tamaño que quieras */
   height: auto !important; /* para mantener la proporción */
 }
 
@@ -893,7 +915,7 @@ button img::before {
   left: -6px;
   right: -6px;
   bottom: -6px;
-  border-radius: 0.25rem;
+  border-radius: 0.15rem;
   filter: blur(8px);
   background: rgba(255, 255, 255, 0.3); /* color para modo claro */
   opacity: 1;
@@ -934,6 +956,19 @@ button img:hover + .arrow-icon {
 .dark button:hover .arrow-icon,
 .dark button img:hover + .arrow-icon {
     color: rgba(221, 217, 217, 0.85);
+}
+
+.touched-hover img {
+  opacity: 1 !important;
+  filter: none !important;
+}
+
+.touched-hover .arrow-icon {
+  color: #898b8d !important;
+}
+
+.dark .touched-hover .arrow-icon {
+  color: rgba(221, 217, 217, 0.85) !important;
 }
 
 
@@ -2593,115 +2628,161 @@ let isModalTransitioning = false;
             allButtonLabel.textContent = labelText;
         }
 
-    const infoButtons = document.querySelectorAll('.info-button-trigger');
-    const dynamicTooltipWrapper = document.getElementById('dynamicTooltipWrapper');
-    const tooltipMessageText = document.getElementById('tooltipMessageText');
-    const dynamicTooltipContent = document.getElementById('dynamicTooltipContent');
+const infoButtons = document.querySelectorAll('.info-button-trigger');
+const dynamicTooltipWrapper = document.getElementById('dynamicTooltipWrapper');
+const tooltipMessageText = document.getElementById('tooltipMessageText');
+const dynamicTooltipContent = document.getElementById('dynamicTooltipContent');
 
-    if (infoButtons.length > 0 && dynamicTooltipWrapper && tooltipMessageText && dynamicTooltipContent) {
-        let showTimeout;
-        let hideTimeout;
-        let isTooltipVisible = false; // Bandera para controlar el estado del tooltip
+if (infoButtons.length > 0 && dynamicTooltipWrapper && tooltipMessageText && dynamicTooltipContent) {
+    let showTimeout;
+    let hideTimeout;
+    let activeButton = null;
+    function isMobile() {
+    return window.innerWidth <= 768;
+}
 
-        infoButtons.forEach(button => {
-            button.addEventListener('mouseenter', () => {
-                if (window.innerWidth <= 768 && isTooltipVisible) {
-                    dynamicTooltipContent.setAttribute('data-state', 'closed');
-                    setTimeout(() => {
-                        dynamicTooltipWrapper.style.display = 'none';
-                        isTooltipVisible = false;
-                    }, 150);
-                }
-                // Si el tooltip ya está visible o se está mostrando, no hacer nada para evitar parpadeos
-                if (isTooltipVisible) {
-                    clearTimeout(hideTimeout); // Cancelar cualquier ocultamiento pendiente
-                    return;
-                }
 
-                clearTimeout(hideTimeout); // Cancela el temporizador de ocultar si el ratón vuelve a entrar
-                showTimeout = setTimeout(() => {
-                    const message = button.dataset.tooltipMessage;
-                    if (message) {
-                        tooltipMessageText.textContent = message;
-                    }
+    // =======================
+    // 🔹 Listener por botón
+    // =======================
+    infoButtons.forEach(button => {
+    if (isMobile()) {
+        button.addEventListener('click', () => {
+            const alreadyOpen = dynamicTooltipWrapper.style.display === 'block' && activeButton === button;
 
-                    // Establecer estado de apertura ANTES de display: block para que las animaciones de Tailwind se apliquen
-                    dynamicTooltipContent.setAttribute('data-state', 'open');
-                    dynamicTooltipWrapper.style.display = 'block'; // Mostrar el contenedor
-
-                    const buttonRect = button.getBoundingClientRect();
-                    // Obtener dimensiones del tooltip DESPUÉS de hacerlo visible
-                    const tooltipContentRect = dynamicTooltipContent.getBoundingClientRect(); // Dimensiones del contenido animado
-                    const tooltipMargin = 8;
-
-                    let topPos = buttonRect.top - tooltipContentRect.height - tooltipMargin;
-                    let leftPos = buttonRect.left + (buttonRect.width / 2) - (tooltipContentRect.width / 2);
-
-                    // Lógica para ajustar la posición si se sale de la pantalla
-                    if (topPos < 0) { // Si se sale por arriba
-                        topPos = buttonRect.bottom + tooltipMargin;
-                        dynamicTooltipContent.setAttribute('data-side', 'bottom');
-                    } else {
-                        dynamicTooltipContent.setAttribute('data-side', 'top');
-                    }
-
-                    if (leftPos < 0) { // Si se sale por la izquierda
-                        leftPos = 0;
-                    } else if (leftPos + tooltipContentRect.width > window.innerWidth) { // Si se sale por la derecha
-                        leftPos = window.innerWidth - tooltipContentRect.width;
-                    }
-
-                    // Aplicar las posiciones al wrapper
-                    dynamicTooltipWrapper.style.top = `${topPos}px`;
-                    dynamicTooltipWrapper.style.left = `${leftPos}px`;
-                    dynamicTooltipWrapper.style.transform = 'none'; // Asegurarse de que no haya transformaciones CSS que interfieran
-
-                    isTooltipVisible = true; // El tooltip está visible
-                    button.setAttribute('data-state', 'delayed-open'); // Actualiza el estado del botón
-                    button.setAttribute('aria-describedby', 'dynamicTooltipContent'); // Para accesibilidad
-                }, 50); // AJUSTADO: Ahora aparece más rápido (50ms)
-            });
-
-            button.addEventListener('mouseleave', () => {
-                clearTimeout(showTimeout); // Cancela el temporizador de mostrar si el ratón sale
-                hideTimeout = setTimeout(() => {
-                    // Primero, establece el estado de "cerrado" para que las animaciones de Tailwind se disparen
-                    dynamicTooltipContent.setAttribute('data-state', 'closed');
-
-                    // Espera un poco más para que la animación de salida termine antes de ocultar completamente
-                    // El valor debe ser igual o ligeramente mayor que la duración de tu animación data-[state=closed]
-                    setTimeout(() => {
-                        dynamicTooltipWrapper.style.display = 'none'; // Oculta el contenedor
-                        isTooltipVisible = false; // El tooltip ya no está visible
-                        button.setAttribute('data-state', 'closed'); // Restaura el estado del botón
-                        button.removeAttribute('aria-describedby');
-                    }, 150); // AJUSTADO: Probablemente 150ms sea un buen valor para fade-out-0
-                }, 50); // Pequeño retraso antes de iniciar la animación de cierre (50ms)
-            });
+            if (alreadyOpen) {
+                handleTooltipClose();
+            } else {
+                handleTooltipOpen(button);
+            }
         });
-    // Ocultar tooltip al hacer scroll en móviles
-    if (window.innerWidth <= 768) {
-        let lastScrollY = window.scrollY;
+    } else {
+        button.addEventListener('mouseenter', () => handleTooltipOpen(button));
+        button.addEventListener('mouseleave', handleTooltipClose);
+    }
+});
 
+
+    // =======================
+    // 🔹 Tap fuera del tooltip
+    // =======================
+    if (isMobile()) {
+        document.addEventListener('click', (event) => {
+            if (!activeButton || dynamicTooltipWrapper.style.display !== 'block') return;
+
+            const isClickInsideButton = activeButton.contains(event.target);
+            const isClickInsideTooltip = dynamicTooltipWrapper.contains(event.target);
+
+            if (!isClickInsideButton && !isClickInsideTooltip) {
+                handleTooltipClose();
+            }
+        });
+    }
+
+    // =======================
+    // 🔹 Scroll en móviles
+    // =======================
+    if (isMobile()) {
+        let lastScrollY = window.scrollY;
         window.addEventListener('scroll', () => {
             const scrollDelta = Math.abs(window.scrollY - lastScrollY);
-            if (scrollDelta > 8 && isTooltipVisible) {
-                dynamicTooltipContent.setAttribute('data-state', 'closed');
-                setTimeout(() => {
-                    dynamicTooltipWrapper.style.display = 'none';
-                    isTooltipVisible = false;
-                }, 150);
+            if (scrollDelta > 8 && dynamicTooltipWrapper.style.display === 'block') {
+                handleTooltipClose();
             }
             lastScrollY = window.scrollY;
         }, { passive: true });
     }
 
+    // =======================
+    // 🔹 Funciones compartidas
+    // =======================
+    function handleTooltipOpen(button) {
+        clearTimeout(hideTimeout);
+
+        const message = button.dataset.tooltipMessage;
+        if (message) {
+            tooltipMessageText.textContent = message;
+        }
+
+        dynamicTooltipContent.setAttribute('data-state', 'closed');
+        dynamicTooltipWrapper.style.display = 'none';
+
+        if (activeButton && activeButton !== button) {
+            activeButton.setAttribute('data-state', 'closed');
+            activeButton.removeAttribute('aria-describedby');
+        }
+
+        clearTimeout(showTimeout);
+        showTimeout = setTimeout(() => {
+            dynamicTooltipContent.setAttribute('data-state', 'open');
+            dynamicTooltipWrapper.style.display = 'block';
+
+            const buttonRect = button.getBoundingClientRect();
+            const tooltipContentRect = dynamicTooltipContent.getBoundingClientRect();
+            const tooltipMargin = 8;
+
+            let topPos = buttonRect.top - tooltipContentRect.height - tooltipMargin;
+            let leftPos = buttonRect.left + (buttonRect.width / 2) - (tooltipContentRect.width / 2);
+
+            if (topPos < 0) {
+                topPos = buttonRect.bottom + tooltipMargin;
+                dynamicTooltipContent.setAttribute('data-side', 'bottom');
+            } else {
+                dynamicTooltipContent.setAttribute('data-side', 'top');
+            }
+
+            // 🔧 Ajuste horizontal para evitar corte en el borde
+            if (leftPos < 8) {
+    leftPos = 8;
+    dynamicTooltipContent.setAttribute('data-align', 'start');
+} else if (leftPos + tooltipContentRect.width > window.innerWidth - 8) {
+    leftPos = window.innerWidth - tooltipContentRect.width - 8;
+    dynamicTooltipContent.setAttribute('data-align', 'end');
+} else {
+    dynamicTooltipContent.setAttribute('data-align', 'center');
+}
+
+
+            dynamicTooltipWrapper.style.top = `${topPos}px`;
+            dynamicTooltipWrapper.style.left = `${leftPos}px`;
+            dynamicTooltipWrapper.style.transform = 'none';
+
+            button.setAttribute('data-state', 'delayed-open');
+            button.setAttribute('aria-describedby', 'dynamicTooltipContent');
+            activeButton = button;
+        }, 50);
+    }
+
+    function handleTooltipClose() {
+        clearTimeout(showTimeout);
+        hideTimeout = setTimeout(() => {
+            dynamicTooltipContent.setAttribute('data-state', 'closed');
+            setTimeout(() => {
+                dynamicTooltipWrapper.style.display = 'none';
+                if (activeButton) {
+                    activeButton.setAttribute('data-state', 'closed');
+                    activeButton.removeAttribute('aria-describedby');
+                    activeButton = null;
+                }
+            }, 150);
+        }, 50);
+    }
+
+// 🔧 Nuevo: cierre inmediato (sin animación)
+function forceTooltipClose() {
+    dynamicTooltipContent.setAttribute('data-state', 'closed');
+    dynamicTooltipWrapper.style.display = 'none';
+    if (activeButton) {
+        activeButton.setAttribute('data-state', 'closed');
+        activeButton.removeAttribute('aria-describedby');
+        activeButton = null;
+    }
+}
+
 } else {
     console.error("Error: Elementos del tooltip no encontrados al iniciar.");
-    console.error("dynamicTooltipWrapper:", dynamicTooltipWrapper);
-    console.error("tooltipMessageText:", tooltipMessageText);
-    console.error("dynamicTooltipContent:", dynamicTooltipContent);
 }
+
      
     // Obtener referencias a los elementos del DOM una vez que el documento esté cargado
     modal = document.getElementById("modal");
@@ -3372,7 +3453,7 @@ const isDarkMode = document.documentElement.classList.contains('dark');
 
 const svgContent = `
     <svg width="120px" height="40px" viewBox="0 0 120 40" preserveAspectRatio="xMidYMid meet">
-        <text x="50%" y="15" text-anchor="middle" font-size="14" font-weight="bold" fill="${isDarkMode ? 'rgba(255,255,255,0.80)' : 'white'}">
+        <text x="50%" y="15" text-anchor="middle" font-size="14" font-weight="bold" fill="${isDarkMode ? 'rgba(255,255,255,0.85)' : 'white'}">
             Duración
         </text>
         <text x="50%" y="35" text-anchor="middle" font-size="14" fill="${horasFillColor}">
@@ -3407,6 +3488,37 @@ const svgContent = `
     const trophyDescription = document.getElementById('trophyDescription');
     const smallPrevTrophyImage = document.getElementById('smallPrevTrophyImage');
     const smallNextTrophyImage = document.getElementById('smallNextTrophyImage');
+
+function setTrophyContentInstantly() {
+    const trophy = rarestTrophies[currentRarestTrophyIndex];
+
+    if (trophyImage) trophyImage.src = trophy.image;
+    if (trophyName) trophyName.innerText = trophy.name;
+    if (trophyDescription) trophyDescription.innerText = trophy.description || '';
+
+    if (smallPrevTrophyImage) {
+        if (rarestTrophies.length > 1) {
+            const prevIndex = (currentRarestTrophyIndex - 1 + rarestTrophies.length) % rarestTrophies.length;
+            smallPrevTrophyImage.src = rarestTrophies[prevIndex].image;
+            smallPrevTrophyImage.classList.remove('opacity-0', 'scale-0', 'hidden');
+            smallPrevTrophyImage.classList.add('opacity-100', 'scale-100');
+        } else {
+            smallPrevTrophyImage.classList.add('opacity-0', 'scale-0', 'hidden');
+        }
+    }
+
+    if (smallNextTrophyImage) {
+        if (rarestTrophies.length > 1) {
+            const nextIndex = (currentRarestTrophyIndex + 1) % rarestTrophies.length;
+            smallNextTrophyImage.src = rarestTrophies[nextIndex].image;
+            smallNextTrophyImage.classList.remove('opacity-0', 'scale-0', 'hidden');
+            smallNextTrophyImage.classList.add('opacity-100', 'scale-100');
+        } else {
+            smallNextTrophyImage.classList.add('opacity-0', 'scale-0', 'hidden');
+        }
+    }
+}
+
 
     // Función para actualizar el trofeo mostrado y los trofeos pequeños
 function updateTrophyDisplay() {
@@ -3495,8 +3607,52 @@ function updateTrophyDisplay() {
         };
     }
 
-    // Inicializar la visualización del trofeo al abrir el modal
-    updateTrophyDisplay();
+    setTrophyContentInstantly(); // Cargar el contenido sin animaciones
+mainTrophyDisplay.classList.add('rotated'); // Forzar el giro inicial
+setTimeout(() => {
+    mainTrophyDisplay.classList.remove('rotated');
+}, 250);
+
+
+// Aplicar efecto visual "hover" solo en móviles (pantallas táctiles)
+// Aplicar efecto visual "hover" solo en móviles (pantallas táctiles)
+if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+  [prevTrophyBtn, nextTrophyBtn].forEach(btn => {
+    if (!btn) return;
+
+    btn.addEventListener('touchstart', () => {
+      btn.classList.add('touched-hover');
+
+      setTimeout(() => {
+        btn.classList.remove('touched-hover');
+
+        // Restaurar imagen y flecha (mobile only)
+        const img = btn.querySelector('img');
+        const arrow = btn.querySelector('.arrow-icon');
+
+        if (img) {
+          img.style.opacity = '0.25';
+          img.style.filter = '';
+        }
+
+        if (arrow) {
+          arrow.style.color =
+            document.documentElement.classList.contains('dark')
+              ? 'rgba(77, 75, 75, 0.85)'  // color actualizado aquí
+              : '#b2b4b6';
+        }
+      }, 550);
+    });
+
+    // Prevenir "quedarse enfocado"
+    ['touchend', 'click'].forEach(eventType => {
+      btn.addEventListener(eventType, () => {
+        btn.blur();
+      });
+    });
+  });
+}
+
 
     // 1. Mostrar el modal con display: flex, pero con opacidad 0 inicialmente.
     modal.style.display = 'flex';
@@ -3513,6 +3669,23 @@ function updateTrophyDisplay() {
         });
     });
 }
+
+[prevTrophyBtn, nextTrophyBtn].forEach(btn => {
+  btn.addEventListener('touchstart', () => {
+    btn.classList.add('touched-hover');
+
+    setTimeout(() => {
+      btn.classList.remove('touched-hover');
+    }, 200); // 200ms de efecto visual
+  });
+
+  // Opcional: quitar el foco de todas formas
+  ['touchend', 'click'].forEach(eventType => {
+    btn.addEventListener(eventType, () => {
+      btn.blur();
+    });
+  });
+});
 
 
 // Función para cerrar el modal
