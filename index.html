@@ -711,13 +711,15 @@ html.dark img[src$="logroPS.png"] {
 }
 
 .dark .pyramid-segment.bg-black span {
-    color: rgba(255, 255, 255, 0.90); /* blanco con 85% de opacidad */
+    color: rgba(255, 255, 255, 0.80); /* blanco con 85% de opacidad */
 }
 
 .dark .pyramid-segment.bg-black {
-    background-color: #000; /* mantiene el fondo negro explícito */
-    box-shadow: inset 0 1px 6px rgba(255, 255, 255, 0.041); /* misma sombra que los demás */
+  background-color: #000;
+  box-shadow: inset 0 1px 6px rgba(255, 255, 255, 0.045);
 }
+
+
 
 @media (max-width: 768px) {
     .extra-time {
@@ -3333,7 +3335,7 @@ const isDarkMode = document.documentElement.classList.contains('dark');
 
 const svgContent = `
     <svg width="120px" height="40px" viewBox="0 0 120 40" preserveAspectRatio="xMidYMid meet">
-        <text x="50%" y="15" text-anchor="middle" font-size="14" font-weight="bold" fill="${isDarkMode ? 'rgba(255,255,255,0.90)' : 'white'}">
+        <text x="50%" y="15" text-anchor="middle" font-size="14" font-weight="bold" fill="${isDarkMode ? 'rgba(255,255,255,0.80)' : 'white'}">
             Duración
         </text>
         <text x="50%" y="35" text-anchor="middle" font-size="14" fill="${horasFillColor}">
