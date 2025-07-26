@@ -2614,9 +2614,24 @@ let isModalTransitioning = false;
                 }
                 // Si el tooltip ya está visible o se está mostrando, no hacer nada para evitar parpadeos
                 if (isTooltipVisible) {
-                    clearTimeout(hideTimeout); // Cancelar cualquier ocultamiento pendiente
-                    return;
-                }
+    clearTimeout(showTimeout);  // Cancela apertura previa si la hubiera
+
+    // Cerrar el tooltip actual con animación
+    dynamicTooltipContent.setAttribute('data-state', 'closed');
+
+    // Espera que termine la animación antes de ocultar y abrir nuevo tooltip
+    setTimeout(() => {
+        dynamicTooltipWrapper.style.display = 'none';
+        isTooltipVisible = false;
+
+        // Aquí disparar la apertura del nuevo tooltip manualmente llamando a la función que tengas o con un evento
+        openTooltip(button); // Necesitas definir openTooltip para abrir tooltip (explico abajo)
+
+    }, 150);
+
+    return;  // Salimos para evitar que se siga con el resto del código (abrir tooltip)
+}
+
 
                 clearTimeout(hideTimeout); // Cancela el temporizador de ocultar si el ratón vuelve a entrar
                 showTimeout = setTimeout(() => {
