@@ -209,6 +209,10 @@ html.dark body > div.relative.flex.min-h-svh.flex-col {
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
+#sort-menu {
+      width: 198px !important; /* o el ancho que quieras */
+}
+
 .dark #platform-menu,
 .dark #all-menu,
 .dark #sort-menu {
@@ -971,6 +975,90 @@ button img:hover + .arrow-icon {
   color: rgba(221, 217, 217, 0.85) !important;
 }
 
+  /* Contenedor */
+  #pagination-container {
+    display: flex;
+    justify-content: center;
+    margin: 1rem 0;
+    gap: 0.25rem;
+  }
+
+  /* Botones normales */
+  #pagination-container a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 31.7812px;
+    height: 36px;
+    line-height: 20px;
+    padding: 12px;
+    text-decoration: none;
+    color: rgb(2, 8, 23);
+    background-color: transparent;
+    border: 0 solid rgb(226, 232, 240);
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: color 0.15s cubic-bezier(0.4,0,0.2,1),
+                background-color 0.15s cubic-bezier(0.4,0,0.2,1),
+                border-color 0.15s cubic-bezier(0.4,0,0.2,1),
+                box-shadow 0.15s cubic-bezier(0.4,0,0.2,1);
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+  }
+
+  /* Hover suave */
+  #pagination-container a:hover {
+    background-color: rgba(226, 232, 240, 0.35); /* menos opaco */
+  }
+
+  /* Página activa / seleccionada (modo light) */
+  #pagination-container a.active {
+    background-color: transparent;
+    border: 1px solid rgb(230, 230, 230); /* gris más suave */
+    pointer-events: none;
+    color: rgb(2, 8, 23);
+  }
+
+  /* Puntos suspensivos */
+  #pagination-container span.ellipsis {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 31.7812px;
+    height: 36px;
+    line-height: 20px;
+    color: rgb(2, 8, 23);
+    font-size: 14px;
+    font-weight: 500;
+    font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    white-space: nowrap;
+  }
+
+  /* --- MODO DARK --- */
+  html.dark #pagination-container a {
+    color: rgb(200, 200, 200) !important;
+    background-color: transparent !important;
+  }
+
+  html.dark #pagination-container a.active {
+    background-color: transparent !important; 
+    border: 1px solid rgba(30, 41, 59, 0.603) !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.25) !important;
+    color: #ffffff !important;
+  }
+
+  /* Hover modo oscuro con menor opacidad */
+  html.dark #pagination-container a:hover {
+    background-color: rgba(255, 255, 255, 0.02) !important; /* menos opaco */
+  }
+
+  html.dark #pagination-container span.ellipsis {
+    color: rgb(200, 200, 200) !important;
+  }
 
 </style>
 
@@ -1029,14 +1117,26 @@ button img:hover + .arrow-icon {
           <path d="m3 8 4-4 4 4"></path>
           <path d="M7 4v16"></path>
         </svg>
-        <div class="hidden lg:block" id="sort-button-label">Last Updated</div>
+        <div class="hidden lg:block" id="sort-button-label">Últimos completados</div>
       </button>
 
       <!-- Menú desplegable que sale debajo -->
-      <div id="sort-menu" class="hidden absolute right-0 mt-2 w-36 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50 border border-gray-200" style="background-color: white !important;">
+      <div id="sort-menu" class="hidden absolute right-0 mt-2 w-52 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50 border border-gray-200" style="background-color: white !important;">
         <div class="py-1">
-          <div id="option-lastupdated" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Last Updated</div>
-          <div id="option-alphabetical" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Alphabetical</div>
+          <div id="option-lastupdated" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Últimos completados</div>
+          <div id="option-firstupdated" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Primeros completados</div>
+          <div id="option-alphabeticalA" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Alfabético (A-Z)</div>
+          <div id="option-alphabeticalZ" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Alfabético (Z-A)</div>
+          <div id="option-masdifisi" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Mayor dificultad</div>
+          <div id="option-masfasi" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Menor dificultad</div>
+          <div id="option-maslogros" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Más logros</div>
+          <div id="option-menoslogros" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Menos logros</div>
+          <div id="option-masraro" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Más raros</div>
+          <div id="option-mascomun" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Más comunes</div>
+          <div id="option-masduracion" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Mayor duración</div>
+          <div id="option-menosduracion" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Menor duración</div>
+          <div id="option-mastiempo" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Más tiempo de juego</div>
+          <div id="option-menostiempo" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Menos tiempo de juego</div>
         </div>
     </div>
     </div>
@@ -1056,7 +1156,7 @@ button img:hover + .arrow-icon {
       <path d="M7 12h10"></path>
       <path d="M10 18h4"></path>
     </svg>
-    <div class="hidden lg:block" id="all-button-label">All</div>
+    <div class="hidden lg:block" id="all-button-label">Todo</div>
   </button>
 
   <!-- Menú desplegable que sale debajo para All -->
@@ -2406,7 +2506,7 @@ button img:hover + .arrow-icon {
     <span data-game-field="date-started">29-04-2021 19:44</span>
     <span data-game-field="date-finished">15-10-2024 19:51</span>
     <span data-game-field="rarity">0.88%</span>
-    <span data-game-field="horas">29h</span>
+    <span data-game-field="horas">35h</span>
     <span data-game-field="content">28 + 🧩 2 trofeos</span>
     <span data-game-field="rarest-trophy-name1">Gran maestro de la magia</span>
      <span data-game-field="rarest-trophy-image1">https://m.exophase.com/psn/awards/s/1jb850.png?a01f2799d00212556d716d90ba3f06a3</span>
@@ -2788,7 +2888,12 @@ button img:hover + .arrow-icon {
     <span data-game-field="link-steam"></span>
 </div></a>
 
-</div></div></div></div></div></main></div><link rel="preload" as="image" href="https://static-resource.np.community.playstation.net/avatar_xl/WWS_A/A2103_xl.png" fetchpriority="high"><next-route-announcer style="position: absolute;"><template shadowrootmode="open"><div aria-live="assertive" id="__next-route-announcer__" role="alert" style="position: absolute; border: 0px; height: 1px; margin: -1px; padding: 0px; width: 1px; clip: rect(0px, 0px, 0px, 0px); overflow: hidden; white-space: nowrap; overflow-wrap: normal;">adricollantex • Platinum Hunt</div></template></next-route-announcer>
+</div>
+
+<div id="pagination-container"></div>
+
+
+</div></div></div></div></main></div><link rel="preload" as="image" href="https://static-resource.np.community.playstation.net/avatar_xl/WWS_A/A2103_xl.png" fetchpriority="high"><next-route-announcer style="position: absolute;"><template shadowrootmode="open"><div aria-live="assertive" id="__next-route-announcer__" role="alert" style="position: absolute; border: 0px; height: 1px; margin: -1px; padding: 0px; width: 1px; clip: rect(0px, 0px, 0px, 0px); overflow: hidden; white-space: nowrap; overflow-wrap: normal;">adricollantex • Platinum Hunt</div></template></next-route-announcer>
 <script>
   // --- DECLARACIONES DE VARIABLES GLOBALES/SEMI-GLOBALES ---
     // (Variables que se usan a lo largo de varias funciones)
@@ -2811,6 +2916,148 @@ let isModalTransitioning = false;
     // El punto de entrada principal para toda la lógica DOM interactiva
     document.addEventListener('DOMContentLoaded', () => {
 
+// --- PAGINACIÓN ---
+const gamesContainer = document.getElementById('games-container');
+const paginationContainer = document.getElementById('pagination-container');
+
+const games = Array.from(gamesContainer.children); // Todos los juegos
+let filteredGames = [...games]; // Copia inicial de todos los juegos
+const itemsPerPage = 36;
+
+let currentPage = 1;
+function getTotalPages() {
+  return Math.ceil(filteredGames.length / itemsPerPage);
+}
+
+
+// Leer la página de la URL al cargar
+const urlPage = parseInt(location.hash.replace('#page=', ''));
+if (!isNaN(urlPage) && urlPage >= 1 && urlPage <= getTotalPages()) {
+  currentPage = urlPage;
+}
+
+// Función para mostrar los juegos de la página
+function showPage(page) {
+  currentPage = page;
+  location.hash = `page=${page}`;
+
+  // Ocultar todos los juegos
+  games.forEach(g => g.style.display = 'none');
+
+  // Mostrar solo los juegos filtrados de esta página
+  const start = (page - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+  filteredGames.slice(start, end).forEach(g => g.style.display = 'block');
+
+  renderPagination();
+}
+
+// Función para renderizar los botones
+function renderPagination() {
+  paginationContainer.innerHTML = '';
+
+  const totalPages = getTotalPages(); // 🔹 Calculamos dinámicamente el total
+
+  const createPageLink = (page) => {
+    const a = document.createElement('a');
+    a.href = `#page=${page}`;
+    a.textContent = page;
+    if (page === currentPage) a.classList.add('active');
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      showPage(page);
+    });
+    return a;
+  };
+
+    const createEllipsis = () => {
+    const span = document.createElement('span');
+    span.textContent = '...';
+    span.classList.add('ellipsis');
+    return span;
+  };
+
+  let pagesToShow = [];
+
+  if (totalPages <= 5) {
+    // Si hay 5 o menos páginas, mostrar todas
+    for (let i = 1; i <= totalPages; i++) pagesToShow.push(i);
+  } else {
+    // Para más de 5 páginas
+    if (currentPage <= 2) {
+      // Página 1 o 2
+      pagesToShow = [1, 2, 3, createEllipsis(), totalPages];
+    } else if (currentPage >= totalPages - 1) {
+      // Últimas dos páginas
+      pagesToShow = [];
+      for (let i = totalPages - 2; i <= totalPages; i++) pagesToShow.push(i);
+    } else {
+      // Páginas intermedias → 3 centradas en currentPage
+      pagesToShow = [currentPage - 1, currentPage, currentPage + 1, createEllipsis(), totalPages];
+    }
+  }
+
+  // Renderizar los botones
+  pagesToShow.forEach(p => {
+    if (typeof p === 'number') {
+      paginationContainer.appendChild(createPageLink(p));
+    } else {
+      paginationContainer.appendChild(p); // Ellipsis
+    }
+  });
+}
+
+// Mostrar la página inicial
+showPage(currentPage);
+
+function applyFiltersAndSort() {
+    // 🔹 Empezamos con todos los juegos
+    filteredGames = [...games];
+
+    // --- FILTRO DE BÚSQUEDA ---
+    const searchValue = searchInput ? searchInput.value.toLowerCase() : '';
+    if (searchValue) {
+        filteredGames = filteredGames.filter(g =>
+            g.textContent.toLowerCase().includes(searchValue)
+        );
+    }
+
+    // --- FILTRO DE TIPO ---
+    if (selectedTypes.size > 0) {
+        filteredGames = filteredGames.filter(g => selectedTypes.has(g.dataset.type));
+    }
+
+    // --- FILTRO DE PLATAFORMA ---
+    if (selectedPlatforms.size > 0) {
+        filteredGames = filteredGames.filter(g => selectedPlatforms.has(g.dataset.platform));
+    }
+
+    // --- FILTRO DE ORDEN ---
+    const activeSortButton = document.querySelector('.sort-menu .active');
+    if (activeSortButton) {
+        const order = activeSortButton.dataset.sort;
+        if (order === 'az') sortGamesAlphabetically(true);
+        else if (order === 'za') sortGamesAlphabetically(false);
+        else if (order === 'last') sortGamesByDate(true);
+        else if (order === 'first') sortGamesByDate(false);
+        else if (order === 'masdifisi') sortGamesByDifficulty(true);
+        else if (order === 'masfasi') sortGamesByDifficulty(false);
+        else if (order === 'maslogros') sortGamesByAchievements(true);
+        else if (order === 'menoslogros') sortGamesByAchievements(false);
+        else if (order === 'masraro') sortGamesByRarity(true);
+        else if (order === 'mascomun') sortGamesByRarity(false);
+
+
+    }
+
+    // --- 🔹 Mostrar página 1 y actualizar paginación
+    currentPage = 1;
+    location.hash = 'page=1';
+    showPage(currentPage);
+}
+
+
+
         // --- REFERENCIAS A ELEMENTOS DEL DOM ---
         // (Obtener los elementos una vez que el DOM está cargado)
         const searchInput = document.querySelector('input[placeholder="Buscar videojuegos..."]');
@@ -2826,8 +3073,21 @@ let isModalTransitioning = false;
         sortButton = document.getElementById('sort-button');
         sortMenu = document.getElementById('sort-menu');
         sortButtonLabel = document.getElementById('sort-button-label');
-        optionAlphabetical = document.getElementById('option-alphabetical');
+        optionAlphabetical = document.getElementById('option-alphabeticalA');
         optionLastUpdated = document.getElementById('option-lastupdated');
+        optionAlphabeticalZ = document.getElementById('option-alphabeticalZ');
+        optionfirstUpdated = document.getElementById('option-firstupdated');
+        const optionMasDifisi = document.getElementById('option-masdifisi');
+        const optionMasFasi = document.getElementById('option-masfasi');
+        const optionMasLogros = document.getElementById('option-maslogros');
+        const optionMenosLogros = document.getElementById('option-menoslogros');
+        const optionMasRaro = document.getElementById('option-masraro');
+        const optionMasComun = document.getElementById('option-mascomun');
+        const optionMasDuracion = document.getElementById('option-masduracion');
+        const optionMenosDuracion = document.getElementById('option-menosduracion');
+        const optionMasTiempo = document.getElementById('option-mastiempo');
+        const optionMenosTiempo = document.getElementById('option-menostiempo')
+
 
         allButton = document.getElementById('all-button');
         allMenu = document.getElementById('all-menu');
@@ -2939,23 +3199,47 @@ let isModalTransitioning = false;
 
    // --- LÓGICA DE BÚSQUEDA ---
         if (searchInput && gameCardsContainer) {
-            searchInput.addEventListener('input', function() {
-                const filter = searchInput.value.toLowerCase();
+    searchInput.addEventListener('input', function() {
+        const filter = searchInput.value.toLowerCase();
 
-                gameCards().forEach(card => {
-                    const img = card.querySelector('img');
-                    const altText = img ? img.alt.toLowerCase() : '';
+        if (filter) {
+            paginationContainer.style.display = 'none'; // ocultar paginación mientras se escribe
 
-                    if (altText.includes(filter)) {
-                        card.style.display = 'block';
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
+            filteredGames.forEach(card => {
+                const titleDiv = card.querySelector('div[title]');
+                const gameTitle = titleDiv ? titleDiv.getAttribute('title').toLowerCase() : '';
+                const matchesSearch = gameTitle.includes(filter);
+
+                const matchesType = selectedTypes.size === 0 || selectedTypes.has(card.id);
+                const matchesPlatform = selectedPlatforms.size === 0 || Array.from(card.querySelectorAll('svg')).some(svg => selectedPlatforms.has(svg.id));
+
+                card.style.display = (matchesSearch && matchesType && matchesPlatform) ? 'block' : 'none';
             });
         } else {
-            console.warn("Advertencia: Elementos de búsqueda (input o games-container) no encontrados.");
+            // Restaurar filtros y paginación al borrar búsqueda
+            paginationContainer.style.display = 'flex';
+            currentPage = 1;
+            applyFiltersAndSort(); // aplica filtros activos y orden
         }
+    });
+}
+
+
+
+function getGameData(gameId) {
+    const gameDiv = document.getElementById(gameId);
+    if (!gameDiv) return null;
+
+    const dataSpans = gameDiv.querySelectorAll('[data-game-field]');
+    const gameData = {};
+
+    dataSpans.forEach(span => {
+        const key = span.getAttribute('data-game-field');
+        gameData[key] = span.textContent.trim();
+    });
+
+    return gameData;
+}
 
         // --- LÓGICA DE ORDENACIÓN ---
         if (sortButton && sortMenu && sortButtonLabel && optionAlphabetical && optionLastUpdated) {
@@ -2968,19 +3252,135 @@ let isModalTransitioning = false;
 
             optionAlphabetical.addEventListener('click', (e) => {
                 e.stopPropagation();
-                sortButtonLabel.textContent = 'Alphabetical';
+                sortButtonLabel.textContent = 'Alfabético (A-Z)';
                 sortMenu.classList.add('hidden');
-                sortGamesAlphabetically();
-                selectOption('sort-menu', 'option-alphabetical');
+                sortGamesAlphabetically(true); // A-Z
+                selectOption('sort-menu', 'option-alphabeticalA');
+            });
+
+            optionAlphabeticalZ.addEventListener('click', (e) => {
+                e.stopPropagation();
+                sortButtonLabel.textContent = 'Alfabético (Z-A)';
+                sortMenu.classList.add('hidden');
+                sortGamesAlphabetically(false); // Z-A
+                selectOption('sort-menu', 'option-alphabeticalZ');
             });
 
             optionLastUpdated.addEventListener('click', (e) => {
                 e.stopPropagation();
-                sortButtonLabel.textContent = 'Last Updated';
+                sortButtonLabel.textContent = 'Últimos completados';
                 sortMenu.classList.add('hidden');
-                restoreOriginalOrder(); // Ahora restauramos el orden original sin recargar la página
+                sortGamesByDate(true); // Más reciente primero
                 selectOption('sort-menu', 'option-lastupdated');
             });
+
+            optionfirstUpdated.addEventListener('click', (e) => {
+                e.stopPropagation();
+                sortButtonLabel.textContent = 'Primero completados';
+                sortMenu.classList.add('hidden');
+                sortGamesByDate(false); // Más antiguo primero
+                selectOption('sort-menu', 'option-firstupdated');
+            });
+
+            if(optionMasDifisi){
+                optionMasDifisi.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    sortButtonLabel.textContent = 'Mayor dificultad';
+                    sortGamesByDifficulty(true); // Mayor dificultad primero
+                    selectOption('sort-menu', 'option-masdifisi'); // 🔹 Marcar activo
+                    closeMenusExcept(null); // 🔹 Cierra todos los menús
+                });
+            }
+
+            if(optionMasFasi){
+                optionMasFasi.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    sortButtonLabel.textContent = 'Menor dificultad';
+                    sortGamesByDifficulty(false); // Menor dificultad primero
+                    selectOption('sort-menu', 'option-masfasi');
+                    closeMenusExcept(null); // 🔹 Cierra todos los menús
+                });
+            }
+
+            if(optionMasLogros){
+                optionMasLogros.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    sortButtonLabel.textContent = 'Más logros';
+                    sortGamesByAchievements(true); // más logros primero
+                    selectOption('sort-menu', 'option-maslogros');
+                    closeMenusExcept(null); // 🔹 Cierra todos los menús
+                });
+            }
+
+            if(optionMenosLogros){
+                optionMenosLogros.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    sortButtonLabel.textContent = 'Menos logros';
+                    sortGamesByAchievements(false); // menos logros primero
+                    selectOption('sort-menu', 'option-menoslogros');
+                    closeMenusExcept(null); // 🔹 Cierra todos los menús
+                });
+            }
+
+            if(optionMasRaro){
+                optionMasRaro.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    sortButtonLabel.textContent = 'Más raros';
+                    sortGamesByRarity(true); // más raros primero
+                    selectOption('sort-menu', 'option-masraro');
+                    closeMenusExcept(null); // 🔹 Cierra todos los menús
+                });
+            }
+
+            if(optionMasComun){
+                optionMasComun.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    sortButtonLabel.textContent = 'Más comunes';
+                    sortGamesByRarity(false); // más comunes primero
+                    selectOption('sort-menu', 'option-mascomun');
+                    closeMenusExcept(null); // 🔹 Cierra todos los menús
+                });
+            }
+
+            if (optionMasDuracion) {
+                optionMasDuracion.addEventListener('click', e => {
+                    e.stopPropagation();
+                    sortButtonLabel.textContent = 'Mayor duración';
+                    sortMenu.classList.add('hidden');
+                    sortGamesByDuration(true);
+                    selectOption('sort-menu', 'option-masduracion');
+                });
+            }
+
+            if (optionMenosDuracion) {
+                optionMenosDuracion.addEventListener('click', e => {
+                    e.stopPropagation();
+                    sortButtonLabel.textContent = 'Menor duración';
+                    sortMenu.classList.add('hidden');
+                    sortGamesByDuration(false);
+                    selectOption('sort-menu', 'option-menosduracion');
+                });
+            }
+
+if (optionMasTiempo) {
+    optionMasTiempo.addEventListener('click', (e) => {
+        e.stopPropagation();
+        sortButtonLabel.textContent = 'Más tiempo de juego';
+        sortMenu.classList.add('hidden');
+        sortGamesByPlaytime(true); // más minutos primero
+        selectOption('sort-menu', 'option-mastiempo');
+    });
+}
+
+if (optionMenosTiempo) {
+    optionMenosTiempo.addEventListener('click', (e) => {
+        e.stopPropagation();
+        sortButtonLabel.textContent = 'Menos tiempo de juego';
+        sortMenu.classList.add('hidden');
+        sortGamesByPlaytime(false); // menos minutos primero
+        selectOption('sort-menu', 'option-menostiempo');
+    });
+}
 
             // Cerrar menú de ordenación al clicar fuera
             document.addEventListener('click', (e) => {
@@ -2989,29 +3389,244 @@ let isModalTransitioning = false;
                 }
             });
 
-            function sortGamesAlphabetically() {
-                const cardsArray = Array.from(gameCards());
+// --- Marcar "Últimos completados" por defecto ---
+selectOption('sort-menu', 'option-lastupdated');
+sortButtonLabel.textContent = 'Últimos completados';
 
-                cardsArray.sort((a, b) => {
-                    const imgA = a.querySelector('img');
-                    const imgB = b.querySelector('img');
-                    const altA = imgA ? imgA.alt.toLowerCase() : '';
-                    const altB = imgB ? imgB.alt.toLowerCase() : '';
-                    return altA.localeCompare(altB);
-                });
+function sortGamesAlphabetically(ascending = true) {
+    filteredGames.sort((a, b) => {
+        const idA = a.getAttribute('onclick')?.match(/'([^']+)'/)?.[1];
+        const idB = b.getAttribute('onclick')?.match(/'([^']+)'/)?.[1];
 
-                gameCardsContainer.innerHTML = '';
-                cardsArray.forEach(card => gameCardsContainer.appendChild(card));
-            }
+        const titleA = getGameData(idA)?.title?.toLowerCase() || '';
+        const titleB = getGameData(idB)?.title?.toLowerCase() || '';
 
-            // Función para restaurar el orden original sin recargar la página
-            function restoreOriginalOrder() {
-                gameCardsContainer.innerHTML = ''; // Borrar el contenedor
-                originalCardsOrder.forEach(card => gameCardsContainer.appendChild(card)); // Volver a poner las cartas en el orden original
-            }
+        return ascending ? titleA.localeCompare(titleB) : titleB.localeCompare(titleA);
+    });
+
+    // 🔹 Reordenar el DOM completo
+    gamesContainer.innerHTML = '';
+    filteredGames.forEach(g => gamesContainer.appendChild(g));
+
+    showPage(1);
+}
+
+
+function sortGamesByDate(descending = true) {
+    filteredGames.sort((a, b) => {
+        const idA = a.getAttribute('onclick')?.match(/'([^']+)'/)?.[1];
+        const idB = b.getAttribute('onclick')?.match(/'([^']+)'/)?.[1];
+
+        const dateA = getGameData(idA)?.['date-finished'] || '';
+        const dateB = getGameData(idB)?.['date-finished'] || '';
+
+        const parseDate = str => {
+            const match = str.match(/^(\d{2})-(\d{2})-(\d{4})(?:\s+(\d{1,2}):(\d{2}))?/);
+            if (!match) return 0;
+            const [, d, m, y, h = 0, min = 0] = match.map(Number);
+            return new Date(y, m - 1, d, h, min).getTime();
+        };
+
+        const diff = parseDate(dateA) - parseDate(dateB);
+        return descending ? -diff : diff;
+    });
+
+    // 🔹 Reordenar el DOM completo
+    gamesContainer.innerHTML = '';
+    filteredGames.forEach(g => gamesContainer.appendChild(g));
+
+    showPage(1);
+}
+
+
+            // Restaurar orden original
+function restoreOriginalOrder() {
+    // Filtra según los filtros actuales si quieres mantenerlos activos
+    filteredGames = [...games]; // copia completa
+    showPage(1);
+}
         } else {
             console.warn("Advertencia: Elementos de ordenación no encontrados.");
         }
+
+function sortGamesByDifficulty(descending = true) {
+    filteredGames.sort((a, b) => {
+        const idA = a.getAttribute('onclick')?.match(/'([^']+)'/)?.[1];
+        const idB = b.getAttribute('onclick')?.match(/'([^']+)'/)?.[1];
+
+        const dataA = getGameData(idA) || {};
+        const dataB = getGameData(idB) || {};
+
+        // 1️⃣ dificultad: sacar número antes de "/5"
+        const diffA = parseFloat(dataA.dificultad?.match(/(\d+)\/5/)?.[1] || 0);
+        const diffB = parseFloat(dataB.dificultad?.match(/(\d+)\/5/)?.[1] || 0);
+
+        if (diffA !== diffB) return descending ? diffB - diffA : diffA - diffB;
+
+        // 2️⃣ horas: sacar número antes de "h"
+        const hoursA = parseFloat(dataA.horas?.match(/(\d+)\s*h/)?.[1] || 0);
+        const hoursB = parseFloat(dataB.horas?.match(/(\d+)\s*h/)?.[1] || 0);
+
+        if (hoursA !== hoursB) return descending ? hoursB - hoursA : hoursA - hoursB;
+
+        // 3️⃣ rarity: número sin %
+        const rarityA = parseFloat(dataA.rarity?.replace('%','')) || 0;
+        const rarityB = parseFloat(dataB.rarity?.replace('%','')) || 0;
+
+        return descending ? rarityA - rarityB : rarityB - rarityA;
+    });
+
+    // 🔹 Reordenar el DOM
+    gamesContainer.innerHTML = '';
+    filteredGames.forEach(g => gamesContainer.appendChild(g));
+
+    showPage(1);
+}
+
+function sortGamesByAchievements(descending = true) {
+    filteredGames.sort((a, b) => {
+        const idA = a.getAttribute('onclick')?.match(/'([^']+)'/)?.[1];
+        const idB = b.getAttribute('onclick')?.match(/'([^']+)'/)?.[1];
+
+        const dataA = getGameData(idA) || {};
+        const dataB = getGameData(idB) || {};
+
+        // 1️⃣ content: extraer todos los números y sumarlos
+        const sumNumbers = str => {
+            const matches = str?.match(/\d+/g) || [];
+            return matches.reduce((acc, n) => acc + Number(n), 0);
+        };
+
+        const achA = sumNumbers(dataA.content);
+        const achB = sumNumbers(dataB.content);
+
+        if (achA !== achB) return descending ? achB - achA : achA - achB;
+
+        // 2️⃣ rarity: desempate
+        const rarityA = parseFloat(dataA.rarity?.replace('%','')) || 0;
+        const rarityB = parseFloat(dataB.rarity?.replace('%','')) || 0;
+
+        return descending ? rarityA - rarityB : rarityB - rarityA;
+    });
+
+    // 🔹 Reordenar el DOM completo
+    gamesContainer.innerHTML = '';
+    filteredGames.forEach(g => gamesContainer.appendChild(g));
+
+    showPage(1);
+}
+
+function sortGamesByRarity(descending = true) {
+    filteredGames.sort((a, b) => {
+        const idA = a.getAttribute('onclick')?.match(/'([^']+)'/)?.[1];
+        const idB = b.getAttribute('onclick')?.match(/'([^']+)'/)?.[1];
+
+        const dataA = getGameData(idA) || {};
+        const dataB = getGameData(idB) || {};
+
+        const rarityA = parseFloat(dataA.rarity?.replace('%','')) || 0;
+        const rarityB = parseFloat(dataB.rarity?.replace('%','')) || 0;
+
+        // CORRECCIÓN:
+        // Mas raros → menor % primero
+        // Mas comunes → mayor % primero
+        return descending ? rarityA - rarityB : rarityB - rarityA;
+    });
+
+    // 🔹 Reordenar el DOM completo
+    gamesContainer.innerHTML = '';
+    filteredGames.forEach(g => gamesContainer.appendChild(g));
+
+    showPage(1);
+}
+function sortGamesByDuration(descending = true) {
+    filteredGames.sort((a, b) => {
+        const idA = a.getAttribute('onclick')?.match(/'([^']+)'/)?.[1];
+        const idB = b.getAttribute('onclick')?.match(/'([^']+)'/)?.[1];
+
+        const dataA = getGameData(idA) || {};
+        const dataB = getGameData(idB) || {};
+
+        const parseDuration = str => {
+            if (!str) return 0;
+            str = str.trim().toLowerCase();
+            let hours = 0, mins = 0;
+
+            const hMatch = str.match(/(\d+(?:\.\d+)?)h/);
+            const mMatch = str.match(/(\d+(?:\.\d+)?)min/);
+
+            if (hMatch) hours = parseFloat(hMatch[1]);
+            if (mMatch) mins = parseFloat(mMatch[1]) / 60;
+
+            return hours + mins; // siempre en horas decimales
+        };
+
+        const durA = parseDuration(dataA.horas);
+        const durB = parseDuration(dataB.horas);
+
+        if (durA !== durB) return descending ? durB - durA : durA - durB;
+
+        // Desempate por rarity
+        const rarityA = parseFloat((dataA.rarity || '0').replace('%',''));
+        const rarityB = parseFloat((dataB.rarity || '0').replace('%',''));
+
+        return descending ? rarityA - rarityB : rarityB - rarityA;
+    });
+
+    // Reordenar el DOM completo
+    gamesContainer.innerHTML = '';
+    filteredGames.forEach(g => gamesContainer.appendChild(g));
+    showPage(1);
+}
+
+function getPlaytimeInMinutes(startStr, endStr) { 
+    if (!startStr || !endStr) return 0;
+
+    const parseDMYHM = str => {
+        const match = str.match(/^(\d{2})-(\d{2})-(\d{4})\s+(\d{1,2}):(\d{2})$/);
+        if (!match) return null;
+        const [, d, m, y, h, min] = match.map(Number);
+        return new Date(y, m - 1, d, h, min); // meses 0-indexed
+    };
+
+    const startDate = parseDMYHM(startStr);
+    const endDate = parseDMYHM(endStr);
+
+    if (!startDate || !endDate || isNaN(startDate.getTime()) || isNaN(endDate.getTime())) return 0;
+
+    let diffMs = endDate.getTime() - startDate.getTime();
+    if (diffMs < 0) diffMs = -diffMs; // en caso de fechas invertidas
+
+    return diffMs / (1000 * 60); // minutos
+}
+
+// Ordena juegos por tiempo de juego
+function sortGamesByPlaytime(descending = true) {
+    filteredGames.sort((a, b) => {
+        const idA = a.getAttribute('onclick')?.match(/'([^']+)'/)?.[1];
+        const idB = b.getAttribute('onclick')?.match(/'([^']+)'/)?.[1];
+
+        const dataA = getGameData(idA) || {};
+        const dataB = getGameData(idB) || {};
+
+        const durationA = getPlaytimeInMinutes(dataA['date-started'], dataA['date-finished']);
+        const durationB = getPlaytimeInMinutes(dataB['date-started'], dataB['date-finished']);
+
+
+        if (durationA !== durationB) return descending ? durationB - durationA : durationA - durationB;
+
+        // Desempate por rarity (más pequeño primero si descending)
+        const rarityA = parseFloat((dataA.rarity || '0').replace('%',''));
+        const rarityB = parseFloat((dataB.rarity || '0').replace('%',''));
+        return descending ? rarityA - rarityB : rarityB - rarityA;
+    });
+
+    // Reordenar el DOM completo
+    gamesContainer.innerHTML = '';
+    filteredGames.forEach(g => gamesContainer.appendChild(g));
+    showPage(1);
+}
+
 
         // --- LÓGICA DE FILTRO POR TIPO (All, Limited, Full) ---
         if (allButton && allMenu && allButtonLabel && optionAll && optionLimited && optionFull) {
@@ -3027,7 +3642,7 @@ let isModalTransitioning = false;
                 selectedTypes.clear();
                 setActiveOption(optionAll, 'All');
                 allMenu.classList.add('hidden');
-                showAllGames(); // Ahora showAllGames también considera la plataforma
+                applyFilters(); // Ahora showAllGames también considera la plataforma
             });
 
             optionLimited.addEventListener('click', (e) => {
@@ -3036,7 +3651,7 @@ let isModalTransitioning = false;
                 selectedTypes.add('100%'); // Filtra solo los juegos con id="100%"
                 setActiveOption(optionLimited, '100%');
                 allMenu.classList.add('hidden');
-                applyCombinedFilters(); // Aplica el filtro combinado con plataformas
+                applyFilters(); // Aplica el filtro combinado con plataformas
             });
 
             optionFull.addEventListener('click', (e) => {
@@ -3045,7 +3660,7 @@ let isModalTransitioning = false;
                 selectedTypes.add('Platinum'); // Filtra solo los juegos con id="Platinum"
                 setActiveOption(optionFull, 'Platinum');
                 allMenu.classList.add('hidden');
-                applyCombinedFilters(); // Aplica el filtro combinado con plataformas
+                applyFilters(); // Aplica el filtro combinado con plataformas
             });
 
             // Cerrar menú de tipo al clicar fuera
@@ -3134,7 +3749,7 @@ let isModalTransitioning = false;
                 }
 
                 updatePlatformSelectionUI();
-                applyCombinedFilters(); // Aplicar filtros después de cambiar la selección
+                applyFilters(); // Aplicar filtros después de cambiar la selección
             });
 
             [
@@ -3152,7 +3767,7 @@ let isModalTransitioning = false;
                         selectedPlatforms.add(id);
                     }
                     updatePlatformSelectionUI();
-                    applyCombinedFilters(); // Usar applyCombinedFilters para ambos tipos de filtro
+                    applyFilters(); // Usar applyCombinedFilters para ambos tipos de filtro
                 });
             });
 
@@ -3179,7 +3794,7 @@ let isModalTransitioning = false;
             // Si la necesitas, asegúrate de que use selectedTypes correctamente.
             // Para mantener consistencia, voy a añadirla pero con la misma lógica que applyCombinedFilters
             function filterGamesByPlatform() { // Mismo que applyCombinedFilters para asegurar consistencia
-                applyCombinedFilters();
+                applyFilters();
             }
 
         } else {
