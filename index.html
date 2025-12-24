@@ -3601,6 +3601,17 @@ function sortGamesByDate(descending = true, arr) {
         }
 
 function sortGamesByDifficulty(descending = true, arr) {
+    const parseDuration = str => {
+        if (!str) return 0;
+        str = str.trim().toLowerCase();
+        let hours = 0, mins = 0;
+        const hMatch = str.match(/(\d+(?:\.\d+)?)h/);
+        const mMatch = str.match(/(\d+(?:\.\d+)?)min/);
+        if (hMatch) hours = parseFloat(hMatch[1]);
+        if (mMatch) mins = parseFloat(mMatch[1]) / 60;
+        return hours + mins;
+    };
+
     arr.sort((a, b) => {
         const idA = a.getAttribute('onclick')?.match(/'([^']+)'/)?.[1];
         const idB = b.getAttribute('onclick')?.match(/'([^']+)'/)?.[1];
@@ -3608,17 +3619,34 @@ function sortGamesByDifficulty(descending = true, arr) {
         const dataA = getGameData(idA) || {};
         const dataB = getGameData(idB) || {};
 
+        // 1️⃣ DIFICULTAD
         const diffA = parseFloat(dataA.dificultad?.match(/(\d+)\/5/)?.[1] || 0);
         const diffB = parseFloat(dataB.dificultad?.match(/(\d+)\/5/)?.[1] || 0);
 
-        if (diffA !== diffB) return descending ? diffB - diffA : diffA - diffB;
+        if (diffA !== diffB) {
+            return descending ? diffB - diffA : diffA - diffB;
+        }
 
-        const hoursA = parseFloat(dataA.horas?.match(/(\d+)\s*h/)?.[1] || 0);
-        const hoursB = parseFloat(dataB.horas?.match(/(\d+)\s*h/)?.[1] || 0);
+        // 2️⃣ DURACIÓN (inverso exacto)
+        const durA = parseDuration(dataA.horas);
+        const durB = parseDuration(dataB.horas);
 
-        return descending ? hoursB - hoursA : hoursA - hoursB;
+        if (durA !== durB) {
+            return descending ? durB - durA : durA - durB;
+        }
+
+        // 3️⃣ RARITY (inverso exacto)
+        const rarityA = parseFloat(dataA.rarity?.replace('%','')) || 0;
+        const rarityB = parseFloat(dataB.rarity?.replace('%','')) || 0;
+
+        if (rarityA !== rarityB) {
+            return descending ? rarityA - rarityB : rarityB - rarityA;
+        }
+
+        return 0;
     });
 }
+
 
 function sortGamesByAchievements(descending = true, arr) {
     const sumNumbers = str => (str?.match(/\d+/g) || []).reduce((acc, n) => acc + Number(n), 0);
