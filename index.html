@@ -3578,7 +3578,6 @@ function applyFiltersAndSort() {
         'PS4': 'PS4', 'PS5': 'PS5', 'Vita': 'Vita'
     };
 
-    // 1️⃣ Ordenar (Tu bloque original)
     let orderedGames = [...originalCardsOrder];
     if (currentSort) {
         switch (currentSort) {
@@ -3599,9 +3598,10 @@ function applyFiltersAndSort() {
         }
     }
 
-    // --- MOTOR DE BÚSQUEDA ROBUSTO ---
+    // --- MOTOR DE BÚSQUEDA ACTUALIZADO (+ y "") ---
     const getSearchCriteria = (input) => {
-        const criteria = { text: [], 'played-on': '', 'dificultad': '', 'content': '', 'horas': '', 'date-finished': '', 'rarity': '' };
+        // CAMBIO: text, played-on y dificultad ahora se guardan como Arrays para soportar el "+"
+        const criteria = { text: [], 'played-on': [], 'dificultad': [], 'content': '', 'horas': '', 'date-finished': '', 'rarity': '' };
         if (!input) return criteria;
 
         const emojiMap = {
@@ -3609,16 +3609,17 @@ function applyFiltersAndSort() {
             '🕑': 'horas', '🏆': 'date-finished', '%': 'rarity', '🔠': 'text'
         };
 
-        // Extraer comillas primero
-        let tempInput = input.replace(/"([^"]+)"/g, (m, p1) => {
-            criteria.text.push(p1.toLowerCase());
-            return " ";
-        });
+        // Función auxiliar para separar por "+" respetando comillas
+        const parseValue = (str) => {
+            return str.split('+').map(part => {
+                return part.trim().replace(/"/g, '').toLowerCase();
+            }).filter(p => p);
+        };
 
+        let tempInput = input;
         const emojis = Object.keys(emojiMap);
         let positions = [];
 
-        // Encontrar dónde está cada emoji en el texto
         emojis.forEach(e => {
             let pos = tempInput.indexOf(e);
             while (pos !== -1) {
@@ -3627,28 +3628,27 @@ function applyFiltersAndSort() {
             }
         });
 
-        // Ordenar posiciones de izquierda a derecha
         positions.sort((a, b) => a.pos - b.pos);
 
-        // Si no hay emojis, todo es título
+        // Si no hay emojis, tratamos todo como texto/título con soporte de "+"
         if (positions.length === 0) {
-            criteria.text.push(...tempInput.toLowerCase().trim().split(/\s+/).filter(t => t));
+            criteria.text = parseValue(tempInput);
             return criteria;
         }
 
-        // Texto antes del primer emoji
         const leadingText = tempInput.substring(0, positions[0].pos).trim();
-        if (leadingText) criteria.text.push(...leadingText.toLowerCase().split(/\s+/).filter(t => t));
+        if (leadingText) criteria.text = parseValue(leadingText);
 
-        // Procesar cada bloque: desde un emoji hasta el siguiente (o el final)
         for (let i = 0; i < positions.length; i++) {
             const start = positions[i].pos + positions[i].emoji.length;
             const end = positions[i + 1] ? positions[i + 1].pos : tempInput.length;
             const content = tempInput.substring(start, end).trim();
             const field = emojiMap[positions[i].emoji];
 
-            if (field === 'text') {
-                if (content) criteria.text.push(...content.toLowerCase().split(/\s+/).filter(t => t));
+            if (field === 'text' || field === 'played-on' || field === 'dificultad') {
+                const parsed = parseValue(content);
+                if (field === 'text') criteria.text.push(...parsed);
+                else criteria[field] = parsed;
             } else if (field) {
                 criteria[field] = content;
             }
@@ -3656,24 +3656,18 @@ function applyFiltersAndSort() {
         return criteria;
     };
 
-const matchRange = (elementValue, searchVal) => {
+    const matchRange = (elementValue, searchVal) => {
         if (!searchVal) return true;
-        
         let val;
-        // Lógica especial para 🏅: Busca todos los números y los suma
-        // Esto detectará "27" y "12" en "27 + 🧩 12 trofeos" y sumará 39
         const numbers = elementValue.match(/\d+/g);
         if (numbers && numbers.length > 1 && !elementValue.includes('/')) {
             val = numbers.reduce((acc, curr) => acc + parseInt(curr), 0);
         } else {
-            // Lógica estándar para dificultad (X/5) o números únicos
             val = elementValue.includes('/') ? 
                 parseFloat(elementValue.split('/')[0].replace(/[^0-9.]/g, '')) : 
                 parseFloat(elementValue.replace(/[^0-9.]/g, ''));
         }
-
         if (isNaN(val)) return false;
-
         const s = searchVal.replace(/\s+/g, '');
         if (s.includes('-')) {
             const parts = s.split('-');
@@ -3686,16 +3680,24 @@ const matchRange = (elementValue, searchVal) => {
 
     const criteria = getSearchCriteria(searchInput?.value || "");
 
-    // 2️⃣ Filtrado (Unificando criterios)
+    // 2️⃣ Filtrado con lógica OR para el símbolo "+"
     filteredGames = orderedGames.filter(g => {
         const getVal = (f) => g.querySelector(`[data-game-field="${f}"]`)?.textContent || '';
         const gameTitle = g.querySelector('div[title]')?.getAttribute('title')?.toLowerCase() || '';
 
-        const matchesText = criteria.text.length === 0 || criteria.text.every(t => gameTitle.includes(t));
-        const matchesPlat = !criteria['played-on'] || getVal('played-on').toLowerCase().includes(criteria['played-on'].toLowerCase());
+        // Título: Si hay "+" usa .some (OR), si no hay usará la lista completa
+        const matchesText = criteria.text.length === 0 || criteria.text.some(t => gameTitle.includes(t));
         
+        // Consola: Soporta "+" (OR)
+        const matchesPlat = criteria['played-on'].length === 0 || criteria['played-on'].some(p => 
+            getVal('played-on').toLowerCase().includes(p)
+        );
+        
+        // Dificultad: Soporta "+" (OR)
         const dCrit = criteria['dificultad'];
-        const matchesDiff = !dCrit || (/[0-9-]/.test(dCrit) ? matchRange(getVal('dificultad'), dCrit) : getVal('dificultad').toLowerCase().includes(dCrit.toLowerCase()));
+        const matchesDiff = dCrit.length === 0 || dCrit.some(d => 
+            /[0-9-]/.test(d) ? matchRange(getVal('dificultad'), d) : getVal('dificultad').toLowerCase().includes(d)
+        );
 
         const matchesDate = !criteria['date-finished'] || getVal('date-finished').includes(criteria['date-finished']);
         const matchesContent = matchRange(getVal('content'), criteria['content']);
@@ -3704,7 +3706,6 @@ const matchRange = (elementValue, searchVal) => {
 
         const matchesSearch = matchesText && matchesPlat && matchesDiff && matchesContent && matchesHoras && matchesDate && matchesRarity;
 
-        // Filtros de botones (Tipo y Plataforma)
         let matchesType = true;
         if (selectedCompletion === "platinum") matchesType = (g.id === "Platinum" || g.id === "Full");
         else if (selectedCompletion === "limited") matchesType = (g.id === "Limited" || g.id === "100%");
@@ -3721,7 +3722,6 @@ const matchRange = (elementValue, searchVal) => {
         return isVisible;
     });
 
-    // 3️⃣ Pintar
     gamesContainer.innerHTML = '';
     orderedGames.forEach(g => gamesContainer.appendChild(g));
     currentPage = 1;
