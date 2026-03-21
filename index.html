@@ -259,37 +259,54 @@ html.dark img[src$="logroPS.png"] {
 
 
 
-/* 1. Estilo general de la barra de desplazamiento (para navegadores WebKit como Chrome, Edge, Safari) */
+/* --- 1. MODO CLARO (POR DEFECTO) --- */
+
+/* Fondo de la barra */
 ::-webkit-scrollbar {
-  width: 12px; /* Ancho de la barra de desplazamiento */
-  /* El fondo del track de la barra de desplazamiento toma el color de fondo del body */
+  width: 12px;
   background-color: hsl(var(--background));
-  /* Aplica una transición suave al cambio de color de fondo del track */
-  transition: background-color 0.3s ease;
 }
 
-/* 2. Estilo del "pulgar" o agarrador de la barra de desplazamiento */
+/* ELIMINAR FLECHAS (Botones arriba/abajo) */
+::-webkit-scrollbar-button {
+  display: none !important;
+  height: 0;
+  width: 0;
+}
+
+/* El "pulgar" (lo que arrastras) */
 ::-webkit-scrollbar-thumb {
-  /* El color del pulgar tomará el color --secondary (que cambia con el tema) */
-  background-color: hsl(var(--secondary));
-  border-radius: 6px; /* Bordes redondeados para el pulgar */
-  /* Añade un borde que coincida con el color del track para crear un margen visual */
+  background-color: #c5c5c5 !important; /* Tu gris claro */
+  border-radius: 6px;
   border: 3px solid hsl(var(--background));
-  background-clip: padding-box; /* Asegura que el borde no afecte el tamaño del área de color */
-  /* Aplica una transición suave al cambio de color de fondo del pulgar */
+  background-clip: padding-box;
   transition: background-color 0.3s ease;
 }
 
-/* 3. Estilo del "pulgar" al pasar el ratón por encima */
+/* Hover del pulgar */
 ::-webkit-scrollbar-thumb:hover {
-  /* El color del pulgar al hacer hover tomará el color --muted-foreground (que cambia con el tema) */
-  background-color: hsl(var(--muted-foreground));
+  background-color: #888888 !important; /* Tu gris oscuro */
 }
 
-/* 4. Estilo del track de la barra de desplazamiento al hacer hover (opcional) */
-::-webkit-scrollbar-track:hover {
-  /* Puedes hacer el track ligeramente más claro/oscuro al pasar el ratón */
-  background-color: hsl(var(--background)); /* Mantener el mismo color o un tono ligeramente diferente */
+
+/* --- 2. MODO OSCURO (MANTIENE TUS VARIABLES) --- */
+
+/* Aplicamos tus variables originales cuando existe la clase .dark */
+.dark::-webkit-scrollbar-thumb,
+.dark ::-webkit-scrollbar-thumb {
+  background-color: hsl(var(--secondary)) !important;
+  border-color: #080A12 !important; /* Ajustado a tu color de fondo #080A12 */
+}
+
+.dark::-webkit-scrollbar-thumb:hover,
+.dark ::-webkit-scrollbar-thumb:hover {
+  background-color: hsl(var(--muted-foreground)) !important;
+}
+
+/* Asegurar que las flechas también desaparezcan en modo oscuro */
+.dark::-webkit-scrollbar-button,
+.dark ::-webkit-scrollbar-button {
+  display: none !important;
 }
 
 /* Estilos del modal que ya tenías */
@@ -1073,17 +1090,7 @@ button img:hover + .arrow-icon {
             
             </div>
           <div class="flex items-center space-x-1">
-            <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-70 hover:bg-accent hover:text-accent-foreground h-9 w-9" type="button" id="SearchIN" aria-haspopup="menu" aria-expanded="false" data-state="closed">
-    <svg width="30" height="30" viewBox="-80 550 1500 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all">
-        <metadata>
-            Created by potrace 1.15, written by Peter Selinger 2001-2017
-        </metadata>
-        <g transform="translate(40.000000,1180.000000) scale(0.100000,-0.1000000)" fill="currentColor" stroke="none">
-            <path d="M4010 11789 c-1105 -89 -2068 -514 -2819 -1244 -510 -496 -874 -1099 -1052 -1745 -252 -915 -157 -1844 276 -2694 272 -533 690 -1023 1198 -1405 638 -478 1381 -767 2232 -868 116 -13 227 -17 490 -17 363 0 485 9 788 60 691 117 1380 410 1930 823 305 229 627 548 843 836 503 669 774 1465 774 2270 0 880 -324 1742 -918 2448 -664 788 -1636 1325 -2702 1491 -290 46 -776 67 -1040 45z m737 -1180 c259 -32 496 -90 738 -180 148 -54 424 -191 563 -278 354 -221 671 -523 892 -851 276 -409 424 -838 461 -1335 23 -312 -26 -684 -132 -997 -296 -870 -1034 -1564 -1969 -1851 -849 -260 -1784 -165 -2544 260 -755 422 -1282 1120 -1440 1905 -41 206 -50 303 -50 523 0 220 9 317 50 523 142 708 584 1344 1234 1777 475 316 1027 495 1635 529 121 7 414 -6 562 -25z"></path>
-            <path d="M8496 5040 c-244 -346 -653 -735 -1051 -1000 -82 -55 -158 -106 -168 -113 -16 -11 212 -223 2054 -1922 1139 -1051 2095 -1931 2124 -1957 l52 -47 647 596 c514 474 644 599 634 608 -148 136 -1759 1620 -2830 2608 -775 713 -1409 1297 -1410 1297 -2 -1 -25 -32 -52 -70z"></path>
-        </g>
-    </svg>
-</button><button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-70 hover:bg-accent hover:text-accent-foreground h-9 w-9" type="button" id="themeToggleBtn" aria-haspopup="menu" aria-expanded="false" data-state="closed"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"><path d="M7.5 0C7.77614 0 8 0.223858 8 0.5V2.5C8 2.77614 7.77614 3 7.5 3C7.22386 3 7 2.77614 7 2.5V0.5C7 0.223858 7.22386 0 7.5 0ZM2.1967 2.1967C2.39196 2.00144 2.70854 2.00144 2.90381 2.1967L4.31802 3.61091C4.51328 3.80617 4.51328 4.12276 4.31802 4.31802C4.12276 4.51328 3.80617 4.51328 3.61091 4.31802L2.1967 2.90381C2.00144 2.70854 2.00144 2.39196 2.1967 2.1967ZM0.5 7C0.223858 7 0 7.22386 0 7.5C0 7.77614 0.223858 8 0.5 8H2.5C2.77614 8 3 7.77614 3 7.5C3 7.22386 2.77614 7 2.5 7H0.5ZM2.1967 12.8033C2.00144 12.608 2.00144 12.2915 2.1967 12.0962L3.61091 10.682C3.80617 10.4867 4.12276 10.4867 4.31802 10.682C4.51328 10.8772 4.51328 11.1938 4.31802 11.3891L2.90381 12.8033C2.70854 12.9986 2.39196 12.9986 2.1967 12.8033ZM12.5 7C12.2239 7 12 7.22386 12 7.5C12 7.77614 12.2239 8 12.5 8H14.5C14.7761 8 15 7.77614 15 7.5C15 7.22386 14.7761 7 14.5 7H12.5ZM10.682 4.31802C10.4867 4.12276 10.4867 3.80617 10.682 3.61091L12.0962 2.1967C12.2915 2.00144 12.608 2.00144 12.8033 2.1967C12.9986 2.39196 12.9986 2.70854 12.8033 2.90381L11.3891 4.31802C11.1938 4.51328 10.8772 4.51328 10.682 4.31802ZM8 12.5C8 12.2239 7.77614 12 7.5 12C7.22386 12 7 12.2239 7 12.5V14.5C7 14.7761 7.22386 15 7.5 15C7.77614 15 8 14.7761 8 14.5V12.5ZM10.682 10.682C10.8772 10.4867 11.1938 10.4867 11.3891 10.682L12.8033 12.0962C12.9986 12.2915 12.9986 12.608 12.8033 12.8033C12.608 12.9986 12.2915 12.9986 12.0962 12.8033L10.682 11.3891C10.4867 11.1938 10.4867 10.8772 10.682 10.682ZM5.5 7.5C5.5 6.39543 6.39543 5.5 7.5 5.5C8.60457 5.5 9.5 6.39543 9.5 7.5C9.5 8.60457 8.60457 9.5 7.5 9.5C6.39543 9.5 5.5 8.60457 5.5 7.5ZM7.5 4.5C5.84315 4.5 4.5 5.84315 4.5 7.5C4.5 9.15685 5.84315 10.5 7.5 10.5C9.15685 10.5 10.5 9.15685 10.5 7.5C10.5 5.84315 9.15685 4.5 7.5 4.5Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg><svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" class="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100"><path d="M2.89998 0.499976C2.89998 0.279062 2.72089 0.0999756 2.49998 0.0999756C2.27906 0.0999756 2.09998 0.279062 2.09998 0.499976V1.09998H1.49998C1.27906 1.09998 1.09998 1.27906 1.09998 1.49998C1.09998 1.72089 1.27906 1.89998 1.49998 1.89998H2.09998V2.49998C2.09998 2.72089 2.27906 2.89998 2.49998 2.89998C2.72089 2.89998 2.89998 2.72089 2.89998 2.49998V1.89998H3.49998C3.72089 1.89998 3.89998 1.72089 3.89998 1.49998C3.89998 1.27906 3.72089 1.09998 3.49998 1.09998H2.89998V0.499976ZM5.89998 3.49998C5.89998 3.27906 5.72089 3.09998 5.49998 3.09998C5.27906 3.09998 5.09998 3.27906 5.09998 3.49998V4.09998H4.49998C4.27906 4.09998 4.09998 4.27906 4.09998 4.49998C4.09998 4.72089 4.27906 4.89998 4.49998 4.89998H5.09998V5.49998C5.09998 5.72089 5.27906 5.89998 5.49998 5.89998C5.72089 5.89998 5.89998 5.72089 5.89998 5.49998V4.89998H6.49998C6.72089 4.89998 6.89998 4.72089 6.89998 4.49998C6.89998 4.27906 6.72089 4.09998 6.49998 4.09998H5.89998V3.49998ZM1.89998 6.49998C1.89998 6.27906 1.72089 6.09998 1.49998 6.09998C1.27906 6.09998 1.09998 6.27906 1.09998 6.49998V7.09998H0.499976C0.279062 7.09998 0.0999756 7.27906 0.0999756 7.49998C0.0999756 7.72089 0.279062 7.89998 0.499976 7.89998H1.09998V8.49998C1.09998 8.72089 1.27906 8.89997 1.49998 8.89997C1.72089 8.89997 1.89998 8.72089 1.89998 8.49998V7.89998H2.49998C2.72089 7.89998 2.89998 7.72089 2.89998 7.49998C2.89998 7.27906 2.72089 7.09998 2.49998 7.09998H1.89998V6.49998ZM8.54406 0.98184L8.24618 0.941586C8.03275 0.917676 7.90692 1.1655 8.02936 1.34194C8.17013 1.54479 8.29981 1.75592 8.41754 1.97445C8.91878 2.90485 9.20322 3.96932 9.20322 5.10022C9.20322 8.37201 6.82247 11.0878 3.69887 11.6097C3.45736 11.65 3.20988 11.6772 2.96008 11.6906C2.74563 11.702 2.62729 11.9535 2.77721 12.1072C2.84551 12.1773 2.91535 12.2458 2.98667 12.3128L3.05883 12.3795L3.31883 12.6045L3.50684 12.7532L3.62796 12.8433L3.81491 12.9742L3.99079 13.089C4.11175 13.1651 4.23536 13.2375 4.36157 13.3059L4.62496 13.4412L4.88553 13.5607L5.18837 13.6828L5.43169 13.7686C5.56564 13.8128 5.70149 13.8529 5.83857 13.8885C5.94262 13.9155 6.04767 13.9401 6.15405 13.9622C6.27993 13.9883 6.40713 14.0109 6.53544 14.0298L6.85241 14.0685L7.11934 14.0892C7.24637 14.0965 7.37436 14.1002 7.50322 14.1002C11.1483 14.1002 14.1032 11.1453 14.1032 7.50023C14.1032 7.25044 14.0893 7.00389 14.0623 6.76131L14.0255 6.48407C13.991 6.26083 13.9453 6.04129 13.8891 5.82642C13.8213 5.56709 13.7382 5.31398 13.6409 5.06881L13.5279 4.80132L13.4507 4.63542L13.3766 4.48666C13.2178 4.17773 13.0353 3.88295 12.8312 3.60423L12.6782 3.40352L12.4793 3.16432L12.3157 2.98361L12.1961 2.85951L12.0355 2.70246L11.8134 2.50184L11.4925 2.24191L11.2483 2.06498L10.9562 1.87446L10.6346 1.68894L10.3073 1.52378L10.1938 1.47176L9.95488 1.3706L9.67791 1.2669L9.42566 1.1846L9.10075 1.09489L8.83599 1.03486L8.54406 0.98184ZM10.4032 5.30023C10.4032 4.27588 10.2002 3.29829 9.83244 2.40604C11.7623 3.28995 13.1032 5.23862 13.1032 7.50023C13.1032 10.593 10.596 13.1002 7.50322 13.1002C6.63646 13.1002 5.81597 12.9036 5.08355 12.5522C6.5419 12.0941 7.81081 11.2082 8.74322 10.0416C8.87963 10.2284 9.10028 10.3497 9.34928 10.3497C9.76349 10.3497 10.0993 10.0139 10.0993 9.59971C10.0993 9.24256 9.84965 8.94373 9.51535 8.86816C9.57741 8.75165 9.63653 8.63334 9.6926 8.51332C9.88358 8.63163 10.1088 8.69993 10.35 8.69993C11.0403 8.69993 11.6 8.14028 11.6 7.44993C11.6 6.75976 11.0406 6.20024 10.3505 6.19993C10.3853 5.90487 10.4032 5.60464 10.4032 5.30023Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg><span class="sr-only">Toggle theme</span></button>
+            <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-70 hover:bg-accent hover:text-accent-foreground h-9 w-9" type="button" id="themeToggleBtn" aria-haspopup="menu" aria-expanded="false" data-state="closed"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"><path d="M7.5 0C7.77614 0 8 0.223858 8 0.5V2.5C8 2.77614 7.77614 3 7.5 3C7.22386 3 7 2.77614 7 2.5V0.5C7 0.223858 7.22386 0 7.5 0ZM2.1967 2.1967C2.39196 2.00144 2.70854 2.00144 2.90381 2.1967L4.31802 3.61091C4.51328 3.80617 4.51328 4.12276 4.31802 4.31802C4.12276 4.51328 3.80617 4.51328 3.61091 4.31802L2.1967 2.90381C2.00144 2.70854 2.00144 2.39196 2.1967 2.1967ZM0.5 7C0.223858 7 0 7.22386 0 7.5C0 7.77614 0.223858 8 0.5 8H2.5C2.77614 8 3 7.77614 3 7.5C3 7.22386 2.77614 7 2.5 7H0.5ZM2.1967 12.8033C2.00144 12.608 2.00144 12.2915 2.1967 12.0962L3.61091 10.682C3.80617 10.4867 4.12276 10.4867 4.31802 10.682C4.51328 10.8772 4.51328 11.1938 4.31802 11.3891L2.90381 12.8033C2.70854 12.9986 2.39196 12.9986 2.1967 12.8033ZM12.5 7C12.2239 7 12 7.22386 12 7.5C12 7.77614 12.2239 8 12.5 8H14.5C14.7761 8 15 7.77614 15 7.5C15 7.22386 14.7761 7 14.5 7H12.5ZM10.682 4.31802C10.4867 4.12276 10.4867 3.80617 10.682 3.61091L12.0962 2.1967C12.2915 2.00144 12.608 2.00144 12.8033 2.1967C12.9986 2.39196 12.9986 2.70854 12.8033 2.90381L11.3891 4.31802C11.1938 4.51328 10.8772 4.51328 10.682 4.31802ZM8 12.5C8 12.2239 7.77614 12 7.5 12C7.22386 12 7 12.2239 7 12.5V14.5C7 14.7761 7.22386 15 7.5 15C7.77614 15 8 14.7761 8 14.5V12.5ZM10.682 10.682C10.8772 10.4867 11.1938 10.4867 11.3891 10.682L12.8033 12.0962C12.9986 12.2915 12.9986 12.608 12.8033 12.8033C12.608 12.9986 12.2915 12.9986 12.0962 12.8033L10.682 11.3891C10.4867 11.1938 10.4867 10.8772 10.682 10.682ZM5.5 7.5C5.5 6.39543 6.39543 5.5 7.5 5.5C8.60457 5.5 9.5 6.39543 9.5 7.5C9.5 8.60457 8.60457 9.5 7.5 9.5C6.39543 9.5 5.5 8.60457 5.5 7.5ZM7.5 4.5C5.84315 4.5 4.5 5.84315 4.5 7.5C4.5 9.15685 5.84315 10.5 7.5 10.5C9.15685 10.5 10.5 9.15685 10.5 7.5C10.5 5.84315 9.15685 4.5 7.5 4.5Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg><svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" class="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100"><path d="M2.89998 0.499976C2.89998 0.279062 2.72089 0.0999756 2.49998 0.0999756C2.27906 0.0999756 2.09998 0.279062 2.09998 0.499976V1.09998H1.49998C1.27906 1.09998 1.09998 1.27906 1.09998 1.49998C1.09998 1.72089 1.27906 1.89998 1.49998 1.89998H2.09998V2.49998C2.09998 2.72089 2.27906 2.89998 2.49998 2.89998C2.72089 2.89998 2.89998 2.72089 2.89998 2.49998V1.89998H3.49998C3.72089 1.89998 3.89998 1.72089 3.89998 1.49998C3.89998 1.27906 3.72089 1.09998 3.49998 1.09998H2.89998V0.499976ZM5.89998 3.49998C5.89998 3.27906 5.72089 3.09998 5.49998 3.09998C5.27906 3.09998 5.09998 3.27906 5.09998 3.49998V4.09998H4.49998C4.27906 4.09998 4.09998 4.27906 4.09998 4.49998C4.09998 4.72089 4.27906 4.89998 4.49998 4.89998H5.09998V5.49998C5.09998 5.72089 5.27906 5.89998 5.49998 5.89998C5.72089 5.89998 5.89998 5.72089 5.89998 5.49998V4.89998H6.49998C6.72089 4.89998 6.89998 4.72089 6.89998 4.49998C6.89998 4.27906 6.72089 4.09998 6.49998 4.09998H5.89998V3.49998ZM1.89998 6.49998C1.89998 6.27906 1.72089 6.09998 1.49998 6.09998C1.27906 6.09998 1.09998 6.27906 1.09998 6.49998V7.09998H0.499976C0.279062 7.09998 0.0999756 7.27906 0.0999756 7.49998C0.0999756 7.72089 0.279062 7.89998 0.499976 7.89998H1.09998V8.49998C1.09998 8.72089 1.27906 8.89997 1.49998 8.89997C1.72089 8.89997 1.89998 8.72089 1.89998 8.49998V7.89998H2.49998C2.72089 7.89998 2.89998 7.72089 2.89998 7.49998C2.89998 7.27906 2.72089 7.09998 2.49998 7.09998H1.89998V6.49998ZM8.54406 0.98184L8.24618 0.941586C8.03275 0.917676 7.90692 1.1655 8.02936 1.34194C8.17013 1.54479 8.29981 1.75592 8.41754 1.97445C8.91878 2.90485 9.20322 3.96932 9.20322 5.10022C9.20322 8.37201 6.82247 11.0878 3.69887 11.6097C3.45736 11.65 3.20988 11.6772 2.96008 11.6906C2.74563 11.702 2.62729 11.9535 2.77721 12.1072C2.84551 12.1773 2.91535 12.2458 2.98667 12.3128L3.05883 12.3795L3.31883 12.6045L3.50684 12.7532L3.62796 12.8433L3.81491 12.9742L3.99079 13.089C4.11175 13.1651 4.23536 13.2375 4.36157 13.3059L4.62496 13.4412L4.88553 13.5607L5.18837 13.6828L5.43169 13.7686C5.56564 13.8128 5.70149 13.8529 5.83857 13.8885C5.94262 13.9155 6.04767 13.9401 6.15405 13.9622C6.27993 13.9883 6.40713 14.0109 6.53544 14.0298L6.85241 14.0685L7.11934 14.0892C7.24637 14.0965 7.37436 14.1002 7.50322 14.1002C11.1483 14.1002 14.1032 11.1453 14.1032 7.50023C14.1032 7.25044 14.0893 7.00389 14.0623 6.76131L14.0255 6.48407C13.991 6.26083 13.9453 6.04129 13.8891 5.82642C13.8213 5.56709 13.7382 5.31398 13.6409 5.06881L13.5279 4.80132L13.4507 4.63542L13.3766 4.48666C13.2178 4.17773 13.0353 3.88295 12.8312 3.60423L12.6782 3.40352L12.4793 3.16432L12.3157 2.98361L12.1961 2.85951L12.0355 2.70246L11.8134 2.50184L11.4925 2.24191L11.2483 2.06498L10.9562 1.87446L10.6346 1.68894L10.3073 1.52378L10.1938 1.47176L9.95488 1.3706L9.67791 1.2669L9.42566 1.1846L9.10075 1.09489L8.83599 1.03486L8.54406 0.98184ZM10.4032 5.30023C10.4032 4.27588 10.2002 3.29829 9.83244 2.40604C11.7623 3.28995 13.1032 5.23862 13.1032 7.50023C13.1032 10.593 10.596 13.1002 7.50322 13.1002C6.63646 13.1002 5.81597 12.9036 5.08355 12.5522C6.5419 12.0941 7.81081 11.2082 8.74322 10.0416C8.87963 10.2284 9.10028 10.3497 9.34928 10.3497C9.76349 10.3497 10.0993 10.0139 10.0993 9.59971C10.0993 9.24256 9.84965 8.94373 9.51535 8.86816C9.57741 8.75165 9.63653 8.63334 9.6926 8.51332C9.88358 8.63163 10.1088 8.69993 10.35 8.69993C11.0403 8.69993 11.6 8.14028 11.6 7.44993C11.6 6.75976 11.0406 6.20024 10.3505 6.19993C10.3853 5.90487 10.4032 5.60464 10.4032 5.30023Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg><span class="sr-only">Toggle theme</span></button>
         </div>
     </div>
 </header>
@@ -3567,17 +3574,12 @@ showPage(currentPage);
 
 function applyFiltersAndSort() {
     const platformIdMap = {
-        'PC': 'Steam',
-        'RA': 'RetroAchievements',
-        'PS3': 'PS3',
-        'PS4': 'PS4',
-        'PS5': 'PS5',
-        'Vita': 'Vita'
+        'PC': 'Steam', 'RA': 'RetroAchievements', 'PS3': 'PS3',
+        'PS4': 'PS4', 'PS5': 'PS5', 'Vita': 'Vita'
     };
 
-    // 1️⃣ Ordenar todos los juegos primero
+    // 1️⃣ Ordenar (Tu bloque original)
     let orderedGames = [...originalCardsOrder];
-
     if (currentSort) {
         switch (currentSort) {
             case 'az': sortGamesAlphabetically(true, orderedGames); break;
@@ -3597,25 +3599,116 @@ function applyFiltersAndSort() {
         }
     }
 
-    // 2️⃣ Aplicar filtros de búsqueda, tipo y plataforma para visibilidad
-    filteredGames = orderedGames.filter(g => {
-        // Búsqueda
-        const searchValue = searchInput?.value.toLowerCase() || '';
-        // Obtener el title del div dentro del <a>
-const titleDiv = g.querySelector('div[title]');
-const gameTitle = titleDiv?.getAttribute('title')?.toLowerCase() || '';
-const matchesSearch = !searchValue || gameTitle.includes(searchValue);
+    // --- MOTOR DE BÚSQUEDA ROBUSTO ---
+    const getSearchCriteria = (input) => {
+        const criteria = { text: [], 'played-on': '', 'dificultad': '', 'content': '', 'horas': '', 'date-finished': '', 'rarity': '' };
+        if (!input) return criteria;
 
+        const emojiMap = {
+            '🎮': 'played-on', '🏔️': 'dificultad', '🏅': 'content',
+            '🕑': 'horas', '🏆': 'date-finished', '%': 'rarity', '🔠': 'text'
+        };
 
-        // Tipo
-        let matchesType = true;
-        if (selectedCompletion === "platinum") {
-            matchesType = (g.id === "Platinum" || g.id === "Full");
-        } else if (selectedCompletion === "limited") {
-            matchesType = (g.id === "Limited" || g.id === "100%");
+        // Extraer comillas primero
+        let tempInput = input.replace(/"([^"]+)"/g, (m, p1) => {
+            criteria.text.push(p1.toLowerCase());
+            return " ";
+        });
+
+        const emojis = Object.keys(emojiMap);
+        let positions = [];
+
+        // Encontrar dónde está cada emoji en el texto
+        emojis.forEach(e => {
+            let pos = tempInput.indexOf(e);
+            while (pos !== -1) {
+                positions.push({ pos, emoji: e });
+                pos = tempInput.indexOf(e, pos + 1);
+            }
+        });
+
+        // Ordenar posiciones de izquierda a derecha
+        positions.sort((a, b) => a.pos - b.pos);
+
+        // Si no hay emojis, todo es título
+        if (positions.length === 0) {
+            criteria.text.push(...tempInput.toLowerCase().trim().split(/\s+/).filter(t => t));
+            return criteria;
         }
 
-        // Plataforma
+        // Texto antes del primer emoji
+        const leadingText = tempInput.substring(0, positions[0].pos).trim();
+        if (leadingText) criteria.text.push(...leadingText.toLowerCase().split(/\s+/).filter(t => t));
+
+        // Procesar cada bloque: desde un emoji hasta el siguiente (o el final)
+        for (let i = 0; i < positions.length; i++) {
+            const start = positions[i].pos + positions[i].emoji.length;
+            const end = positions[i + 1] ? positions[i + 1].pos : tempInput.length;
+            const content = tempInput.substring(start, end).trim();
+            const field = emojiMap[positions[i].emoji];
+
+            if (field === 'text') {
+                if (content) criteria.text.push(...content.toLowerCase().split(/\s+/).filter(t => t));
+            } else if (field) {
+                criteria[field] = content;
+            }
+        }
+        return criteria;
+    };
+
+const matchRange = (elementValue, searchVal) => {
+        if (!searchVal) return true;
+        
+        let val;
+        // Lógica especial para 🏅: Busca todos los números y los suma
+        // Esto detectará "27" y "12" en "27 + 🧩 12 trofeos" y sumará 39
+        const numbers = elementValue.match(/\d+/g);
+        if (numbers && numbers.length > 1 && !elementValue.includes('/')) {
+            val = numbers.reduce((acc, curr) => acc + parseInt(curr), 0);
+        } else {
+            // Lógica estándar para dificultad (X/5) o números únicos
+            val = elementValue.includes('/') ? 
+                parseFloat(elementValue.split('/')[0].replace(/[^0-9.]/g, '')) : 
+                parseFloat(elementValue.replace(/[^0-9.]/g, ''));
+        }
+
+        if (isNaN(val)) return false;
+
+        const s = searchVal.replace(/\s+/g, '');
+        if (s.includes('-')) {
+            const parts = s.split('-');
+            if (s.startsWith('-')) return val <= parseFloat(parts[1]);
+            if (s.endsWith('-')) return val >= parseFloat(parts[0]);
+            return val >= parseFloat(parts[0]) && val <= parseFloat(parts[1]);
+        }
+        return val === parseFloat(s);
+    };
+
+    const criteria = getSearchCriteria(searchInput?.value || "");
+
+    // 2️⃣ Filtrado (Unificando criterios)
+    filteredGames = orderedGames.filter(g => {
+        const getVal = (f) => g.querySelector(`[data-game-field="${f}"]`)?.textContent || '';
+        const gameTitle = g.querySelector('div[title]')?.getAttribute('title')?.toLowerCase() || '';
+
+        const matchesText = criteria.text.length === 0 || criteria.text.every(t => gameTitle.includes(t));
+        const matchesPlat = !criteria['played-on'] || getVal('played-on').toLowerCase().includes(criteria['played-on'].toLowerCase());
+        
+        const dCrit = criteria['dificultad'];
+        const matchesDiff = !dCrit || (/[0-9-]/.test(dCrit) ? matchRange(getVal('dificultad'), dCrit) : getVal('dificultad').toLowerCase().includes(dCrit.toLowerCase()));
+
+        const matchesDate = !criteria['date-finished'] || getVal('date-finished').includes(criteria['date-finished']);
+        const matchesContent = matchRange(getVal('content'), criteria['content']);
+        const matchesHoras = matchRange(getVal('horas'), criteria['horas']);
+        const matchesRarity = matchRange(getVal('rarity'), criteria['rarity']);
+
+        const matchesSearch = matchesText && matchesPlat && matchesDiff && matchesContent && matchesHoras && matchesDate && matchesRarity;
+
+        // Filtros de botones (Tipo y Plataforma)
+        let matchesType = true;
+        if (selectedCompletion === "platinum") matchesType = (g.id === "Platinum" || g.id === "Full");
+        else if (selectedCompletion === "limited") matchesType = (g.id === "Limited" || g.id === "100%");
+
         let matchesPlatform = true;
         if (selectedPlatforms.size > 0) {
             matchesPlatform = Array.from(g.querySelectorAll('svg')).some(svg =>
@@ -3623,22 +3716,17 @@ const matchesSearch = !searchValue || gameTitle.includes(searchValue);
             );
         }
 
-        // Solo determina si se muestra o se oculta
-        g.style.display = (matchesSearch && matchesType && matchesPlatform) ? 'block' : 'none';
-
-        // Se mantiene en el array filtrado para paginación
-        return matchesSearch && matchesType && matchesPlatform;
+        const isVisible = matchesSearch && matchesType && matchesPlatform;
+        g.style.display = isVisible ? 'block' : 'none';
+        return isVisible;
     });
 
-    // 3️⃣ Pintar juegos en el contenedor según el orden global
+    // 3️⃣ Pintar
     gamesContainer.innerHTML = '';
     orderedGames.forEach(g => gamesContainer.appendChild(g));
-
-    // 4️⃣ Resetear paginación
     currentPage = 1;
     showPage(currentPage);
 }
-
 
         // --- REFERENCIAS A ELEMENTOS DEL DOM ---
         // (Obtener los elementos una vez que el DOM está cargado)
