@@ -3656,25 +3656,39 @@ function applyFiltersAndSort() {
         return criteria;
     };
 
-    const matchRange = (elementValue, searchVal) => {
+const matchRange = (elementValue, searchVal) => {
         if (!searchVal) return true;
+        
         let val;
-        const numbers = elementValue.match(/\d+/g);
+        // 1. Buscamos números decimales (ej: 13.10) o enteros
+        const numbers = elementValue.match(/\d+(\.\d+)?/g);
+        
+        // 2. Lógica especial para 🏅: Si hay varios números y no es una fracción (X/5)
         if (numbers && numbers.length > 1 && !elementValue.includes('/')) {
-            val = numbers.reduce((acc, curr) => acc + parseInt(curr), 0);
+            // Sumamos tratando cada uno como float para no perder decimales si los hubiera
+            val = numbers.reduce((acc, curr) => acc + parseFloat(curr), 0);
         } else {
-            val = elementValue.includes('/') ? 
-                parseFloat(elementValue.split('/')[0].replace(/[^0-9.]/g, '')) : 
-                parseFloat(elementValue.replace(/[^0-9.]/g, ''));
+            // 3. Lógica estándar para % (rarity) y otros
+            // Limpiamos el valor del elemento dejando solo números y puntos
+            const cleanVal = elementValue.replace(/[^0-9.]/g, '');
+            val = parseFloat(cleanVal);
         }
+
         if (isNaN(val)) return false;
+
+        // 4. Procesar el término de búsqueda (soporta rangos como -10 o 5-15)
         const s = searchVal.replace(/\s+/g, '');
         if (s.includes('-')) {
             const parts = s.split('-');
+            // Caso: -10 (Menor o igual a 10)
             if (s.startsWith('-')) return val <= parseFloat(parts[1]);
+            // Caso: 10- (Mayor o igual a 10)
             if (s.endsWith('-')) return val >= parseFloat(parts[0]);
+            // Caso: 5-10 (Entre 5 y 10)
             return val >= parseFloat(parts[0]) && val <= parseFloat(parts[1]);
         }
+        
+        // Comparación exacta
         return val === parseFloat(s);
     };
 
