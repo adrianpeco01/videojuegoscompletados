@@ -3678,7 +3678,11 @@ function applyFiltersAndSort() {
 
         const emojiMap = {
             '🎮': 'played-on', '🏔️': 'dificultad', '⛰️': 'dificultad', '🏅': 'content',
-            '🕑': 'horas', '🏆': 'date-finished', '%': 'rarity', '🔠': 'text'
+            '⏳': 'horas', '⌛': 'horas', '🕛': 'horas', '🕧': 'horas', '🕐': 'horas', '🕜': 'horas',
+            '🕑': 'horas', '🕝': 'horas', '🕒': 'horas', '🕞': 'horas', '🕓': 'horas', '🕟': 'horas',
+            '🕔': 'horas', '🕠': 'horas', '🕕': 'horas', '🕡': 'horas', '🕖': 'horas', '🕢': 'horas',
+            '🕗': 'horas', '🕣': 'horas', '🕘': 'horas', '🕤': 'horas', '🕙': 'horas', '🕥': 'horas',
+            '🕚': 'horas', '🕦': 'horas', '🏆': 'date-finished', '%': 'rarity', '🔠': 'text'
         };
 
         // Función auxiliar para separar por "+" respetando comillas
@@ -3800,7 +3804,74 @@ const matchesDiff = dCrit.length === 0 || dCrit.some(d => {
 
         const matchesDate = !criteria['date-finished'] || getVal('date-finished').includes(criteria['date-finished']);
         const matchesContent = matchRange(getVal('content'), criteria['content']);
-        const matchesHoras = matchRange(getVal('horas'), criteria['horas']);
+        const matchesHoras = !criteria['horas'] || (() => {
+    const raw = getVal('horas').toLowerCase();
+    const search = criteria['horas'].toLowerCase().trim();
+
+    // 👉 detectar si el usuario busca minutos
+    const isMinutesSearch = search.includes('m');
+
+    // 👉 convertir texto a minutos totales
+    const parseToMinutes = (str) => {
+        let h = 0, m = 0;
+
+        const hMatch = str.match(/(\d+)\s*h/);
+        const mMatch = str.match(/(\d+)\s*m/);
+
+        if (hMatch) h = parseInt(hMatch[1]) * 60;
+        if (mMatch) m = parseInt(mMatch[1]);
+
+        // fallback: si solo hay número sin "h", lo tratamos como horas
+        if (!hMatch && !mMatch) {
+            const num = parseFloat(str);
+            if (!isNaN(num)) h = num * 60;
+        }
+
+        return h + m;
+    };
+
+    const valMinutes = parseToMinutes(raw);
+
+    // 👉 limpiar búsqueda
+    const cleanSearch = search.replace(/[^0-9\-]/g, '');
+
+    if (!cleanSearch) return true;
+
+   // 👉 lógica de rango con unidades independientes
+if (search.includes('-')) {
+    const parts = search.split('-');
+
+    const getMinutes = (str) => {
+        if (!str) return null;
+
+        const num = parseFloat(str.replace(/[^0-9.]/g, ''));
+        if (isNaN(num)) return null;
+
+        // 👉 si tiene m → minutos, si no → horas
+        return str.includes('m') ? num : num * 60;
+    };
+
+    const min = getMinutes(parts[0]);
+    const max = getMinutes(parts[1]);
+
+    // Caso: -10 / -10m
+    if (search.startsWith('-')) {
+        return valMinutes <= max;
+    }
+
+    // Caso: 10- / 10m- / 10-m
+    if (search.endsWith('-') || parts[1] === '' || parts[1] === 'm') {
+        return valMinutes >= min;
+    }
+
+    // Caso: rango mixto (aquí está la clave)
+    return valMinutes >= min && valMinutes <= max;
+}
+
+    // 👉 comparación exacta
+    const target = parseFloat(cleanSearch) * (isMinutesSearch ? 1 : 60);
+    return valMinutes === target;
+})();
         const matchesRarity = matchRange(getVal('rarity'), criteria['rarity']);
 
         const matchesSearch = matchesText && matchesPlat && matchesDiff && matchesContent && matchesHoras && matchesDate && matchesRarity;
