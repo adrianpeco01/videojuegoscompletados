@@ -3684,6 +3684,27 @@ let isModalTransitioning = false;
 const gamesContainer = document.getElementById('games-container');
 const paginationContainer = document.getElementById('pagination-container');
 
+// Escucha los clics dentro del contenedor de paginación
+paginationContainer.addEventListener('click', (e) => {
+  // Comprobamos si lo que se ha pulsado es un enlace de paginación
+  const link = e.target.closest('a');
+  
+  if (link) {
+    // Hace que la página suba con una animación suave
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }
+});
+
+function normalizeText(text) {
+    return (text || "")
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+}
+
 const games = Array.from(gamesContainer.children); // Todos los juegos
 let filteredGames = [...games]; // Copia inicial de todos los juegos
 const itemsPerPage = 66;
@@ -3817,11 +3838,11 @@ function applyFiltersAndSort() {
         // Función auxiliar para separar por "+" respetando comillas
         const parseValue = (str) => {
             return str.split('+').map(part => {
-                return part.trim().replace(/"/g, '').toLowerCase();
+                return normalizeText(part.trim().replace(/"/g, ''));
             }).filter(p => p);
         };
 
-        let tempInput = input;
+        let tempInput = normalizeText(input);
         const emojis = Object.keys(emojiMap);
         let positions = [];
 
@@ -3901,15 +3922,18 @@ const matchRange = (elementValue, searchVal) => {
 
     // 2️⃣ Filtrado con lógica OR para el símbolo "+"
     filteredGames = orderedGames.filter(g => {
-        const getVal = (f) => g.querySelector(`[data-game-field="${f}"]`)?.textContent || '';
-        const gameTitle = g.querySelector('div[title]')?.getAttribute('title')?.toLowerCase() || '';
+        const getVal = (f) =>
+    normalizeText(g.querySelector(`[data-game-field="${f}"]`)?.textContent || '');
+        const gameTitle = normalizeText(
+    g.querySelector('div[title]')?.getAttribute('title') || ''
+);
 
         // Título: Si hay "+" usa .some (OR), si no hay usará la lista completa
         const matchesText = criteria.text.length === 0 || criteria.text.some(t => gameTitle.includes(t));
         
         // Consola: Soporta "+" (OR)
         const matchesPlat = criteria['played-on'].length === 0 || criteria['played-on'].some(p => 
-            getVal('played-on').toLowerCase().includes(p)
+            getVal('played-on').toLowerCase().includes(normalizeText(p))
         );
         
         // Dificultad: Soporta "+" (OR)
