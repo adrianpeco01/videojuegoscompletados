@@ -1097,12 +1097,15 @@ button img:hover + .arrow-icon {
       <div class="flex items-center space-x-1">
         <a class="ml-2 mr-4 hidden sm:block __className_9fd9c5"
        href="https://adrianpeco01.github.io/videojuegoscompletados/#page=1"
-       onclick="window.location.replace(this.href); return false;">
-        Mis videojuegos completados</a>
-        <a class="ml-2 mr-4 sm:hidden __className_9fd9c5"
+       onclick="event.preventDefault(); window.location.hash = 'page=1'; window.location.reload();">
+        Mis videojuegos completados
+    </a>
+
+    <a class="ml-2 mr-4 sm:hidden __className_9fd9c5"
        href="https://adrianpeco01.github.io/videojuegoscompletados/#page=1"
-       onclick="window.location.replace(this.href); return false;">
-        Mis completados</a>
+       onclick="event.preventDefault(); window.location.hash = 'page=1'; window.location.reload();">
+        Mis completados
+    </a>
             
             </div>
           <div class="flex items-center space-x-1">
