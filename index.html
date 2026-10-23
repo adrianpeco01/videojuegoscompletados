@@ -341,7 +341,7 @@ html.dark img[src$="logroPS.png"] {
             opacity: 0;
             transition: transform 300ms ease, opacity 300ms ease;
             will-change: transform, opacity;
-            max-height: 90vh; /* No sobrepasar el 90% de la ventana */
+            max-height: calc(90vh + 2px); /* No sobrepasar el 90% de la ventana */
             overflow-y: auto; /* Habilita scroll si el contenido es muy alto */
             overscroll-behavior: contain;
             scrollbar-width: thin;
@@ -1085,6 +1085,14 @@ button img:hover + .arrow-icon {
 /* Tema oscuro */
 .dark #searchInfoButton svg {
     color: #1e293b;
+}
+
+#Limited > div,
+#Platinum > div,
+#Full > div,
+a[id="100%"] > div {
+    transition: background-color 200ms ease,
+                box-shadow 200ms ease !important;
 }
 
 </style>
