@@ -5635,6 +5635,16 @@ if (message) {
 let topPos;
 let leftPos = buttonRect.left + (buttonRect.width / 2) - (tooltipContentRect.width / 2);
 
+if (window.innerWidth <= 1023) {
+    if (button.id === 'searchInfoButton') {
+        leftPos -= 60;
+    } else if (/^\d+ masterizados$/.test(button.dataset.tooltipMessage)) {
+        leftPos -= 30;
+    } else if (/^\d+ ocultos$/.test(button.dataset.tooltipMessage)) {
+        leftPos -= 10;
+    }
+}
+
 if (isSearchTooltip) {
     // Solo el tooltip de búsqueda aparece siempre debajo
     topPos = buttonRect.bottom + tooltipMargin;
