@@ -1,0 +1,25 @@
+
+{
+  "id": "/videojuegoscompletados/",
+  "name": "Mis videojuegos completados",
+  "short_name": "Mis completados",
+  "description": "Mi colección de videojuegos completados",
+  "start_url": "/videojuegoscompletados/#page=1",
+  "scope": "/videojuegoscompletados/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "/videojuegoscompletados/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/videojuegoscompletados/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
