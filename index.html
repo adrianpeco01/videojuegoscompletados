@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <!-- saved from url=(0058)https://platinumhunt.com/adricollantex?completion=Complete -->
-<html lang="en" class="light" style="color-scheme: light;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html lang="en" class="light" style="color-scheme: light;"><head>  <link rel="manifest" href="/videojuegoscompletados/manifest.json">
+  <meta name="theme-color" content="#ffffff"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
       <script>
         (function() {
             try {
@@ -6691,5 +6692,19 @@ function closeModal() {
     </div>
   </div>
 </div>
+
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register(
+      '/videojuegoscompletados/service-worker.js'
+    ).catch(error => {
+      console.error('Error registrando el service worker:', error);
+    });
+  });
+}
+</script>
+
 
 </body></html>
